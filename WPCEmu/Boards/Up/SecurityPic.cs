@@ -3,6 +3,8 @@ using System.Diagnostics;
 
 namespace WPCEmu.Boards.Up
 {
+    public delegate byte GetRowFunction(byte col);
+
     public class SecurityPic
     {
         const int PIC_SERIAL_SIZE = 16;
@@ -12,6 +14,9 @@ namespace WPCEmu.Boards.Up
         const byte INITIAL_BYTE = 0xFF;
         const byte DEFAULT_SCRAMBLER_VALUE = 0xA5;
 
+        // 123456: Serial number (it's that is registered on the labels)
+        // 12345: Serial number n°2 (this number has no known utility)
+        // 123: Unlock key of the matrix's contacts key (ALWAYS at the value of 123, it is used to generate the corresponding unlock code)
         const int MEDIEVAL_MADNESS_GAME_ID = 559;
 
         const string GAME_SERIAL_SUFFIX = " 123456 12345 123";
@@ -103,7 +108,7 @@ namespace WPCEmu.Boards.Up
             Debug.Print("RESET SECURITY PIC");
         }
 
-        public byte Read(/*getRowFunction*/)
+        public byte Read(GetRowFunction getRowFunction)
         {
             if (lastByteWrite == WPC_PIC_COUNTER)
             {
@@ -114,7 +119,7 @@ namespace WPCEmu.Boards.Up
             if (lastByteWrite >= 0x16 && lastByteWrite <= 0x1F)
             {
                 byte col = (byte) (lastByteWrite - 0x15);
-                return /*getRowFunction(*/col/*)*/;
+                return getRowFunction(col);
             }
 
             if ((lastByteWrite & 0xF0) == 0x70)
@@ -139,11 +144,11 @@ namespace WPCEmu.Boards.Up
             {
                 if (unlockCode[3 - unlockCodeCounter] == data)
                 {
-                    Debug.Print("Correct code sent to pic { sent: {0}, codeW: {1}, expected: {2} }", data, unlockCodeCounter, unlockCode[3 - unlockCodeCounter]);
+                    Debug.Print("Correct code sent to pic sent: {0}, codeW: {1}, expected: {2}", data, unlockCodeCounter, unlockCode[3 - unlockCodeCounter]);
                 }
                 else
                 {
-                    Debug.Print("Wrong code sent to pic { sent: {0}, codeW: {1}, expected: {2} }", data, unlockCodeCounter, unlockCode[3 - unlockCodeCounter]);
+                    Debug.Print("Wrong code sent to pic sent: {0}, codeW: {1}, expected: {2}", data, unlockCodeCounter, unlockCode[3 - unlockCodeCounter]);
                 }
                 unlockCodeCounter--;
                 return;

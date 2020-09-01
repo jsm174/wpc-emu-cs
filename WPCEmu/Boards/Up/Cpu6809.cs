@@ -1,4 +1,56 @@
-﻿using System;
+﻿/*
+  seems to be based on 6809.c by Larry Bank
+
+  TODO, see https://groups.google.com/forum/#!msg/comp.sys.m6809/ct2V1nGIy2c/4xfP-qI91TIJ
+  1) NMIs were not being masked before the 1st LDS.
+  Fixed -> NMIs are now ignored until the system stack pointer
+  is initialized
+  "the NMI is not recognized until the first program load of the Hardware Stack Pointer (S)."
+
+  2) CWAI pushed state twice, once when the CWAI first executed
+  and again when the interrupt occured (DOH!).
+  Fixed -> The second state push has been removed.
+
+  3) SYNC required an enabled interrupt before exiting the sync state.
+  Fixed -> It now exits the sync state on the occurance of NMI,
+  IRQ, or FIRQ interrupts regardless of whether IRQ or FIRQ are
+  masked.  If the interrupt duration is < 3 clocks or if the interrupt
+  is masked then continue executing from the next instruction
+  else take the interrupt vector.
+
+*/
+
+/*
+The MIT License (MIT)
+
+Copyright (c) 2014 Martin Maly, http://retrocip.cz, http://www.uelectronics.info,
+twitter: @uelectronics
+
+Copyright (c) 2018 Michael Vogt
+twitter: @neophob
+
+Copyright (c) 2020 Jason Millard
+twitter: @jsm174
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of
+the Software, and to permit persons to whom the Software is furnished to do so,
+subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
+FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR
+COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER
+IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
+
+using System;
 using System.Diagnostics;
 
 namespace WPCEmu.Boards.Up
@@ -2651,7 +2703,7 @@ namespace WPCEmu.Boards.Up
                 int cycles = step();
                 if (cycles < 1)
                 {
-                    Debug.Print("WARNING, invalid step detected:', { invalidStepDetected, ticksToRun, ticks, pc: regPC }");
+                    Debug.Print("WARNING, invalid step detected: {0}, {1}, {2}, pc: {3}", invalidStepDetected, ticksToRun, ticks, regPC);
                     invalidStepDetected++;
                     ticks--;
                 }
@@ -2706,16 +2758,14 @@ namespace WPCEmu.Boards.Up
         public void irq()
         {
             // simulate toggle line
-            Debug.Print("SCHEDULE_IRQ %o { tickCount: tickCount, missedIRQ: missedIRQ }");
-
+            Debug.Print("SCHEDULE_IRQ tickCount: {0}, missedIRQ: {1}", tickCount, missedIRQ);
             irqPending = true;
         }
 
         public void firq()
         {
             // simulate toggle line
-            Debug.Print("SCHEDULE_FIRQ %o { tickCount: tickCount, missedFIRQ: missedFIRQ }");
-
+            Debug.Print("SCHEDULE_FIRQ tickCount: {0}, missedFIRQ: {1}", tickCount, missedFIRQ);
             firqPending = true;
         }
 

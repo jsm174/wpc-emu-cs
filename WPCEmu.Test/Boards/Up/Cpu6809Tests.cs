@@ -14,7 +14,7 @@ namespace WPCEmu.Test.Boards.Up
 		Cpu6809 cpu;
 
 		struct AddressValueStruct
-        {
+		{
 			public ushort address;
 			public byte value;
 
@@ -25,19 +25,21 @@ namespace WPCEmu.Test.Boards.Up
 			}
 		}
 
-		byte ReadMemoryMock(ushort address) {
+		byte ReadMemoryMock(ushort address)
+		{
 			readMemoryAddress.Add(address);
 			return 0;
 		}
 
-		void WriteMemoryMock(ushort address, byte value) {
+		void WriteMemoryMock(ushort address, byte value)
+		{
 			writeMemoryAddress.Add(new AddressValueStruct(address, value));
 		}
 
 		byte FetchFunction0x12()
-        {
+		{
 			return 0x12;
-        }
+		}
 
 		byte FetchFunction0xFF()
 		{
@@ -46,7 +48,7 @@ namespace WPCEmu.Test.Boards.Up
 
 		[SetUp]
 		public void Init()
-        {
+		{
 			readMemoryAddress = new List<ushort>();
 			writeMemoryAddress = new List<AddressValueStruct>();
 		

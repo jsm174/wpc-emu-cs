@@ -503,13 +503,13 @@ namespace WPCEmu.Boards.Up
         // Transfer or exchange two registers.
         public void TFREXG(byte ucPostByte, bool bExchange)
         {
-            byte ucTemp = (byte) (ucPostByte & 0x88);
+            ushort ucTemp = (ushort) (ucPostByte & 0x88);
             if (ucTemp == 0x80 || ucTemp == 0x08)
             {
                 throw new Exception("TFREXG_ERROR_MIXING_8_AND_16BIT_REGISTER!");
             }
 
-            ucTemp = (byte)getPostByteRegister((byte) (ucPostByte >> 4));
+            ucTemp = getPostByteRegister((byte) (ucPostByte >> 4));
             if (bExchange)
             {
                 setPostByteRegister((byte) (ucPostByte >> 4), getPostByteRegister(ucPostByte));

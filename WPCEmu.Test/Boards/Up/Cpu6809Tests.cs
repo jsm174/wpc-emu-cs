@@ -8,8 +8,8 @@ namespace WPCEmu.Test.Boards.Up
 	[TestFixture]
 	public class Cpu6809Tests
 	{
-		Stack<ushort> readMemoryAddress;
-		Stack<AddressValueStruct> writeMemoryAddress;
+		List<ushort> readMemoryAddress;
+		List<AddressValueStruct> writeMemoryAddress;
 
 		Cpu6809 cpu;
 
@@ -26,12 +26,12 @@ namespace WPCEmu.Test.Boards.Up
 		}
 
 		byte ReadMemoryMock(ushort address) {
-			readMemoryAddress.Push(address);
+			readMemoryAddress.Add(address);
 			return 0;
 		}
 
 		void WriteMemoryMock(ushort address, byte value) {
-			writeMemoryAddress.Push(new AddressValueStruct(address, value));
+			writeMemoryAddress.Add(new AddressValueStruct(address, value));
 		}
 
 		byte FetchFunction0x12()
@@ -47,8 +47,8 @@ namespace WPCEmu.Test.Boards.Up
 		[SetUp]
 		public void Init()
         {
-			readMemoryAddress = new Stack<ushort>();
-			writeMemoryAddress = new Stack<AddressValueStruct>();
+			readMemoryAddress = new List<ushort>();
+			writeMemoryAddress = new List<AddressValueStruct>();
 		
 			cpu = Cpu6809.GetInstance(WriteMemoryMock, ReadMemoryMock);
 			cpu.reset();
@@ -60,8 +60,8 @@ namespace WPCEmu.Test.Boards.Up
 		public void ReadInitialVector()
 		{
 
-			Assert.AreEqual(0xFFFE, readMemoryAddress.ElementAt(0));
-			Assert.AreEqual(0xFFFF, readMemoryAddress.ElementAt(1));
+			Assert.AreEqual(0xFFFE, readMemoryAddress[0]);
+			Assert.AreEqual(0xFFFF, readMemoryAddress[1]);
 		}
 
 		[Test, Order(1)]
@@ -152,8 +152,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
 			Assert.AreEqual("EfhInzvc", cpu.flagsToString());
-			Assert.AreEqual(0xFFF8, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(0xFFF9, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(0xFFF8, readMemoryAddress[2]);
+			Assert.AreEqual(0xFFF9, readMemoryAddress[3]);
 		}
 
 		[Test, Order(12)]
@@ -173,8 +173,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.irq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
-			Assert.AreEqual(0xFFF8, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(0xFFF9, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(0xFFF8, readMemoryAddress[2]);
+			Assert.AreEqual(0xFFF9, readMemoryAddress[3]);
 			Assert.AreEqual("EFHINZVC", cpu.flagsToString());
 		}
 
@@ -185,8 +185,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.irq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
-			Assert.AreEqual(null, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(null, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(null, readMemoryAddress[2]);
+			Assert.AreEqual(null, readMemoryAddress[3]);
 		}
 
 		[Test, Order(15)]
@@ -197,8 +197,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
 			Assert.AreEqual("EFhInzvc", cpu.flagsToString());
-			Assert.AreEqual(0xFFFC, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(0xFFFD, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(0xFFFC, readMemoryAddress[2]);
+			Assert.AreEqual(0xFFFD, readMemoryAddress[3]);
 		}
 
 		[Test, Order(16)]
@@ -209,8 +209,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
 			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
-			Assert.AreEqual(0xFFF6, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(0xFFF7, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(0xFFF6, readMemoryAddress[2]);
+			Assert.AreEqual(0xFFF7, readMemoryAddress[3]);
 		}
 
 		[Test, Order(17)]
@@ -221,8 +221,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.firq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
-			Assert.AreEqual(0xFFF6, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(0xFFF7, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(0xFFF6, readMemoryAddress[2]);
+			Assert.AreEqual(0xFFF7, readMemoryAddress[3]);
 			Assert.AreEqual("eFHINZVC", cpu.flagsToString());
 		}
 
@@ -233,8 +233,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.firq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
-			Assert.AreEqual(null, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(null, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(null, readMemoryAddress[2]);
+			Assert.AreEqual(null, readMemoryAddress[3]);
 		}
 
 		[Test, Order(19)]
@@ -245,8 +245,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
 			cpu.oCMP(0, 0xFF);
-			Assert.AreEqual(null, readMemoryAddress.ElementAt(2));
-			Assert.AreEqual(null, readMemoryAddress.ElementAt(3));
+			Assert.AreEqual(null, readMemoryAddress[2]);
+			Assert.AreEqual(null, readMemoryAddress[3]);
 		}
 
 		[Test, Order(20)]
@@ -346,20 +346,20 @@ namespace WPCEmu.Test.Boards.Up
 		public void WriteWord_0_0x1234()
 		{
 			cpu.WriteWord(0x0, 0x1234);
-			Assert.AreEqual(0, writeMemoryAddress.ElementAt(0).address);
-			Assert.AreEqual(0x12, writeMemoryAddress.ElementAt(0).value);
-			Assert.AreEqual(1, writeMemoryAddress.ElementAt(1).address);
-			Assert.AreEqual(0x34, writeMemoryAddress.ElementAt(1).value);
+			Assert.AreEqual(0, writeMemoryAddress[0].address);
+			Assert.AreEqual(0x12, writeMemoryAddress[0].value);
+			Assert.AreEqual(1, writeMemoryAddress[1].address);
+			Assert.AreEqual(0x34, writeMemoryAddress[1].value);
 		}
 
 		[Test, Order(30)]
 		public void WriteWord_0xFFFF_0x1234()
 		{
 			cpu.WriteWord(0xFFFF, 0x1234);
-			Assert.AreEqual(0xFFFF, writeMemoryAddress.ElementAt(0).address);
-			Assert.AreEqual(0x12, writeMemoryAddress.ElementAt(0).value);
-			Assert.AreEqual(0, writeMemoryAddress.ElementAt(1).address);
-			Assert.AreEqual(0x34, writeMemoryAddress.ElementAt(1).value);
+			Assert.AreEqual(0xFFFF, writeMemoryAddress[0].address);
+			Assert.AreEqual(0x12, writeMemoryAddress[0].value);
+			Assert.AreEqual(0, writeMemoryAddress[1].address);
+			Assert.AreEqual(0x34, writeMemoryAddress[1].value);
 		}
 
 		[Test, Order(31)]

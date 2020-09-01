@@ -1,0 +1,54 @@
+on: [push, pull_request]
+
+jobs:
+  wpc-emu-cs-win-x64:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nuget/setup-nuget@v1
+      - name: Build
+        run: dotnet build -c Release -r win-x64
+      - name: Build Contents
+        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1
+        shell: bash
+      - name: Test
+        run: dotnet test -r win-x64
+        shell: bash
+
+  wpc-emu-cs-win-x86:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nuget/setup-nuget@v1
+      - name: Build
+        run: dotnet build -c Release -r win-x86
+      - name: Build Contents
+        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1
+        shell: bash
+      - name: Test
+        run: dotnet test -r win-x86
+        shell: bash
+
+  wpc-emu-cs-osx-x64:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nuget/setup-nuget@v1
+      - name: Build
+        run: dotnet build -c Release -r osx-x64
+      - name: Build Contents
+        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1
+      - name: Test
+        run: dotnet test -r osx-x64
+
+  wpc-emu-cs-linux-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: nuget/setup-nuget@v1
+      - name: Build
+        run: dotnet build -c Release -r linux-x64
+      - name: Build Contents
+        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1
+      - name: Test
+        run: dotnet test -r linux-x64

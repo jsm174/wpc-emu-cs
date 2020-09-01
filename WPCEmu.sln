@@ -1,0 +1,23 @@
+
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPCEmu", "WPCEmu\WPCEmu.csproj", "{9C4A97A7-1700-4D5F-9B75-2CE194F7FC25}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPCEmu.Test", "WPCEmu.Test\WPCEmu.Test.csproj", "{F13714E2-9E22-42D2-B35F-F0492AD034C0}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9C4A97A7-1700-4D5F-9B75-2CE194F7FC25}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C4A97A7-1700-4D5F-9B75-2CE194F7FC25}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C4A97A7-1700-4D5F-9B75-2CE194F7FC25}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C4A97A7-1700-4D5F-9B75-2CE194F7FC25}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F13714E2-9E22-42D2-B35F-F0492AD034C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F13714E2-9E22-42D2-B35F-F0492AD034C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F13714E2-9E22-42D2-B35F-F0492AD034C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F13714E2-9E22-42D2-B35F-F0492AD034C0}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

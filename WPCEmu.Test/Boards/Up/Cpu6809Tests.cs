@@ -59,7 +59,6 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(0)]
 		public void ReadInitialVector()
 		{
-
 			Assert.AreEqual(0xFFFE, readMemoryAddress[0]);
 			Assert.AreEqual(0xFFFF, readMemoryAddress[1]);
 		}
@@ -185,8 +184,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.irq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
-			Assert.AreEqual(null, readMemoryAddress[2]);
-			Assert.AreEqual(null, readMemoryAddress[3]);
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
 		}
 
 		[Test, Order(15)]
@@ -204,7 +203,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(16)]
 		public void FlagsShouldBeCorrectAfterFirq_InitFlags_0x00()
 		{
-			cpu.set("flags", 0xFF);
+			cpu.set("flags", 0x00);
 			cpu.firq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
@@ -233,8 +232,8 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.firq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
-			Assert.AreEqual(null, readMemoryAddress[2]);
-			Assert.AreEqual(null, readMemoryAddress[3]);
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
 		}
 
 		[Test, Order(19)]
@@ -244,23 +243,22 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.firq();
 			cpu.fetchFunction = FetchFunction0x12;
 			cpu.steps();
-			cpu.oCMP(0, 0xFF);
-			Assert.AreEqual(null, readMemoryAddress[2]);
-			Assert.AreEqual(null, readMemoryAddress[3]);
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
 		}
 
 		[Test, Order(20)]
 		public void setOverflowFlag8Bit()
 		{
-			cpu.set("flags", 0x00);
-			cpu.setV16(1, 1, 0x80);
+			cpu.set("flags", 0);
+			cpu.setV8(1, 1, 0x80);
 			Assert.AreEqual("efhinzVc", cpu.flagsToString());
 		}
 
 		[Test, Order(21)]
 		public void setOverflowFlag8Bit_overflow_r()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x180);
 			Assert.AreEqual("efhinzvc", cpu.flagsToString());
 		}
@@ -268,7 +266,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(22)]
 		public void setOverflowFlag16Bit()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x8000);
 			Assert.AreEqual("efhinzVc", cpu.flagsToString());
 		}
@@ -276,7 +274,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(23)]
 		public void setOverflowFlag16Bit_overflow_r()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x18000);
 			Assert.AreEqual("efhinzvc", cpu.flagsToString());
 		}
@@ -284,10 +282,10 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(24)]
 		public void signed5bit()
 		{
-			ushort val0 = cpu.signed5bit(0);
-			ushort valF = cpu.signed5bit(0xF);
-			ushort val10 = cpu.signed5bit(0x10);
-			ushort val1F = cpu.signed5bit(0x1F);
+			sbyte val0 = (sbyte) cpu.signed5bit(0);
+			sbyte valF = (sbyte) cpu.signed5bit(0xF);
+			sbyte val10 = (sbyte) cpu.signed5bit(0x10);
+			sbyte val1F = (sbyte) cpu.signed5bit(0x1F);
 			//ushort valUndef = cpu.signed16();
 			Assert.AreEqual(0, val0);
 			Assert.AreEqual(15, valF);
@@ -299,10 +297,10 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(25)]
 		public void signed8bit()
 		{
-			ushort val0 = cpu.signed(0);
-			ushort val7f = cpu.signed(0x7F);
-			ushort val80 = cpu.signed(0x80);
-			ushort valff = cpu.signed(0xFF);
+			sbyte val0 = (sbyte) cpu.signed(0);
+			sbyte val7f = (sbyte) cpu.signed(0x7F);
+			sbyte val80 = (sbyte) cpu.signed(0x80);
+			sbyte valff = (sbyte) cpu.signed(0xFF);
 			//ushort valUndef = cpu.signed();
 			Assert.AreEqual(0, val0);
 			Assert.AreEqual(0x7f, val7f);
@@ -314,10 +312,10 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(26)]
 		public void signed16bit()
 		{
-			ushort val0 = cpu.signed16(0);
-			ushort val7fff = cpu.signed16(0x7FFF);
-			ushort val8000 = cpu.signed16(0x8000);
-			ushort valffff = cpu.signed16(0xFFFF);
+			short val0 = (short) cpu.signed16(0);
+			short val7fff = (short) cpu.signed16(0x7FFF);
+			short val8000 = (short) cpu.signed16(0x8000);
+			short valffff = (short) cpu.signed16(0xFFFF);
 			//ushort valUndef = cpu.signed16();
 			Assert.AreEqual(0, val0);
 			Assert.AreEqual(32767, val7fff);
@@ -329,7 +327,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(27)]
 		public void flagsNZ16_0xFFFF()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			cpu.flagsNZ16(0xFFFF);
 			Assert.AreEqual("efhiNzvc", cpu.flagsToString());
 		}
@@ -337,7 +335,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(28)]
 		public void flagsNZ16_0x0000()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			cpu.flagsNZ16(0);
 			Assert.AreEqual("efhinZvc", cpu.flagsToString());
 		}
@@ -400,16 +398,16 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(35)]
 		public void oNEG_0()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0);
 			Assert.AreEqual(0, result);
-			Assert.AreEqual("efhiNzvC", cpu.flagsToString());
+			Assert.AreEqual("efhinZvc", cpu.flagsToString());
 		}
 
 		[Test, Order(36)]
 		public void oNEG_1()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			byte result = cpu.oNEG(1);
 			Assert.AreEqual(0xFF, result);
 			Assert.AreEqual("efhiNzvC", cpu.flagsToString());
@@ -418,7 +416,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(37)]
 		public void oNEG_0x7F()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0x7F);
 			Assert.AreEqual(0x81, result);
 			Assert.AreEqual("efhiNzvC", cpu.flagsToString());
@@ -427,7 +425,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(38)]
 		public void oNEG_0x80()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0x80);
 			Assert.AreEqual(0x80, result);
 			Assert.AreEqual("efhiNzVC", cpu.flagsToString());
@@ -436,7 +434,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(39)]
 		public void oNEG_0xFF()
 		{
-			cpu.set("flags", 0x00);
+			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0xFF);
 			Assert.AreEqual(1, result);
 			Assert.AreEqual("efhinzvc", cpu.flagsToString());
@@ -462,7 +460,7 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.regA = 0x44;
 			cpu.regB = 0x99;
-			byte result = (byte)cpu.getPostByteRegister(0x0);
+			ushort result = cpu.getPostByteRegister(0x0);
 			Assert.AreEqual(0x4499, result);
 		}
 
@@ -470,7 +468,7 @@ namespace WPCEmu.Test.Boards.Up
 		public void getPostByteRegister0x5_PC()
 		{
 			cpu.regPC = 0x1234;
-			byte result = (byte)cpu.getPostByteRegister(0xA);
+			ushort result = cpu.getPostByteRegister(0x5);
 			Assert.AreEqual(0x1234, result);
 		}
 
@@ -478,7 +476,7 @@ namespace WPCEmu.Test.Boards.Up
 		public void getPostByteRegister0xA_CC()
 		{
 			cpu.regCC = 0xFF;
-			byte result = (byte) cpu.getPostByteRegister(0xA);
+			ushort result = cpu.getPostByteRegister(0xA);
 			Assert.AreEqual(0xFF, result);
 		}
 
@@ -497,7 +495,7 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.regU = 0xFFFF;
 			cpu.regS = 0x7F;
-			cpu.TFREXG(0x34, false);
+			cpu.TFREXG(0x34, true);
 			Assert.AreEqual(0x7F, cpu.regU);
 			Assert.AreEqual(0xFFFF, cpu.regS);
 		}

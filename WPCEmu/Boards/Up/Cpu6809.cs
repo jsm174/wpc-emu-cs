@@ -882,7 +882,7 @@ namespace WPCEmu.Boards.Up
             {
                 regCC |= F_CARRY;
             }
-            setV8(b, v, (byte)temp);
+            setV8(b, v, temp);
             temp &= 0xFF;
             regCC |= flagsNZ[temp];
         }

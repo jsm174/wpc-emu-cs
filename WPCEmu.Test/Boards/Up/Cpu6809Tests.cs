@@ -8,11 +8,6 @@ namespace WPCEmu.Test.Boards.Up
 	[TestFixture]
 	public class Cpu6809Tests
 	{
-		List<ushort> readMemoryAddress;
-		List<AddressValueStruct> writeMemoryAddress;
-
-		Cpu6809 cpu;
-
 		struct AddressValueStruct
 		{
 			public ushort address;
@@ -24,6 +19,11 @@ namespace WPCEmu.Test.Boards.Up
 				this.value = value;
 			}
 		}
+
+		List<ushort> readMemoryAddress;
+		List<AddressValueStruct> writeMemoryAddress;
+
+		Cpu6809 cpu;
 
 		byte ReadMemoryMock(ushort address)
 		{

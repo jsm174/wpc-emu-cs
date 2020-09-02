@@ -141,7 +141,7 @@ namespace WPCEmu.Boards.Up
         ReadMemoryFunction memoryReadFunction;
         public FetchFunction fetchFunction = null;
 
-        int tickCount;
+        public int tickCount;
 
         bool irqPending;
         bool firqPending;
@@ -238,14 +238,14 @@ namespace WPCEmu.Boards.Up
         }
 
         // push byte to S stack
-        void PUSHB(byte b)
+        public void PUSHB(byte b)
         {
             regS = (ushort)((regS - 1) & 0xFFFF);
             memoryWriteFunction(regS, (byte) (b & 0xFF));
         }
 
         // push word to S stack
-        void PUSHW(ushort b)
+        public void PUSHW(ushort b)
         {
             regS = (ushort)((regS - 1) & 0xFFFF);
             memoryWriteFunction(regS, (byte) (b & 0xFF));
@@ -254,14 +254,14 @@ namespace WPCEmu.Boards.Up
         }
 
         // push byte to U stack
-        void PUSHBU(byte b)
+        public void PUSHBU(byte b)
         {
             regU = (ushort)((regU - 1) & 0xFFFF);
             memoryWriteFunction(regU, (byte) (b & 0xFF));
         }
 
         // push word to U stack
-        void PUSHWU(ushort b)
+        public void PUSHWU(ushort b)
         {
             regU = (ushort)((regU - 1) & 0xFFFF);
             memoryWriteFunction(regU, (byte) (b & 0xFF));
@@ -621,7 +621,7 @@ namespace WPCEmu.Boards.Up
         // ±4-bit (-16 to +15)
         // ±7-bit (-128 to +127)
         // ±15-bit (-32768 to +32767)
-        ushort PostByte()
+        public ushort PostByte()
         {
             const byte INDIRECT_FIELD = 0x10;
             const byte REGISTER_FIELD = 0x60;
@@ -650,7 +650,7 @@ namespace WPCEmu.Boards.Up
                     throw new Exception("INVALID_ADDRESS_PB");
             }
 
-            ushort xchg = 0;
+            ushort? xchg = null;
             ushort EA = 0; //Effective Address
             if ((postByte & COMPLEXTYPE_FIELD) != 0)
             {
@@ -669,32 +669,32 @@ namespace WPCEmu.Boards.Up
                         break;
                     case 0x02: // -R
                         xchg = (ushort) (registerField - 1);
-                        EA = xchg;
+                        EA = xchg.Value;
                         tickCount += 2;
                         break;
                     case 0x03: // --R
                         xchg = (ushort) (registerField - 2);
-                        EA = xchg;
+                        EA = xchg.Value;
                         tickCount += 3;
                         break;
                     case 0x04: // EA = R + 0 OFFSET
                         EA = registerField;
                         break;
                     case 0x05: // EA = R + REGB OFFSET
-                        EA = (ushort) (registerField + signed(regB));
+                        EA = (ushort) (registerField + (sbyte) signed(regB));
                         tickCount += 1;
                         break;
                     case 0x06: // EA = R + REGA OFFSET
-                        EA = (ushort) (registerField + signed(regA));
+                        EA = (ushort) (registerField + (sbyte) signed(regA));
                         tickCount += 1;
                         break;
                     // case 0x07 is ILLEGAL
                     case 0x08: // EA = R + 7bit OFFSET
-                        EA = (ushort) (registerField + signed(fetch()));
+                        EA = (ushort) (registerField + (sbyte) signed(fetch()));
                         tickCount += 1;
                         break;
                     case 0x09: // EA = R + 15bit OFFSET
-                        EA = (ushort) (registerField + signed16(fetch16()));
+                        EA = (ushort) (registerField + (short) signed16(fetch16()));
                         tickCount += 4;
                         break;
                     // case 0x0A is ILLEGAL
@@ -705,7 +705,7 @@ namespace WPCEmu.Boards.Up
                     case 0x0C:
                         { // EA = PC + 7bit OFFSET
                           // NOTE: fetch increases regPC - so order is important!
-                            byte tmpByte = signed(fetch());
+                            sbyte tmpByte = (sbyte) signed(fetch());
                             EA = (ushort) (regPC + tmpByte);
                             tickCount += 1;
                             break;
@@ -713,7 +713,7 @@ namespace WPCEmu.Boards.Up
                     case 0x0D:
                         { // EA = PC + 15bit OFFSET
                           // NOTE: fetch increases regPC - so order is important!
-                            ushort word = signed16(fetch16());
+                            short word = (short) signed16(fetch16());
                             EA = (ushort) (regPC + word);
                             tickCount += 5;
                             break;
@@ -747,27 +747,27 @@ namespace WPCEmu.Boards.Up
             else
             {
                 // Just a 5 bit signed offset + register, NO INDIRECT ADDRESS MODE
-                byte sByte = signed5bit((byte) (postByte & 0x1F));
+                sbyte sByte = (sbyte) signed5bit((byte) (postByte & 0x1F));
                 EA = (ushort) (registerField + sByte);
                 tickCount += 1;
             }
 
-            if (xchg != 0)
+            if (xchg.HasValue)
             {
                 xchg &= 0xFFFF;
                 switch (postByte & REGISTER_FIELD)
                 {
                     case 0:
-                        regX = xchg;
+                        regX = xchg.Value;
                         break;
                     case 0x20:
-                        regY = xchg;
+                        regY = xchg.Value;
                         break;
                     case 0x40:
-                        regU = xchg;
+                        regU = xchg.Value;
                         break;
                     case 0x60:
-                        regS = xchg;
+                        regS = xchg.Value;
                         break;
                     default:
                         throw new Exception("PB_INVALID_XCHG_VALUE_" + postByte);
@@ -1100,7 +1100,7 @@ namespace WPCEmu.Boards.Up
             return (ushort) ((regDP << 8) + fetch());
         }
 
-        int step()
+        public int step()
         {
             int oldTickCount = tickCount;
 

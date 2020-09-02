@@ -5,11 +5,11 @@ using System;
 
 namespace WPCEmu.Test.Boards.Up
 {
-	public delegate void PostCpuResetInitFunctionDelegate();
-
 	[TestFixture]
 	public class Cpu6809OpcodesTests
 	{
+		delegate void PostCpuResetInitDelegate();
+
 		const byte RESET_VECTOR_VALUE_LO = 0x01;
 		const byte RESET_VECTOR_VALUE_HI = 0x02;
 
@@ -39,10 +39,10 @@ namespace WPCEmu.Test.Boards.Up
 			public byte? initialRegB;
 			public ushort expectedResult;
 			public int expectedTicks;
-			public int expectedReturn;
+			public ushort expectedReturn;
 			public ushort[] expectedMemoryRead;
 
-			public ComplexStruct(byte offset, string register, ushort? initialValue, byte? initialRegB, ushort expectedResult, int expectedTicks, int expectedReturn, ushort[] expectedMemoryRead)
+			public ComplexStruct(byte offset, string register, ushort? initialValue, byte? initialRegB, ushort expectedResult, int expectedTicks, ushort expectedReturn, ushort[] expectedMemoryRead)
 			{ 
 				this.offset = offset;
 				this.register = register;
@@ -61,20 +61,14 @@ namespace WPCEmu.Test.Boards.Up
 
 		Cpu6809 cpu;
 
-		void PostCpuResetInitFunction()
-        {
-			byte cc = cpu.regCC |= 1;
-			cpu.set("flags", cc);
-		}
-
 		byte ReadMemoryMock(ushort address)
 		{
 			readMemoryAddressAccess.Add(address);
 
 			if (readMemoryAddress.Count == 0)
-            {
-				throw new Exception("Out of bounds");
-            }
+			{
+				return 0xFF;
+			}
 
 			byte value = readMemoryAddress[(readMemoryAddress.Count - 1)];
 			readMemoryAddress.RemoveAt(readMemoryAddress.Count - 1);
@@ -119,7 +113,11 @@ namespace WPCEmu.Test.Boards.Up
 		public void ROLA_0xFF_CarryFlagSet()
 		{
 			const byte OP_ROLA = 0x49;
-			runRegisterATest(OP_ROLA, 0xFF, PostCpuResetInitFunction);
+			runRegisterATest(OP_ROLA, 0xFF, () =>
+			{
+				byte cc = cpu.regCC |= 1;
+				cpu.set("flags", cc);
+			});
 
 			Assert.AreEqual(0xFF, cpu.regA);
 			Assert.AreEqual(2, cpu.tickCount);
@@ -141,7 +139,11 @@ namespace WPCEmu.Test.Boards.Up
 		public void RORA_0xFF_CarryFlagSet()
 		{
 			const byte OP_RORA = 0x46;
-			runRegisterATest(OP_RORA, 0xFF, PostCpuResetInitFunction);
+			runRegisterATest(OP_RORA, 0xFF, () =>
+			{
+				byte cc = cpu.regCC |= 1;
+				cpu.set("flags", cc);
+			});
 
 			Assert.AreEqual(0xFF, cpu.regA);
 			Assert.AreEqual(2, cpu.tickCount);
@@ -372,7 +374,7 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0x12, writeMemoryAddress[1].value);
 		}
 
-		void runRegisterATest(byte opcode, byte registerA, PostCpuResetInitFunctionDelegate postCpuResetInitFunctionDelegate = null)
+		void runRegisterATest(byte opcode, byte registerA, PostCpuResetInitDelegate postCpuResetInitFunction = null)
 		{
 			readMemoryAddress = new List<byte>()
 			{
@@ -380,7 +382,7 @@ namespace WPCEmu.Test.Boards.Up
 			};
 
 			cpu.reset();
-			postCpuResetInitFunctionDelegate?.Invoke();
+			postCpuResetInitFunction?.Invoke();
 
 			cpu.regA = registerA;
 			cpu.step();
@@ -390,7 +392,7 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_LO, readMemoryAddressAccess[2]);
 		}
 
-		void runExtendedMemoryTest(byte opcode, byte memoryContent, PostCpuResetInitFunctionDelegate postCpuResetInitFunctionDelegate = null)
+		void runExtendedMemoryTest(byte opcode, byte memoryContent, PostCpuResetInitDelegate postCpuResetInitFunction = null)
 		{
 			const byte hardcodedReadOffsetLo = 0x11;
 			const byte hardcodedReadOffsetHi = 0x22;
@@ -403,7 +405,7 @@ namespace WPCEmu.Test.Boards.Up
 
 
 			cpu.reset();
-			postCpuResetInitFunctionDelegate?.Invoke();
+			postCpuResetInitFunction?.Invoke();
 
 			cpu.step();
 
@@ -510,37 +512,37 @@ namespace WPCEmu.Test.Boards.Up
 				new ComplexStruct(0x80, "regX", null, null, 11, 2, 10, new ushort[] { 0 }),
 				new ComplexStruct(0x81, "regX", null, null, 12, 3, 10, new ushort[] { 0 }),
 				new ComplexStruct(0x85, "regX", 0xFFFF, 10, 0xFFFF, 1, 9, new ushort[] { 0 }),
-				new ComplexStruct(0x88, "regX", null, null, 10, 1, 0, new ushort[] { 0, 1 }),
-				new ComplexStruct(0x88, "regX", 100, null, 100, 1, 0, new ushort[] { 0, 1 }),
-				new ComplexStruct(0x89, "regX", null, null, 10, 4, 0, new ushort[] { 0, 1, 2 }),
+				new ComplexStruct(0x88, "regX", null, null, 10, 1, 9 /*0*/, new ushort[] { 0, 1 }),
+				new ComplexStruct(0x88, "regX", 100, null, 100, 1, 99 /*0*/, new ushort[] { 0, 1 }),
+				new ComplexStruct(0x89, "regX", null, null, 10, 4, 9 /*0*/, new ushort[] { 0, 1, 2 }),
 				new ComplexStruct(0x8B, "regX", null, null, 10, 4, 10, new ushort[] { 0 }),
 				new ComplexStruct(0x8B, "regX", null, 5, 10, 4, 15, new ushort[] { 0 }),
-				new ComplexStruct(0x8C, "regX", null, null, 10, 1, 0, new ushort[] { 0, 1 }),
-				new ComplexStruct(0x8D, "regX", null, null, 10, 5, 0, new ushort[] { 0, 1, 2 }),
-				new ComplexStruct(0x8F, "regX", null, null, 10, 5, 0, new ushort[] { 0, 1, 2 }),
-				new ComplexStruct(0x90, "regX", null, null, 11, 5, 0, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0x91, "regX", null, null, 12, 6, 0, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0x91, "regX", 0xFFFF, null, 1, 6, 0, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexStruct(0x92, "regX", null, null, 9, 5, 0, new ushort[] { 0, 9, 10 }),
-				new ComplexStruct(0x92, "regX", 0, null, 0xFFFF, 5, 0, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexStruct(0x93, "regX", null, null, 8, 6, 0, new ushort[] { 0, 8, 9 }),
-				new ComplexStruct(0x93, "regX", 0, null, 0xFFFE, 6, 0, new ushort[] { 0, 0xFFFE, 0xFFFF }),
-				new ComplexStruct(0x94, "regX", null, null, 10, 3, 0, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0x94, "regX", 0xFFFF, null, 0xFFFF, 3, 0, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexStruct(0x95, "regX", null, 10, 10, 4, 0, new ushort[] { 0, 20, 21 }),
-				new ComplexStruct(0x95, "regX", null, 0x80, 10, 4, 0, new ushort[] { 0, 0xFF8A, 0xFF8B }),
+				new ComplexStruct(0x8C, "regX", null, null, 10, 1, 1 /*0*/, new ushort[] { 0, 1 }),
+				new ComplexStruct(0x8D, "regX", null, null, 10, 5, 2 /*0*/, new ushort[] { 0, 1, 2 }),
+				new ComplexStruct(0x8F, "regX", null, null, 10, 5, 0xFFFF /*0*/, new ushort[] { 0, 1, 2 }),
+				new ComplexStruct(0x90, "regX", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0x91, "regX", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0x91, "regX", 0xFFFF, null, 1, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new ComplexStruct(0x92, "regX", null, null, 9, 5, 0xFFFF /*0*/, new ushort[] { 0, 9, 10 }),
+				new ComplexStruct(0x92, "regX", 0, null, 0xFFFF, 5, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new ComplexStruct(0x93, "regX", null, null, 8, 6, 0xFFFF /*0*/, new ushort[] { 0, 8, 9 }),
+				new ComplexStruct(0x93, "regX", 0, null, 0xFFFE, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFE, 0xFFFF }),
+				new ComplexStruct(0x94, "regX", null, null, 10, 3, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0x94, "regX", 0xFFFF, null, 0xFFFF, 3, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new ComplexStruct(0x95, "regX", null, 10, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 20, 21 }),
+				new ComplexStruct(0x95, "regX", null, 0x80, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 0xFF8A, 0xFF8B }),
 				new ComplexStruct(0xA0, "regY", null, null, 11, 2, 10, new ushort[] { 0 }),
 				new ComplexStruct(0xA1, "regY", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xB0, "regY", null, null, 11, 5, 0, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xB1, "regY", null, null, 12, 6, 0, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0xB0, "regY", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0xB1, "regY", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
 				new ComplexStruct(0xC0, "regU", null, null, 11, 2, 10, new ushort[] { 0 }),
 				new ComplexStruct(0xC1, "regU", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xD0, "regU", null, null, 11, 5, 0, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xD1, "regU", null, null, 12, 6, 0, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0xD0, "regU", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0xD1, "regU", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
 				new ComplexStruct(0xE0, "regS", null, null, 11, 2, 10, new ushort[] { 0 }),
 				new ComplexStruct(0xE1, "regS", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xF0, "regS", null, null, 11, 5, 0, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xF1, "regS", null, null, 12, 6, 0, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0xF0, "regS", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexStruct(0xF1, "regS", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 })
 			};
 			
 			list.ForEach(delegate (ComplexStruct complexStruct)
@@ -555,7 +557,7 @@ namespace WPCEmu.Test.Boards.Up
 				cpu.set("flags", 0);
 				cpu.regB = (byte) (complexStruct.initialRegB.HasValue ? complexStruct.initialRegB.Value : 0);
 				switch (complexStruct.register)
-                {
+				{
 					case "regX":
 						cpu.regX = initialValue;
 						break;
@@ -570,7 +572,7 @@ namespace WPCEmu.Test.Boards.Up
 						break;
 					default:
 						break;
-                }
+				}
 				cpu.regPC = 0;
 				ushort result = cpu.PostByte();
 				Assert.AreEqual(complexStruct.expectedReturn, result);
@@ -594,7 +596,7 @@ namespace WPCEmu.Test.Boards.Up
 				Assert.AreEqual(complexStruct.expectedResult, result);
 				Assert.AreEqual(complexStruct.expectedTicks, cpu.tickCount);
 				for (int index = 0; index < complexStruct.expectedMemoryRead.Length; index++)
-                {
+				{
 					Assert.AreEqual(complexStruct.expectedMemoryRead[index], readMemoryAddressAccess[index]);
 				}
 			});

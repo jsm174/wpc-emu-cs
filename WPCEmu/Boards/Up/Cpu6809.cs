@@ -55,12 +55,12 @@ using System.Diagnostics;
 
 namespace WPCEmu.Boards.Up
 {
-    public delegate byte ReadMemoryFunction(ushort address);
-    public delegate void WriteMemoryFunction(ushort address, byte value);
-    public delegate byte FetchFunction();
-
     public class Cpu6809
     {
+        public delegate byte ReadMemoryDelegate(ushort address);
+        public delegate void WriteMemoryDelegate(ushort address, byte value);
+        public delegate byte FetchDelegate();
+
         const byte F_CARRY = 1;
         const byte F_OVERFLOW = 2;
         const byte F_ZERO = 4;
@@ -137,9 +137,9 @@ namespace WPCEmu.Boards.Up
           8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8  /* F0-FF */
         };
 
-        WriteMemoryFunction memoryWriteFunction;
-        ReadMemoryFunction memoryReadFunction;
-        public FetchFunction fetchFunction = null;
+        WriteMemoryDelegate memoryWriteFunction;
+        ReadMemoryDelegate memoryReadFunction;
+        public FetchDelegate fetch;
 
         public int tickCount;
 
@@ -180,17 +180,18 @@ namespace WPCEmu.Boards.Up
             public int tickCount;
         }
              
-        public static Cpu6809 GetInstance(WriteMemoryFunction memoryWriteFunction, ReadMemoryFunction memoryReadFunction)
+        public static Cpu6809 GetInstance(WriteMemoryDelegate memoryWriteFunction, ReadMemoryDelegate memoryReadFunction)
         {
             return new Cpu6809(memoryWriteFunction, memoryReadFunction);
         }
 
-        public Cpu6809(WriteMemoryFunction memoryWriteFunction, ReadMemoryFunction memoryReadFunction)
+        public Cpu6809(WriteMemoryDelegate memoryWriteFunction, ReadMemoryDelegate memoryReadFunction)
         {
             Debug.Print("INITIALIZE CPU");
 
             this.memoryWriteFunction = memoryWriteFunction;
             this.memoryReadFunction = memoryReadFunction;
+            fetch = FetchFunction;
 
             tickCount = 0;
 
@@ -585,14 +586,9 @@ namespace WPCEmu.Boards.Up
             return (ushort) ((x > 0x7FFF) ? x - 0x10000 : x);
         }
 
-        public byte fetch()
+        byte FetchFunction()
         {
-            if (fetchFunction != null) {
-                return fetchFunction();
-            }
-            else {
-                return memoryReadFunction(regPC++);
-            }
+            return memoryReadFunction(regPC++);
         }
 
         ushort fetch16()
@@ -2829,6 +2825,5 @@ namespace WPCEmu.Boards.Up
             }
             return f;
         }
-
     }
 }

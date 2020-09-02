@@ -10,11 +10,6 @@ namespace WPCEmu.Test.Boards.Up
 
 		SecurityPic securityPic;
 
-		byte GetRowFunction(byte offset)
-		{
-			return offset;
-		}
-
 		[SetUp]
 		public void Init()
 		{
@@ -31,7 +26,9 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(1)]
 		public void InvalidReadAfterReset()
 		{
-			byte result = securityPic.Read(GetRowFunction);
+			byte result = securityPic.Read((offset) => {
+				return offset;
+			});
 			Assert.AreEqual(0, result);
 		}
 
@@ -41,7 +38,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte WPC_PIC_RESET = 0x00;
 			securityPic.Write(WPC_PIC_RESET);
 			securityPic.Write(0x7F);
-			byte result = securityPic.Read(GetRowFunction);
+			byte result = securityPic.Read((offset) => {
+				return offset;
+			});
 			Assert.AreEqual(178, result);
 		}
 
@@ -49,7 +48,9 @@ namespace WPCEmu.Test.Boards.Up
 		public void ReadFirstRow()
 		{
 			securityPic.Write(0x16);
-			byte result = securityPic.Read(GetRowFunction);
+			byte result = securityPic.Read((offset) => {
+				return offset;
+			});
 			Assert.AreEqual(1, result);
 		}
 
@@ -57,7 +58,9 @@ namespace WPCEmu.Test.Boards.Up
 		public void ReadLastRow()
 		{
 			securityPic.Write(0x1F);
-			byte result = securityPic.Read(GetRowFunction);
+			byte result = securityPic.Read((offset) => {
+				return offset;
+			});
 			Assert.AreEqual(10, result);
 		}
 

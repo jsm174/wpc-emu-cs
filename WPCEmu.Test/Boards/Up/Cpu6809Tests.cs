@@ -36,16 +36,6 @@ namespace WPCEmu.Test.Boards.Up
 			writeMemoryAddress.Add(new AddressValueStruct(address, value));
 		}
 
-		byte FetchFunction0x12()
-		{
-			return 0x12;
-		}
-
-		byte FetchFunction0xFF()
-		{
-			return 0xFF;
-		}
-
 		[SetUp]
 		public void Init()
 		{
@@ -54,8 +44,6 @@ namespace WPCEmu.Test.Boards.Up
 		
 			cpu = Cpu6809.GetInstance(WriteMemoryMock, ReadMemoryMock);
 			cpu.reset();
-
-			cpu.fetchFunction = null;
 		}
 
 		[Test, Order(0)]
@@ -150,7 +138,10 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.set("flags", 0x00);
 			cpu.irq();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.AreEqual("EfhInzvc", cpu.flagsToString());
 			Assert.AreEqual(0xFFF8, readMemoryAddress[2]);
@@ -172,7 +163,10 @@ namespace WPCEmu.Test.Boards.Up
 			byte flagClearedFirqBit = 0xFF & ~16;
 			cpu.set("flags", flagClearedFirqBit);
 			cpu.irq();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.AreEqual(0xFFF8, readMemoryAddress[2]);
 			Assert.AreEqual(0xFFF9, readMemoryAddress[3]);
@@ -184,7 +178,10 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.set("flags", 0xFF);
 			cpu.irq();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
 			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
@@ -195,7 +192,10 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.set("flags", 0x00);
 			cpu.nmi();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.AreEqual("EFhInzvc", cpu.flagsToString());
 			Assert.AreEqual(0xFFFC, readMemoryAddress[2]);
@@ -207,7 +207,10 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.set("flags", 0x00);
 			cpu.firq();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
 			Assert.AreEqual(0xFFF6, readMemoryAddress[2]);
@@ -220,7 +223,10 @@ namespace WPCEmu.Test.Boards.Up
 			byte flagClearedFirqBit = 0xFF & ~64;
 			cpu.set("flags", flagClearedFirqBit);
 			cpu.firq();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.AreEqual(0xFFF6, readMemoryAddress[2]);
 			Assert.AreEqual(0xFFF7, readMemoryAddress[3]);
@@ -232,7 +238,10 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.set("flags", 0xFF);
 			cpu.firq();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
 			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
@@ -243,7 +252,10 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			cpu.set("flags", 0xFF);
 			cpu.firq();
-			cpu.fetchFunction = FetchFunction0x12;
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
 			cpu.steps();
 			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
 			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
@@ -383,7 +395,9 @@ namespace WPCEmu.Test.Boards.Up
 		public void dpadd_regDP_0()
 		{
 			cpu.regDP = 0;
-			cpu.fetchFunction = FetchFunction0xFF;
+			cpu.fetch = () => {
+				return 0xFF;
+			};
 			ushort result = cpu.dpadd();
 			Assert.AreEqual(0xFF, result);
 		}
@@ -392,7 +406,9 @@ namespace WPCEmu.Test.Boards.Up
 		public void dpadd_regDP_0xFF()
 		{
 			cpu.regDP = 0xFF;
-			cpu.fetchFunction = FetchFunction0xFF;
+			cpu.fetch = () => {
+				return 0xFF;
+			};
 			ushort result = cpu.dpadd();
 			Assert.AreEqual(0xFFFF, result);
 		}

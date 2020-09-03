@@ -2305,7 +2305,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x22: //BHI
                             addr = signed16(fetch16());
-                            if ((regCC & (F_CARRY | F_ZERO)) == 0)
+                            if (!((regCC & (F_CARRY | F_ZERO)) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;
@@ -2321,7 +2321,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x24: //BCC
                             addr = signed16(fetch16());
-                            if ((regCC & F_CARRY) == 0)
+                            if (!((regCC & F_CARRY) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;
@@ -2337,7 +2337,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x26: //BNE
                             addr = signed16(fetch16());
-                            if ((regCC & F_ZERO) == 0)
+                            if (!((regCC & F_ZERO) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;
@@ -2353,7 +2353,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x28: //BVC
                             addr = signed16(fetch16());
-                            if ((regCC & F_OVERFLOW) == 0)
+                            if (!((regCC & F_OVERFLOW) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;
@@ -2369,7 +2369,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x2A: //BPL
                             addr = signed16(fetch16());
-                            if ((regCC & F_NEGATIVE) == 0)
+                            if (!((regCC & F_NEGATIVE) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;
@@ -2385,7 +2385,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x2C: //BGE
                             addr = signed16(fetch16());
-                            if ((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) == 0))
+                            if (!(((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;
@@ -2401,7 +2401,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x2E: //BGT
                             addr = signed16(fetch16());
-                            if ((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) == 0) || ((regCC & F_ZERO) != 0))
+                            if (!((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0) || (regCC & F_ZERO) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;
@@ -2409,7 +2409,7 @@ namespace WPCEmu.Boards.Up
                             break;
                         case 0x2F: //BLE
                             addr = signed16(fetch16());
-                            if ((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) == 0) || ((regCC & F_ZERO) != 0))
+                            if ((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0) || ((regCC & F_ZERO) != 0))
                             {
                                 regPC += addr;
                                 tickCount++;

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Diagnostics;
 using NUnit.Framework;
 using WPCEmu.Boards.Up;
 
@@ -14,60 +15,68 @@ namespace WPCEmu.Test.Boards.Up
 		public void Init()
 		{
 			securityPic = SecurityPic.GetInstance(MACHINE_SERIAL);
-			securityPic.Reset();
-		}
-
-		[Test, Order(0)]
-		public void Reset()
-		{
-			Assert.AreEqual(0xFF, securityPic.lastByteWrite);
 		}
 
 		[Test, Order(1)]
-		public void InvalidReadAfterReset()
+		public void Reset()
 		{
-			byte result = securityPic.Read((offset) => {
-				return offset;
-			});
-			Assert.AreEqual(0, result);
+			Debug.Print("SecurityPic, reset");
+			securityPic.reset();
+
+			Assert.AreEqual(0xFF, securityPic.lastByteWrite);
 		}
 
 		[Test, Order(2)]
-		public void ReadSerialNumber()
-        {
-			const byte WPC_PIC_RESET = 0x00;
-			securityPic.Write(WPC_PIC_RESET);
-			securityPic.Write(0x7F);
-			byte result = securityPic.Read((offset) => {
-				return offset;
-			});
-			Assert.AreEqual(178, result);
+		public void InvalidReadAfterReset()
+		{
+			Debug.Print("SecurityPic, invalid read after reset");
+
+			byte result = securityPic.read();
+			Assert.AreEqual(0, result);
 		}
 
 		[Test, Order(3)]
+		public void ReadSerialNumber()
+        {
+			Debug.Print("SecurityPic, read serial number");
+
+			const byte WPC_PIC_RESET = 0x00;
+			securityPic.write(WPC_PIC_RESET);
+			securityPic.write(0x7F);
+			byte result = securityPic.read();
+			Assert.AreEqual(178, result);
+		}
+
+		[Test, Order(4)]
 		public void ReadFirstRow()
 		{
-			securityPic.Write(0x16);
-			byte result = securityPic.Read((offset) => {
+			Debug.Print("SecurityPic, read first row");
+
+			securityPic.write(0x16);
+			byte result = securityPic.read((offset) => {
 				return offset;
 			});
 			Assert.AreEqual(1, result);
 		}
 
-		[Test, Order(4)]
+		[Test, Order(5)]
 		public void ReadLastRow()
 		{
-			securityPic.Write(0x1F);
-			byte result = securityPic.Read((offset) => {
+			Debug.Print("SecurityPic, read last row");
+
+			securityPic.write(0x1F);
+			byte result = securityPic.read((offset) => {
 				return offset;
 			});
 			Assert.AreEqual(10, result);
 		}
 
-		[Test, Order(5)]
+		[Test, Order(6)]
 		public void CalculateInitialSerialNumbers()
 		{
-			byte[] expectedPicSerial = new byte[] {
+			Debug.Print("SecurityPic, calculate initial serial numbers");
+
+			byte[] expectedPicSerial = {
 				197, 49, 52, 28,
 				110, 0, 95, 1,
 				253, 226, 18, 243,

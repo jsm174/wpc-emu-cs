@@ -99,7 +99,7 @@ namespace WPCEmu.Boards.Up
             unlockCode[2] = (byte) ((tmp) & 0xFF);
         }
 
-        public void Reset()
+        public void reset()
         {
             lastByteWrite = INITIAL_BYTE;
             writesUntilUnlockNeeded = 0x20;
@@ -108,7 +108,7 @@ namespace WPCEmu.Boards.Up
             Debug.Print("RESET SECURITY PIC");
         }
 
-        public byte Read(GetRowDelegate getRowFunction)
+        public byte read(GetRowDelegate getRowFunction = null)
         {
             if (lastByteWrite == WPC_PIC_COUNTER)
             {
@@ -119,7 +119,7 @@ namespace WPCEmu.Boards.Up
             if (lastByteWrite >= 0x16 && lastByteWrite <= 0x1F)
             {
                 byte col = (byte) (lastByteWrite - 0x15);
-                return getRowFunction(col);
+                return getRowFunction != null ? getRowFunction(col) : col;
             }
 
             if ((lastByteWrite & 0xF0) == 0x70)
@@ -136,7 +136,7 @@ namespace WPCEmu.Boards.Up
             return 0;
         }
 
-        public void Write(byte data)
+        public void write(byte data)
         {
             lastByteWrite = data;
 
@@ -179,7 +179,7 @@ namespace WPCEmu.Boards.Up
             }
         }
 
-        public byte GetScrambler()
+        public byte getScrambler()
         {
             return serialNumberScrambler;
         }

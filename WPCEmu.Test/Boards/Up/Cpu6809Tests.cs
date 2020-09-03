@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using NUnit.Framework;
 using WPCEmu.Boards.Up;
 
@@ -46,96 +47,120 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.reset();
 		}
 
-		[Test, Order(0)]
+		[Test, Order(1)]
 		public void ReadInitialVector()
 		{
+			Debug.Print("read initial vector");
+
 			Assert.AreEqual(0xFFFE, readMemoryAddress[0]);
 			Assert.AreEqual(0xFFFF, readMemoryAddress[1]);
 		}
 
-		[Test, Order(1)]
+		[Test, Order(2)]
 		public void oCmp_8bit_CarryFlag()
 		{
+			Debug.Print("oCMP 8bit, carry flag");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 0xFF);
 			Assert.AreEqual("efhinzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(2)]
+		[Test, Order(3)]
 		public void oCmp_8bit_0xFF()
 		{
+			Debug.Print("oCMP 8bit, 0xFF");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0xFF, 0);
 			Assert.AreEqual("efhiNzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(3)]
+		[Test, Order(4)]
 		public void oCmp_8bit_NegativeFlag()
 		{
+			Debug.Print("oCMP 8bit, negative flag");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 0x80);
 			Assert.AreEqual("efhiNzVC", cpu.flagsToString());
 		}
 
-		[Test, Order(4)]
+		[Test, Order(5)]
 		public void oCmp_8bit_Negative1()
 		{
+			Debug.Print("oCMP 8bit, -1");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 1);
 			Assert.AreEqual("efhiNzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(5)]
+		[Test, Order(6)]
 		public void oCmp_8bit_ZeroFlag()
 		{
+			Debug.Print("oCMP 8bit, zero flag");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 0);
 			Assert.AreEqual("efhinZvc", cpu.flagsToString());
 		}
 
-		[Test, Order(6)]
+		[Test, Order(7)]
 		public void oCmp_16bit_CarryFlag()
 		{
+			Debug.Print("oCMP 16bit, carry flag");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 0xFFFF);
 			Assert.AreEqual("efhinzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(7)]
+		[Test, Order(8)]
 		public void oCmp_16bit_0xFFFF()
 		{
+			Debug.Print("oCMP 16bit, 0xFFFF");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0xFFFF, 0);
 			Assert.AreEqual("efhiNzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(8)]
+		[Test, Order(9)]
 		public void oCmp_16bit_NegativeFlag()
 		{
+			Debug.Print("oCMP 16bit, negative flag");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 0x8000);
 			Assert.AreEqual("efhiNzVC", cpu.flagsToString());
 		}
 
-		[Test, Order(9)]
+		[Test, Order(10)]
 		public void oCmp_16bit_Negative1()
 		{
+			Debug.Print("oCMP 16bit, -1");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 1);
 			Assert.AreEqual("efhiNzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(10)]
+		[Test, Order(11)]
 		public void oCmp_16bit_ZeroFlag()
 		{
+			Debug.Print("oCMP 16bit, zero flag");
+
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 0);
 			Assert.AreEqual("efhinZvc", cpu.flagsToString());
 		}
 
-		[Test, Order(11)]
-		public void FlagsAfterIrq_InitFlags_0x00()
+		[Test, Order(12)]
+		public void FlagsCorrectAfterIRQ_InitFlags_0x00()
 		{
+			Debug.Print("flags should be correct after calling irq(), init flags to 0x00");
+
 			cpu.set("flags", 0x00);
 			cpu.irq();
 			cpu.fetch = () =>
@@ -148,18 +173,21 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFFF9, readMemoryAddress[3]);
 		}
 
-		[Test, Order(12)]
+		[Test, Order(13)]
 		public void DetectFirqCouldNotBeTriggered()
 		{
+			Debug.Print("detect that firq could not be triggered");
+
 			cpu.set("flags", 0x00);
 			cpu.firq();
-			byte firqTriggered = 0; // cpu.firq();
-			Assert.AreEqual(0, firqTriggered);
+			Assert.AreEqual(0, 0);
 		}
 
-		[Test, Order(13)]
-		public void FlagsCorrectAfterIrq_InitFlags_0xef()
+		[Test, Order(14)]
+		public void FlagsCorrectAfterIRQ_InitFlags_0xEF()
 		{
+			Debug.Print("flags should be correct after calling irq(), init flags to 0xef");
+
 			byte flagClearedFirqBit = 0xFF & ~16;
 			cpu.set("flags", flagClearedFirqBit);
 			cpu.irq();
@@ -173,9 +201,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("EFHINZVC", cpu.flagsToString());
 		}
 
-		[Test, Order(14)]
-		public void IrqShouldNotBeCalled_F_IRQMASK_set()
+		[Test, Order(15)]
+		public void IRQNotCalledIf_F_IRQMASK_set()
 		{
+			Debug.Print("irq() should not be called if F_IRQMASK flag is set");
+
 			cpu.set("flags", 0xFF);
 			cpu.irq();
 			cpu.fetch = () =>
@@ -187,9 +217,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
 		}
 
-		[Test, Order(15)]
-		public void FlagsShouldBeCorrectAfterNmi()
+		[Test, Order(16)]
+		public void FlagsCorrectAfterNMI()
 		{
+			Debug.Print("flags should be correct after calling nmi()");
+
 			cpu.set("flags", 0x00);
 			cpu.nmi();
 			cpu.fetch = () =>
@@ -202,9 +234,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFFFD, readMemoryAddress[3]);
 		}
 
-		[Test, Order(16)]
-		public void FlagsShouldBeCorrectAfterFirq_InitFlags_0x00()
+		[Test, Order(17)]
+		public void FlagsCorrectAfterFIRQ_InitFlags_0x00()
 		{
+			Debug.Print("flags should be correct after calling firq(), init flags to 0x00");
+
 			cpu.set("flags", 0x00);
 			cpu.firq();
 			cpu.fetch = () =>
@@ -217,9 +251,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFFF7, readMemoryAddress[3]);
 		}
 
-		[Test, Order(17)]
-		public void FlagsShouldBeCorrectAfterFirq_InitFlags_0xbf()
+		[Test, Order(18)]
+		public void FlagsCorrectAfterFIRQ_InitFlags_0xBF()
 		{
+			Debug.Print("flags should be correct after calling firq(), init flags to 0xbf");
+
 			byte flagClearedFirqBit = 0xFF & ~64;
 			cpu.set("flags", flagClearedFirqBit);
 			cpu.firq();
@@ -233,23 +269,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFHINZVC", cpu.flagsToString());
 		}
 
-		[Test, Order(18)]
-		public void FirqShouldNotBeCalled_F_FIRQMASK_set()
-		{
-			cpu.set("flags", 0xFF);
-			cpu.firq();
-			cpu.fetch = () =>
-			{
-				return 0x12;
-			};
-			cpu.steps();
-			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
-			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
-		}
-
 		[Test, Order(19)]
-		public void oNEG_CarryFlag()
+		public void FIRQNotCalledIf_F_FIRQMASK_set()
 		{
+			Debug.Print("firq() should not be called if F_FIRQMASK flag is set");
+
 			cpu.set("flags", 0xFF);
 			cpu.firq();
 			cpu.fetch = () =>
@@ -262,40 +286,66 @@ namespace WPCEmu.Test.Boards.Up
 		}
 
 		[Test, Order(20)]
-		public void setOverflowFlag8Bit()
+		public void oNEG_CarryFlag()
 		{
+			Debug.Print("oNEG() should set CARRY flag correctly");
+
+			cpu.set("flags", 0xFF);
+			cpu.firq();
+			cpu.fetch = () =>
+			{
+				return 0x12;
+			};
+			cpu.steps();
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(2));
+			Assert.Throws<System.ArgumentOutOfRangeException>(() => readMemoryAddress.ElementAt(3));
+		}
+
+		[Test, Order(21)]
+		public void SetOverflowFlag_8bit()
+		{
+			Debug.Print("set overflow flag (8bit)");
+
 			cpu.set("flags", 0);
 			cpu.setV8(1, 1, 0x80);
 			Assert.AreEqual("efhinzVc", cpu.flagsToString());
 		}
 
-		[Test, Order(21)]
-		public void setOverflowFlag8Bit_overflow_r()
+		[Test, Order(22)]
+		public void SetOverflowFlag_8bit_overflow_r()
 		{
+			Debug.Print("set overflow flag (8bit), overflow r value");
+
 			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x180);
 			Assert.AreEqual("efhinzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(22)]
-		public void setOverflowFlag16Bit()
+		[Test, Order(23)]
+		public void setOverflowFlag_16bit()
 		{
+			Debug.Print("set overflow flag (16bit)");
+
 			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x8000);
 			Assert.AreEqual("efhinzVc", cpu.flagsToString());
 		}
 
-		[Test, Order(23)]
-		public void setOverflowFlag16Bit_overflow_r()
+		[Test, Order(24)]
+		public void SetOverflowFlag_16bit_overflow_r()
 		{
+			Debug.Print("set overflow flag (16bit), overflow r value");
+
 			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x18000);
 			Assert.AreEqual("efhinzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(24)]
-		public void signed5bit()
+		[Test, Order(25)]
+		public void Signed_5bit()
 		{
+			Debug.Print("signed 5bit");
+
 			sbyte val0 = (sbyte) cpu.signed5bit(0);
 			sbyte valF = (sbyte) cpu.signed5bit(0xF);
 			sbyte val10 = (sbyte) cpu.signed5bit(0x10);
@@ -308,9 +358,11 @@ namespace WPCEmu.Test.Boards.Up
 			//Assert.AreEqual(undefined, valUndef);
 		}
 
-		[Test, Order(25)]
-		public void signed8bit()
+		[Test, Order(26)]
+		public void Signed_8bit()
 		{
+			Debug.Print("signed 8bit");
+
 			sbyte val0 = (sbyte) cpu.signed(0);
 			sbyte val7f = (sbyte) cpu.signed(0x7F);
 			sbyte val80 = (sbyte) cpu.signed(0x80);
@@ -323,9 +375,11 @@ namespace WPCEmu.Test.Boards.Up
 			//Assert.AreEqual(undefined, valUndef);
 		}
 
-		[Test, Order(26)]
-		public void signed16bit()
+		[Test, Order(27)]
+		public void Signed_16bit()
 		{
+			Debug.Print("signed 16bit");
+
 			short val0 = (short) cpu.signed16(0);
 			short val7fff = (short) cpu.signed16(0x7FFF);
 			short val8000 = (short) cpu.signed16(0x8000);
@@ -338,25 +392,31 @@ namespace WPCEmu.Test.Boards.Up
 			//Assert.AreEqual(undefined, valUndef);
 		}
 
-		[Test, Order(27)]
-		public void flagsNZ16_0xFFFF()
+		[Test, Order(28)]
+		public void Flags_NZ16_0xFFFF()
 		{
+			Debug.Print("flagsNZ16 0xFFFF");
+
 			cpu.set("flags", 0);
 			cpu.flagsNZ16(0xFFFF);
 			Assert.AreEqual("efhiNzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(28)]
-		public void flagsNZ16_0x0000()
+		[Test, Order(29)]
+		public void FlagsNZ16_0x0000()
 		{
+			Debug.Print("flagsNZ16 0x0000");
+
 			cpu.set("flags", 0);
 			cpu.flagsNZ16(0);
 			Assert.AreEqual("efhinZvc", cpu.flagsToString());
 		}
 
-		[Test, Order(29)]
+		[Test, Order(30)]
 		public void WriteWord_0_0x1234()
 		{
+			Debug.Print("WriteWord(0, 0x1234)");
+
 			cpu.WriteWord(0x0, 0x1234);
 			Assert.AreEqual(0, writeMemoryAddress[0].address);
 			Assert.AreEqual(0x12, writeMemoryAddress[0].value);
@@ -364,9 +424,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0x34, writeMemoryAddress[1].value);
 		}
 
-		[Test, Order(30)]
+		[Test, Order(31)]
 		public void WriteWord_0xFFFF_0x1234()
 		{
+			Debug.Print("WriteWord(0xFFFF, 0x1234)");
+
 			cpu.WriteWord(0xFFFF, 0x1234);
 			Assert.AreEqual(0xFFFF, writeMemoryAddress[0].address);
 			Assert.AreEqual(0x12, writeMemoryAddress[0].value);
@@ -374,26 +436,32 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0x34, writeMemoryAddress[1].value);
 		}
 
-		[Test, Order(31)]
-		public void getD()
+		[Test, Order(32)]
+		public void GetD()
 		{
+			Debug.Print("getD");
+
 			cpu.regA = 0xFF;
 			cpu.regB = 0xEE;
 			ushort result = cpu.getD();
 			Assert.AreEqual(0xFFEE, result);
 		}
 
-		[Test, Order(32)]
-		public void setD_0xFFEE()
+		[Test, Order(33)]
+		public void SetD_0xFFEE()
 		{
+			Debug.Print("setD(0xFFEE)");
+
 			cpu.setD(0xFFEE);
 			Assert.AreEqual(0xFF, cpu.regA);
 			Assert.AreEqual(0xEE, cpu.regB);
 		}
 
-		[Test, Order(33)]
+		[Test, Order(34)]
 		public void dpadd_regDP_0()
 		{
+			Debug.Print("dpadd(), regDP = 0");
+
 			cpu.regDP = 0;
 			cpu.fetch = () => {
 				return 0xFF;
@@ -402,9 +470,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFF, result);
 		}
 
-		[Test, Order(34)]
+		[Test, Order(35)]
 		public void dpadd_regDP_0xFF()
 		{
+			Debug.Print("dpadd(), regDP = 0xFF");
+
 			cpu.regDP = 0xFF;
 			cpu.fetch = () => {
 				return 0xFF;
@@ -413,94 +483,116 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFFFF, result);
 		}
 
-		[Test, Order(35)]
+		[Test, Order(36)]
 		public void oNEG_0()
 		{
+			Debug.Print("oNEG(0)");
+
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0);
 			Assert.AreEqual(0, result);
 			Assert.AreEqual("efhinZvc", cpu.flagsToString());
 		}
 
-		[Test, Order(36)]
+		[Test, Order(37)]
 		public void oNEG_1()
 		{
+			Debug.Print("oNEG(1)");
+
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(1);
 			Assert.AreEqual(0xFF, result);
 			Assert.AreEqual("efhiNzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(37)]
+		[Test, Order(38)]
 		public void oNEG_0x7F()
 		{
+			Debug.Print("oNEG(0x7F)");
+
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0x7F);
 			Assert.AreEqual(0x81, result);
 			Assert.AreEqual("efhiNzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(38)]
+		[Test, Order(39)]
 		public void oNEG_0x80()
 		{
+			Debug.Print("oNEG(0x80)");
+
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0x80);
 			Assert.AreEqual(0x80, result);
 			Assert.AreEqual("efhiNzVC", cpu.flagsToString());
 		}
 
-		[Test, Order(39)]
+		[Test, Order(40)]
 		public void oNEG_0xFF()
 		{
+			Debug.Print("oNEG(0xFF)");
+
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0xFF);
 			Assert.AreEqual(1, result);
 			Assert.AreEqual("efhinzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(40)]
-		public void setPostByteRegister0_0xFFFF()
+		[Test, Order(41)]
+		public void SetPostByteRegister_0_0xFFFF()
 		{
+			Debug.Print("setPostByteRegister(0, 0xFFFF)");
+
 			cpu.setPostByteRegister(0, 0xFFFF);
 			Assert.AreEqual(0xFF, cpu.regA);
 			Assert.AreEqual(0xFF, cpu.regB);
 		}
 
-		[Test, Order(41)]
-		public void setPostByteRegister0x8_0xFFFF()
+		[Test, Order(42)]
+		public void SetPostByteRegister_0x8_0xFFFF()
 		{
+			Debug.Print("setPostByteRegister(0x8, 0xFFFF)");
+
 			cpu.setPostByteRegister(0x8, 0xFFFF);
 			Assert.AreEqual(0xFF, cpu.regA);
 		}
 
-		[Test, Order(42)]
-		public void getPostByteRegister0x0_D()
+		[Test, Order(43)]
+		public void GetPostByteRegister_0x0_D()
 		{
+			Debug.Print("getPostByteRegister(0x0) - D");
+
 			cpu.regA = 0x44;
 			cpu.regB = 0x99;
 			ushort result = cpu.getPostByteRegister(0x0);
 			Assert.AreEqual(0x4499, result);
 		}
 
-		[Test, Order(43)]
-		public void getPostByteRegister0x5_PC()
+		[Test, Order(44)]
+		public void GetPostByteRegister_0x5_PC()
 		{
+			Debug.Print("getPostByteRegister(0x5) - PC");
+
 			cpu.regPC = 0x1234;
 			ushort result = cpu.getPostByteRegister(0x5);
 			Assert.AreEqual(0x1234, result);
 		}
 
-		[Test, Order(44)]
-		public void getPostByteRegister0xA_CC()
+		[Test, Order(45)]
+		public void GetPostByteRegister_0xA_CC()
 		{
+			Debug.Print("getPostByteRegister(0xA) - CC");
+
 			cpu.regCC = 0xFF;
 			ushort result = cpu.getPostByteRegister(0xA);
 			Assert.AreEqual(0xFF, result);
 		}
 
-		[Test, Order(45)]
-		public void TFREXG_TransferX_Y()
+		[Test, Order(46)]
+		public void TFREXG_Transfer_X_Y()
 		{
+			Debug.Print("TFREXG - transfer X -> Y");
+
 			cpu.regX = 0xFFFF;
 			cpu.regY = 0x7F;
 			cpu.TFREXG(0x12, false);
@@ -508,9 +600,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFFFF, cpu.regY);
 		}
 
-		[Test, Order(46)]
-		public void TFREXG_ExchangeU_S()
+		[Test, Order(47)]
+		public void TFREXG_Exchange_U_S()
 		{
+			Debug.Print("TFREXG - exchange U <-> S");
+
 			cpu.regU = 0xFFFF;
 			cpu.regS = 0x7F;
 			cpu.TFREXG(0x34, true);
@@ -518,9 +612,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFFFF, cpu.regS);
 		}
 
-		[Test, Order(47)]
-		public void TFREXG_TransferA_CC()
+		[Test, Order(48)]
+		public void TFREXG_Transfer_A_CC()
 		{
+			Debug.Print("TFREXG - transfer A -> CC");
+
 			cpu.regA = 0xFF;
 			cpu.regCC = 0x7F;
 			cpu.TFREXG(0x8A, false);
@@ -528,9 +624,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFF, cpu.regCC);
 		}
 
-		[Test, Order(48)]
-		public void TFREXG_ExchangeB_DP()
+		[Test, Order(49)]
+		public void TFREXG_Exchange_B_DP()
 		{
+			Debug.Print("TFREXG - exchange b <-> DP");
+
 			cpu.regB = 0xFF;
 			cpu.regDP = 0x7F;
 			cpu.TFREXG(0x9B, true);
@@ -538,9 +636,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0xFF, cpu.regDP);
 		}
 
-		[Test, Order(49)]
-		public void getAndSetState()
+		[Test, Order(50)]
+		public void GetAndSetState()
 		{
+			Debug.Print("get and set state");
+
 			cpu.regA = 0x44;
 			Cpu6809.State state = cpu.getState();
 			cpu.regA = 0;

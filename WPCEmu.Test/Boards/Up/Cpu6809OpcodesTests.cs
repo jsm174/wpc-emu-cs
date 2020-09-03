@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using WPCEmu.Boards.Up;
-using System;
+using System.Diagnostics;
 
 namespace WPCEmu.Test.Boards.Up
 {
@@ -90,17 +90,21 @@ namespace WPCEmu.Test.Boards.Up
 			cpu = Cpu6809.GetInstance(WriteMemoryMock, ReadMemoryMock);
 		}
 
-		[Test, Order(0)]
+		[Test, Order(1)]
 		public void ShouldReadResetVectorOnBoot()
 		{
+			Debug.Print("should read RESET vector on boot");
+
 			cpu.reset();
 			Assert.AreEqual(RESET_VECTOR_OFFSET_LO, readMemoryAddressAccess[0]);
 			Assert.AreEqual(RESET_VECTOR_OFFSET_HI, readMemoryAddressAccess[1]);
 		}
 
-		[Test, Order(1)]
+		[Test, Order(2)]
 		public void ROLA_0xFF()
 		{
+			Debug.Print("ROLA 0xFF");
+
 			const byte OP_ROLA = 0x49;
 			runRegisterATest(OP_ROLA, 0xFF);
 
@@ -109,9 +113,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(2)]
+		[Test, Order(3)]
 		public void ROLA_0xFF_CarryFlagSet()
 		{
+			Debug.Print("ROLA, 0xFF - carry flag set");
+
 			const byte OP_ROLA = 0x49;
 			runRegisterATest(OP_ROLA, 0xFF, () =>
 			{
@@ -124,9 +130,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(3)]
+		[Test, Order(4)]
 		public void RORA_0x01_NoOverflow()
 		{
+			Debug.Print("RORA, 0x01 (no overflow)");
+
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0x01);
 
@@ -135,9 +143,24 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInZvC", cpu.flagsToString());
 		}
 
-		[Test, Order(4)]
+		[Test, Order(5)]
+		public void RORA_0xFF_CarryFlagNotSet()
+		{
+			Debug.Print("RORA, 0xFF - carry flag not set");
+
+			const byte OP_RORA = 0x46;
+			runRegisterATest(OP_RORA, 0xFF);
+
+			Assert.AreEqual(0x7F, cpu.regA);
+			Assert.AreEqual(2, cpu.tickCount);
+			Assert.AreEqual("eFhInzvC", cpu.flagsToString());
+		}
+
+		[Test, Order(6)]
 		public void RORA_0xFF_CarryFlagSet()
 		{
+			Debug.Print("RORA, 0xFF - carry flag set");
+
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0xFF, () =>
 			{
@@ -150,15 +173,18 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(5)]
+		[Test, Order(7)]
 		public void ADDA_oADD()
 		{
+			Debug.Print("ADDA / oADD");
+
 			const byte OP_ADDA = 0x8B;
 			const byte ADD_VALUE_1 = 0xFF;
 			const byte ADD_VALUE_2 = 0xFF;
 
 			cpu.set("flags", 0x00);
 
+			// add command in reverse order
 			readMemoryAddress = new List<byte>()
 			{
 				ADD_VALUE_2, OP_ADDA, RESET_VECTOR_VALUE_LO, RESET_VECTOR_VALUE_HI
@@ -178,9 +204,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFHINzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(6)]
+		[Test, Order(8)]
 		public void LSRA()
 		{
+			Debug.Print("LSRA");
+
 			const byte OP_LSRA = 0x44;
 			runRegisterATest(OP_LSRA, 0xFF);
 
@@ -189,9 +217,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(7)]
+		[Test, Order(9)]
 		public void ASLA_Overflow()
 		{
+			Debug.Print("ASLA, overflow");
+
 			const byte OP_ASLA = 0x48;
 			runRegisterATest(OP_ASLA, 0x81);
 
@@ -200,9 +230,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInzVC", cpu.flagsToString());
 		}
 
-		[Test, Order(8)]
+		[Test, Order(10)]
 		public void ASLA_NoOverflow()
 		{
+			Debug.Print("ASLA, no overflow");
+
 			const byte OP_ASLA = 0x48;
 			runRegisterATest(OP_ASLA, 0x01);
 
@@ -211,9 +243,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(9)]
+		[Test, Order(11)]
 		public void ASRA_0xFF()
 		{
+			Debug.Print("ASRA (0xFF)");
+
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0xFF);
 
@@ -222,9 +256,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(10)]
+		[Test, Order(12)]
 		public void ASRA_0x7F()
 		{
+			Debug.Print("ASRA (0x7F)");
+
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0x7F);
 
@@ -233,9 +269,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(11)]
+		[Test, Order(13)]
 		public void ASRA_0()
 		{
+			Debug.Print("ASRA (0)");
+
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0);
 
@@ -244,9 +282,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInZvc", cpu.flagsToString());
 		}
 
-		[Test, Order(12)]
+		[Test, Order(14)]
 		public void oNEG_0x1()
 		{
+			Debug.Print("oNEG, 0x1");
+
 			const byte OP_NEG = 0x40;
 			runRegisterATest(OP_NEG, 0x01);
 
@@ -255,9 +295,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
 		}
 
-		[Test, Order(13)]
+		[Test, Order(15)]
 		public void oNEG_0xFF()
 		{
+			Debug.Print("oNEG, 0xFF");
+
 			const byte OP_NEG = 0x40;
 			runRegisterATest(OP_NEG, 0xFF);
 
@@ -266,9 +308,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(14)]
+		[Test, Order(16)]
 		public void oDEC_0x80_NoOverflow()
 		{
+			Debug.Print("oDEC, 0x80 (no overflow)");
+
 			const byte OP_DEC = 0x4A;
 			runRegisterATest(OP_DEC, 0x80);
 
@@ -277,9 +321,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInzVc", cpu.flagsToString());
 		}
 
-		[Test, Order(15)]
+		[Test, Order(17)]
 		public void oDEC_0x0_Overflow()
 		{
+			Debug.Print("oDEC, 0x0 (overflow)");
+
 			const byte OP_DEC = 0x4A;
 			runRegisterATest(OP_DEC, 0x00);
 
@@ -288,9 +334,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhINzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(16)]
+		[Test, Order(18)]
 		public void oDEC_ExtendedMemory_0x0_Overflow()
 		{
+			Debug.Print("oDEC extended memory, 0x0 (overflow)");
+
 			const byte OP_DEC = 0x7A;
 			runExtendedMemoryTest(OP_DEC, 0x00);
 
@@ -300,9 +348,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhINzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(17)]
+		[Test, Order(19)]
 		public void oINC_0x00_NoOverflow()
 		{
+			Debug.Print("oINC, 0x00 (no overflow)");
+
 			const byte OP_INC = 0x4C;
 			runRegisterATest(OP_INC, 0x00);
 
@@ -311,9 +361,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
 		}
 
-		[Test, Order(18)]
+		[Test, Order(20)]
 		public void oINC_0xFF_Overflow()
 		{
+			Debug.Print("oINC, 0xFF (overflow)");
+
 			const byte OP_INC = 0x4C;
 			runRegisterATest(OP_INC, 0xFF);
 
@@ -322,9 +374,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInZvc", cpu.flagsToString());
 		}
 
-		[Test, Order(19)]
+		[Test, Order(21)]
 		public void oINC_ExtendedMemory_0xFF_Overflow()
 		{
+			Debug.Print("oINC extended memory, 0xFF (overflow)");
+
 			const byte OP_INC = 0x7C;
 			runExtendedMemoryTest(OP_INC, 0xFF);
 
@@ -334,18 +388,22 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual("eFhInZvc", cpu.flagsToString());
 		}
 
-		[Test, Order(20)]
+		[Test, Order(22)]
 		public void PUSHB_ShouldWrapAround()
 		{
+			Debug.Print("PUSHB should wrap around");
+
 			cpu.reset();
 			cpu.PUSHB(0x23);
 			Assert.AreEqual(65535, writeMemoryAddress[0].address);
 			Assert.AreEqual(0x23, writeMemoryAddress[0].value);
 		}
 
-		[Test, Order(21)]
+		[Test, Order(23)]
 		public void PUSHW_ShouldWrapAround()
 		{
+			Debug.Print("PUSHW should wrap around");
+
 			cpu.reset();
 			cpu.PUSHW(0x1234);
 			Assert.AreEqual(65535, writeMemoryAddress[0].address);
@@ -354,18 +412,22 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0x12, writeMemoryAddress[1].value);
 		}
 
-		[Test, Order(22)]
+		[Test, Order(24)]
 		public void PUSHBU_ShouldWrapAround()
 		{
+			Debug.Print("PUSHBU should wrap around");
+
 			cpu.reset();
 			cpu.PUSHBU(0x23);
 			Assert.AreEqual(65535, writeMemoryAddress[0].address);
 			Assert.AreEqual(0x23, writeMemoryAddress[0].value);
 		}
 
-		[Test, Order(23)]
+		[Test, Order(25)]
 		public void PUSHWU_ShouldWrapAround()
 		{
+			Debug.Print("PUSHWU should wrap around");
+
 			cpu.reset();
 			cpu.PUSHWU(0x1234);
 			Assert.AreEqual(65535, writeMemoryAddress[0].address);
@@ -376,6 +438,7 @@ namespace WPCEmu.Test.Boards.Up
 
 		void runRegisterATest(byte opcode, byte registerA, PostCpuResetInitDelegate postCpuResetInitFunction = null)
 		{
+			// add command in reverse order
 			readMemoryAddress = new List<byte>()
 			{
 				opcode, RESET_VECTOR_VALUE_LO, RESET_VECTOR_VALUE_HI
@@ -398,11 +461,11 @@ namespace WPCEmu.Test.Boards.Up
 			const byte hardcodedReadOffsetHi = 0x22;
 			const short hardcodedReadOffset = 0x2211;
 
+			// add command in reverse order
 			readMemoryAddress = new List<byte>()
 			{
 				memoryContent, hardcodedReadOffsetLo, hardcodedReadOffsetHi, opcode, RESET_VECTOR_VALUE_LO, RESET_VECTOR_VALUE_HI
 			};
-
 
 			cpu.reset();
 			postCpuResetInitFunction?.Invoke();
@@ -417,10 +480,12 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(hardcodedReadOffset, readMemoryAddressAccess[5]);
 		}
 
-		[Test, Order(24)]
+		[Test, Order(26)]
 		public void PostByteSimpleX_0_15()
-		{ 
+		{
 			for (byte offset = 0; offset < 16; offset++) {
+				Debug.Print("postbyte simple X: {0}", offset);
+
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
@@ -438,11 +503,13 @@ namespace WPCEmu.Test.Boards.Up
 			}
 		}
 
-		[Test, Order(25)]
+		[Test, Order(27)]
 		public void PostByteSimpleX_16_31()
 		{
 			for (byte offset = 16; offset < 32; offset++)
 			{
+				Debug.Print("postbyte simple X: {0}", offset);
+
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
@@ -460,11 +527,13 @@ namespace WPCEmu.Test.Boards.Up
 			}
 		}
 
-		[Test, Order(26)]
+		[Test, Order(28)]
 		public void PostByteSimpleS_0x60_0x70()
 		{
 			for (byte offset = 0x60; offset < 0x70; offset++)
 			{
+				Debug.Print("postbyte simple S: {0}", offset);
+
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
@@ -482,11 +551,13 @@ namespace WPCEmu.Test.Boards.Up
 			}
 		}
 
-		[Test, Order(27)]
+		[Test, Order(29)]
 		public void PostByteSimpleS_0x70_0x80()
 		{
 			for (byte offset = 0x70; offset < 0x80; offset++)
 			{
+				Debug.Print("postbyte simple S: {0}", offset);
+
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
@@ -504,7 +575,7 @@ namespace WPCEmu.Test.Boards.Up
 			}
 		}
 
-		[Test, Order(28)]
+		[Test, Order(30)]
 		public void PostByteComplex()
 		{
 			List<ComplexStruct> list = new List<ComplexStruct>()
@@ -545,18 +616,20 @@ namespace WPCEmu.Test.Boards.Up
 				new ComplexStruct(0xF1, "regS", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 })
 			};
 			
-			list.ForEach(delegate (ComplexStruct complexStruct)
+			list.ForEach(delegate (ComplexStruct testData)
 			{
-				ushort initialValue = (ushort)(complexStruct.initialValue.HasValue ? complexStruct.initialValue.Value : 10);
+				ushort initialValue = (ushort)(testData.initialValue.HasValue ? testData.initialValue.Value : 10);
+
+				Debug.Print("test: postbyte complex {0}: {1}", testData.register, initialValue);
 
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
-					complexStruct.offset
+					testData.offset
 				};
 				cpu.set("flags", 0);
-				cpu.regB = (byte) (complexStruct.initialRegB.HasValue ? complexStruct.initialRegB.Value : 0);
-				switch (complexStruct.register)
+				cpu.regB = (byte) (testData.initialRegB.HasValue ? testData.initialRegB.Value : 0);
+				switch (testData.register)
 				{
 					case "regX":
 						cpu.regX = initialValue;
@@ -575,8 +648,8 @@ namespace WPCEmu.Test.Boards.Up
 				}
 				cpu.regPC = 0;
 				ushort result = cpu.PostByte();
-				Assert.AreEqual(complexStruct.expectedReturn, result);
-				switch (complexStruct.register)
+				Assert.AreEqual(testData.expectedReturn, result);
+				switch (testData.register)
 				{
 					case "regX":
 						result = cpu.regX;
@@ -593,18 +666,20 @@ namespace WPCEmu.Test.Boards.Up
 					default:
 						break;
 				}
-				Assert.AreEqual(complexStruct.expectedResult, result);
-				Assert.AreEqual(complexStruct.expectedTicks, cpu.tickCount);
-				for (int index = 0; index < complexStruct.expectedMemoryRead.Length; index++)
+				Assert.AreEqual(testData.expectedResult, result);
+				Assert.AreEqual(testData.expectedTicks, cpu.tickCount);
+				for (int index = 0; index < testData.expectedMemoryRead.Length; index++)
 				{
-					Assert.AreEqual(complexStruct.expectedMemoryRead[index], readMemoryAddressAccess[index]);
+					Assert.AreEqual(testData.expectedMemoryRead[index], readMemoryAddressAccess[index]);
 				}
 			});
 		}
 
-		[Test, Order(29)]
+		[Test, Order(31)]
 		public void PostByteComplex_0x8C()
 		{
+			Debug.Print("postbyte complex 0x8C");
+
 			Init();
 			readMemoryAddress = new List<byte>()
 			{
@@ -621,9 +696,11 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0x1001, readMemoryAddressAccess[1]);
 		}
 
-		[Test, Order(30)]
+		[Test, Order(32)]
 		public void PostByteComplex_0x8D()
 		{
+			Debug.Print("postbyte complex 0x8D");
+
 			Init();
 			readMemoryAddress = new List<byte>()
 			{

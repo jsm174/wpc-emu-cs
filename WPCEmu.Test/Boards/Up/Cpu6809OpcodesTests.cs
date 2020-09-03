@@ -10,15 +10,6 @@ namespace WPCEmu.Test.Boards.Up
 	{
 		delegate void PostCpuResetInitDelegate();
 
-		const byte RESET_VECTOR_VALUE_LO = 0x01;
-		const byte RESET_VECTOR_VALUE_HI = 0x02;
-
-		const ushort EXPECTED_RESET_READ_OFFSET_LO = 0x201;
-		const ushort EXPECTED_RESET_READ_OFFSET_HI = 0x202;
-
-		const ushort RESET_VECTOR_OFFSET_LO = 0xFFFE;
-		const ushort RESET_VECTOR_OFFSET_HI = 0xFFFF;
-
 		struct AddressValueStruct
 		{
 			public ushort address;
@@ -43,7 +34,7 @@ namespace WPCEmu.Test.Boards.Up
 			public ushort[] expectedMemoryRead;
 
 			public ComplexStruct(byte offset, string register, ushort? initialValue, byte? initialRegB, ushort expectedResult, int expectedTicks, ushort expectedReturn, ushort[] expectedMemoryRead)
-			{ 
+			{
 				this.offset = offset;
 				this.register = register;
 				this.initialValue = initialValue;
@@ -54,6 +45,15 @@ namespace WPCEmu.Test.Boards.Up
 				this.expectedMemoryRead = expectedMemoryRead;
 			}
 		}
+
+		const byte RESET_VECTOR_VALUE_LO = 0x01;
+		const byte RESET_VECTOR_VALUE_HI = 0x02;
+
+		const ushort EXPECTED_RESET_READ_OFFSET_LO = 0x201;
+		const ushort EXPECTED_RESET_READ_OFFSET_HI = 0x202;
+
+		const ushort RESET_VECTOR_OFFSET_LO = 0xFFFE;
+		const ushort RESET_VECTOR_OFFSET_HI = 0xFFFF;
 
 		List<ushort> readMemoryAddressAccess;
 		List<byte> readMemoryAddress;

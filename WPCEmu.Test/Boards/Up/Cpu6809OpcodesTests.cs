@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using NUnit.Framework;
 using WPCEmu.Boards.Up;
-using System.Diagnostics;
 
 namespace WPCEmu.Test.Boards.Up
 {
@@ -93,7 +92,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(1)]
 		public void ShouldReadResetVectorOnBoot()
 		{
-			Debug.Print("should read RESET vector on boot");
+			TestContext.WriteLine("should read RESET vector on boot");
 
 			cpu.reset();
 			Assert.AreEqual(RESET_VECTOR_OFFSET_LO, readMemoryAddressAccess[0]);
@@ -103,7 +102,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(2)]
 		public void ROLA_0xFF()
 		{
-			Debug.Print("ROLA 0xFF");
+			TestContext.WriteLine("ROLA 0xFF");
 
 			const byte OP_ROLA = 0x49;
 			runRegisterATest(OP_ROLA, 0xFF);
@@ -116,7 +115,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(3)]
 		public void ROLA_0xFF_CarryFlagSet()
 		{
-			Debug.Print("ROLA, 0xFF - carry flag set");
+			TestContext.WriteLine("ROLA, 0xFF - carry flag set");
 
 			const byte OP_ROLA = 0x49;
 			runRegisterATest(OP_ROLA, 0xFF, () =>
@@ -133,7 +132,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(4)]
 		public void RORA_0x01_NoOverflow()
 		{
-			Debug.Print("RORA, 0x01 (no overflow)");
+			TestContext.WriteLine("RORA, 0x01 (no overflow)");
 
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0x01);
@@ -146,7 +145,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(5)]
 		public void RORA_0xFF_CarryFlagNotSet()
 		{
-			Debug.Print("RORA, 0xFF - carry flag not set");
+			TestContext.WriteLine("RORA, 0xFF - carry flag not set");
 
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0xFF);
@@ -159,7 +158,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(6)]
 		public void RORA_0xFF_CarryFlagSet()
 		{
-			Debug.Print("RORA, 0xFF - carry flag set");
+			TestContext.WriteLine("RORA, 0xFF - carry flag set");
 
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0xFF, () =>
@@ -176,7 +175,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(7)]
 		public void ADDA_oADD()
 		{
-			Debug.Print("ADDA / oADD");
+			TestContext.WriteLine("ADDA / oADD");
 
 			const byte OP_ADDA = 0x8B;
 			const byte ADD_VALUE_1 = 0xFF;
@@ -207,7 +206,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(8)]
 		public void LSRA()
 		{
-			Debug.Print("LSRA");
+			TestContext.WriteLine("LSRA");
 
 			const byte OP_LSRA = 0x44;
 			runRegisterATest(OP_LSRA, 0xFF);
@@ -220,7 +219,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(9)]
 		public void ASLA_Overflow()
 		{
-			Debug.Print("ASLA, overflow");
+			TestContext.WriteLine("ASLA, overflow");
 
 			const byte OP_ASLA = 0x48;
 			runRegisterATest(OP_ASLA, 0x81);
@@ -233,7 +232,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(10)]
 		public void ASLA_NoOverflow()
 		{
-			Debug.Print("ASLA, no overflow");
+			TestContext.WriteLine("ASLA, no overflow");
 
 			const byte OP_ASLA = 0x48;
 			runRegisterATest(OP_ASLA, 0x01);
@@ -246,7 +245,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(11)]
 		public void ASRA_0xFF()
 		{
-			Debug.Print("ASRA (0xFF)");
+			TestContext.WriteLine("ASRA (0xFF)");
 
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0xFF);
@@ -259,7 +258,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(12)]
 		public void ASRA_0x7F()
 		{
-			Debug.Print("ASRA (0x7F)");
+			TestContext.WriteLine("ASRA (0x7F)");
 
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0x7F);
@@ -272,7 +271,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(13)]
 		public void ASRA_0()
 		{
-			Debug.Print("ASRA (0)");
+			TestContext.WriteLine("ASRA (0)");
 
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0);
@@ -285,7 +284,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(14)]
 		public void oNEG_0x1()
 		{
-			Debug.Print("oNEG, 0x1");
+			TestContext.WriteLine("oNEG, 0x1");
 
 			const byte OP_NEG = 0x40;
 			runRegisterATest(OP_NEG, 0x01);
@@ -298,7 +297,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(15)]
 		public void oNEG_0xFF()
 		{
-			Debug.Print("oNEG, 0xFF");
+			TestContext.WriteLine("oNEG, 0xFF");
 
 			const byte OP_NEG = 0x40;
 			runRegisterATest(OP_NEG, 0xFF);
@@ -311,7 +310,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(16)]
 		public void oDEC_0x80_NoOverflow()
 		{
-			Debug.Print("oDEC, 0x80 (no overflow)");
+			TestContext.WriteLine("oDEC, 0x80 (no overflow)");
 
 			const byte OP_DEC = 0x4A;
 			runRegisterATest(OP_DEC, 0x80);
@@ -324,7 +323,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(17)]
 		public void oDEC_0x0_Overflow()
 		{
-			Debug.Print("oDEC, 0x0 (overflow)");
+			TestContext.WriteLine("oDEC, 0x0 (overflow)");
 
 			const byte OP_DEC = 0x4A;
 			runRegisterATest(OP_DEC, 0x00);
@@ -337,7 +336,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(18)]
 		public void oDEC_ExtendedMemory_0x0_Overflow()
 		{
-			Debug.Print("oDEC extended memory, 0x0 (overflow)");
+			TestContext.WriteLine("oDEC extended memory, 0x0 (overflow)");
 
 			const byte OP_DEC = 0x7A;
 			runExtendedMemoryTest(OP_DEC, 0x00);
@@ -351,7 +350,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(19)]
 		public void oINC_0x00_NoOverflow()
 		{
-			Debug.Print("oINC, 0x00 (no overflow)");
+			TestContext.WriteLine("oINC, 0x00 (no overflow)");
 
 			const byte OP_INC = 0x4C;
 			runRegisterATest(OP_INC, 0x00);
@@ -364,7 +363,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(20)]
 		public void oINC_0xFF_Overflow()
 		{
-			Debug.Print("oINC, 0xFF (overflow)");
+			TestContext.WriteLine("oINC, 0xFF (overflow)");
 
 			const byte OP_INC = 0x4C;
 			runRegisterATest(OP_INC, 0xFF);
@@ -377,7 +376,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(21)]
 		public void oINC_ExtendedMemory_0xFF_Overflow()
 		{
-			Debug.Print("oINC extended memory, 0xFF (overflow)");
+			TestContext.WriteLine("oINC extended memory, 0xFF (overflow)");
 
 			const byte OP_INC = 0x7C;
 			runExtendedMemoryTest(OP_INC, 0xFF);
@@ -391,7 +390,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(22)]
 		public void PUSHB_ShouldWrapAround()
 		{
-			Debug.Print("PUSHB should wrap around");
+			TestContext.WriteLine("PUSHB should wrap around");
 
 			cpu.reset();
 			cpu.PUSHB(0x23);
@@ -402,7 +401,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(23)]
 		public void PUSHW_ShouldWrapAround()
 		{
-			Debug.Print("PUSHW should wrap around");
+			TestContext.WriteLine("PUSHW should wrap around");
 
 			cpu.reset();
 			cpu.PUSHW(0x1234);
@@ -415,7 +414,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(24)]
 		public void PUSHBU_ShouldWrapAround()
 		{
-			Debug.Print("PUSHBU should wrap around");
+			TestContext.WriteLine("PUSHBU should wrap around");
 
 			cpu.reset();
 			cpu.PUSHBU(0x23);
@@ -426,7 +425,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(25)]
 		public void PUSHWU_ShouldWrapAround()
 		{
-			Debug.Print("PUSHWU should wrap around");
+			TestContext.WriteLine("PUSHWU should wrap around");
 
 			cpu.reset();
 			cpu.PUSHWU(0x1234);
@@ -484,7 +483,7 @@ namespace WPCEmu.Test.Boards.Up
 		public void PostByteSimpleX_0_15()
 		{
 			for (byte offset = 0; offset < 16; offset++) {
-				Debug.Print("postbyte simple X: {0}", offset);
+				TestContext.WriteLine("postbyte simple X: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
@@ -508,7 +507,7 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			for (byte offset = 16; offset < 32; offset++)
 			{
-				Debug.Print("postbyte simple X: {0}", offset);
+				TestContext.WriteLine("postbyte simple X: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
@@ -532,7 +531,7 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			for (byte offset = 0x60; offset < 0x70; offset++)
 			{
-				Debug.Print("postbyte simple S: {0}", offset);
+				TestContext.WriteLine("postbyte simple S: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
@@ -556,7 +555,7 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			for (byte offset = 0x70; offset < 0x80; offset++)
 			{
-				Debug.Print("postbyte simple S: {0}", offset);
+				TestContext.WriteLine("postbyte simple S: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
@@ -620,7 +619,7 @@ namespace WPCEmu.Test.Boards.Up
 			{
 				ushort initialValue = (ushort)(testData.initialValue.HasValue ? testData.initialValue.Value : 10);
 
-				Debug.Print("test: postbyte complex {0}: {1}", testData.register, initialValue);
+				TestContext.WriteLine("test: postbyte complex {0}: {1}", testData.register, initialValue);
 
 				Init();
 				readMemoryAddress = new List<byte>()
@@ -678,7 +677,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(31)]
 		public void PostByteComplex_0x8C()
 		{
-			Debug.Print("postbyte complex 0x8C");
+			TestContext.WriteLine("postbyte complex 0x8C");
 
 			Init();
 			readMemoryAddress = new List<byte>()
@@ -699,7 +698,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(32)]
 		public void PostByteComplex_0x8D()
 		{
-			Debug.Print("postbyte complex 0x8D");
+			TestContext.WriteLine("postbyte complex 0x8D");
 
 			Init();
 			readMemoryAddress = new List<byte>()

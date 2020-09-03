@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Diagnostics;
 using NUnit.Framework;
 using WPCEmu.Boards.Up;
 
@@ -50,7 +49,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(1)]
 		public void ReadInitialVector()
 		{
-			Debug.Print("read initial vector");
+			TestContext.WriteLine("read initial vector");
 
 			Assert.AreEqual(0xFFFE, readMemoryAddress[0]);
 			Assert.AreEqual(0xFFFF, readMemoryAddress[1]);
@@ -59,7 +58,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(2)]
 		public void oCmp_8bit_CarryFlag()
 		{
-			Debug.Print("oCMP 8bit, carry flag");
+			TestContext.WriteLine("oCMP 8bit, carry flag");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 0xFF);
@@ -69,7 +68,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(3)]
 		public void oCmp_8bit_0xFF()
 		{
-			Debug.Print("oCMP 8bit, 0xFF");
+			TestContext.WriteLine("oCMP 8bit, 0xFF");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0xFF, 0);
@@ -79,7 +78,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(4)]
 		public void oCmp_8bit_NegativeFlag()
 		{
-			Debug.Print("oCMP 8bit, negative flag");
+			TestContext.WriteLine("oCMP 8bit, negative flag");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 0x80);
@@ -89,7 +88,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(5)]
 		public void oCmp_8bit_Negative1()
 		{
-			Debug.Print("oCMP 8bit, -1");
+			TestContext.WriteLine("oCMP 8bit, -1");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 1);
@@ -99,7 +98,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(6)]
 		public void oCmp_8bit_ZeroFlag()
 		{
-			Debug.Print("oCMP 8bit, zero flag");
+			TestContext.WriteLine("oCMP 8bit, zero flag");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP(0, 0);
@@ -109,7 +108,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(7)]
 		public void oCmp_16bit_CarryFlag()
 		{
-			Debug.Print("oCMP 16bit, carry flag");
+			TestContext.WriteLine("oCMP 16bit, carry flag");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 0xFFFF);
@@ -119,7 +118,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(8)]
 		public void oCmp_16bit_0xFFFF()
 		{
-			Debug.Print("oCMP 16bit, 0xFFFF");
+			TestContext.WriteLine("oCMP 16bit, 0xFFFF");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0xFFFF, 0);
@@ -129,7 +128,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(9)]
 		public void oCmp_16bit_NegativeFlag()
 		{
-			Debug.Print("oCMP 16bit, negative flag");
+			TestContext.WriteLine("oCMP 16bit, negative flag");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 0x8000);
@@ -139,7 +138,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(10)]
 		public void oCmp_16bit_Negative1()
 		{
-			Debug.Print("oCMP 16bit, -1");
+			TestContext.WriteLine("oCMP 16bit, -1");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 1);
@@ -149,7 +148,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(11)]
 		public void oCmp_16bit_ZeroFlag()
 		{
-			Debug.Print("oCMP 16bit, zero flag");
+			TestContext.WriteLine("oCMP 16bit, zero flag");
 
 			cpu.set("flags", 0x00);
 			cpu.oCMP16(0, 0);
@@ -159,7 +158,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(12)]
 		public void FlagsCorrectAfterIRQ_InitFlags_0x00()
 		{
-			Debug.Print("flags should be correct after calling irq(), init flags to 0x00");
+			TestContext.WriteLine("flags should be correct after calling irq(), init flags to 0x00");
 
 			cpu.set("flags", 0x00);
 			cpu.irq();
@@ -176,7 +175,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(13)]
 		public void DetectFirqCouldNotBeTriggered()
 		{
-			Debug.Print("detect that firq could not be triggered");
+			TestContext.WriteLine("detect that firq could not be triggered");
 
 			cpu.set("flags", 0x00);
 			cpu.firq();
@@ -186,7 +185,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(14)]
 		public void FlagsCorrectAfterIRQ_InitFlags_0xEF()
 		{
-			Debug.Print("flags should be correct after calling irq(), init flags to 0xef");
+			TestContext.WriteLine("flags should be correct after calling irq(), init flags to 0xef");
 
 			byte flagClearedFirqBit = 0xFF & ~16;
 			cpu.set("flags", flagClearedFirqBit);
@@ -204,7 +203,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(15)]
 		public void IRQNotCalledIf_F_IRQMASK_set()
 		{
-			Debug.Print("irq() should not be called if F_IRQMASK flag is set");
+			TestContext.WriteLine("irq() should not be called if F_IRQMASK flag is set");
 
 			cpu.set("flags", 0xFF);
 			cpu.irq();
@@ -220,7 +219,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(16)]
 		public void FlagsCorrectAfterNMI()
 		{
-			Debug.Print("flags should be correct after calling nmi()");
+			TestContext.WriteLine("flags should be correct after calling nmi()");
 
 			cpu.set("flags", 0x00);
 			cpu.nmi();
@@ -237,7 +236,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(17)]
 		public void FlagsCorrectAfterFIRQ_InitFlags_0x00()
 		{
-			Debug.Print("flags should be correct after calling firq(), init flags to 0x00");
+			TestContext.WriteLine("flags should be correct after calling firq(), init flags to 0x00");
 
 			cpu.set("flags", 0x00);
 			cpu.firq();
@@ -254,7 +253,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(18)]
 		public void FlagsCorrectAfterFIRQ_InitFlags_0xBF()
 		{
-			Debug.Print("flags should be correct after calling firq(), init flags to 0xbf");
+			TestContext.WriteLine("flags should be correct after calling firq(), init flags to 0xbf");
 
 			byte flagClearedFirqBit = 0xFF & ~64;
 			cpu.set("flags", flagClearedFirqBit);
@@ -272,7 +271,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(19)]
 		public void FIRQNotCalledIf_F_FIRQMASK_set()
 		{
-			Debug.Print("firq() should not be called if F_FIRQMASK flag is set");
+			TestContext.WriteLine("firq() should not be called if F_FIRQMASK flag is set");
 
 			cpu.set("flags", 0xFF);
 			cpu.firq();
@@ -288,7 +287,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(20)]
 		public void oNEG_CarryFlag()
 		{
-			Debug.Print("oNEG() should set CARRY flag correctly");
+			TestContext.WriteLine("oNEG() should set CARRY flag correctly");
 
 			cpu.set("flags", 0xFF);
 			cpu.firq();
@@ -304,7 +303,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(21)]
 		public void SetOverflowFlag_8bit()
 		{
-			Debug.Print("set overflow flag (8bit)");
+			TestContext.WriteLine("set overflow flag (8bit)");
 
 			cpu.set("flags", 0);
 			cpu.setV8(1, 1, 0x80);
@@ -314,7 +313,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(22)]
 		public void SetOverflowFlag_8bit_overflow_r()
 		{
-			Debug.Print("set overflow flag (8bit), overflow r value");
+			TestContext.WriteLine("set overflow flag (8bit), overflow r value");
 
 			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x180);
@@ -324,7 +323,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(23)]
 		public void setOverflowFlag_16bit()
 		{
-			Debug.Print("set overflow flag (16bit)");
+			TestContext.WriteLine("set overflow flag (16bit)");
 
 			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x8000);
@@ -334,7 +333,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(24)]
 		public void SetOverflowFlag_16bit_overflow_r()
 		{
-			Debug.Print("set overflow flag (16bit), overflow r value");
+			TestContext.WriteLine("set overflow flag (16bit), overflow r value");
 
 			cpu.set("flags", 0);
 			cpu.setV16(1, 1, 0x18000);
@@ -344,7 +343,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(25)]
 		public void Signed_5bit()
 		{
-			Debug.Print("signed 5bit");
+			TestContext.WriteLine("signed 5bit");
 
 			sbyte val0 = (sbyte) cpu.signed5bit(0);
 			sbyte valF = (sbyte) cpu.signed5bit(0xF);
@@ -361,7 +360,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(26)]
 		public void Signed_8bit()
 		{
-			Debug.Print("signed 8bit");
+			TestContext.WriteLine("signed 8bit");
 
 			sbyte val0 = (sbyte) cpu.signed(0);
 			sbyte val7f = (sbyte) cpu.signed(0x7F);
@@ -378,7 +377,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(27)]
 		public void Signed_16bit()
 		{
-			Debug.Print("signed 16bit");
+			TestContext.WriteLine("signed 16bit");
 
 			short val0 = (short) cpu.signed16(0);
 			short val7fff = (short) cpu.signed16(0x7FFF);
@@ -395,7 +394,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(28)]
 		public void Flags_NZ16_0xFFFF()
 		{
-			Debug.Print("flagsNZ16 0xFFFF");
+			TestContext.WriteLine("flagsNZ16 0xFFFF");
 
 			cpu.set("flags", 0);
 			cpu.flagsNZ16(0xFFFF);
@@ -405,7 +404,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(29)]
 		public void FlagsNZ16_0x0000()
 		{
-			Debug.Print("flagsNZ16 0x0000");
+			TestContext.WriteLine("flagsNZ16 0x0000");
 
 			cpu.set("flags", 0);
 			cpu.flagsNZ16(0);
@@ -415,7 +414,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(30)]
 		public void WriteWord_0_0x1234()
 		{
-			Debug.Print("WriteWord(0, 0x1234)");
+			TestContext.WriteLine("WriteWord(0, 0x1234)");
 
 			cpu.WriteWord(0x0, 0x1234);
 			Assert.AreEqual(0, writeMemoryAddress[0].address);
@@ -427,7 +426,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(31)]
 		public void WriteWord_0xFFFF_0x1234()
 		{
-			Debug.Print("WriteWord(0xFFFF, 0x1234)");
+			TestContext.WriteLine("WriteWord(0xFFFF, 0x1234)");
 
 			cpu.WriteWord(0xFFFF, 0x1234);
 			Assert.AreEqual(0xFFFF, writeMemoryAddress[0].address);
@@ -439,7 +438,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(32)]
 		public void GetD()
 		{
-			Debug.Print("getD");
+			TestContext.WriteLine("getD");
 
 			cpu.regA = 0xFF;
 			cpu.regB = 0xEE;
@@ -450,7 +449,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(33)]
 		public void SetD_0xFFEE()
 		{
-			Debug.Print("setD(0xFFEE)");
+			TestContext.WriteLine("setD(0xFFEE)");
 
 			cpu.setD(0xFFEE);
 			Assert.AreEqual(0xFF, cpu.regA);
@@ -460,7 +459,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(34)]
 		public void dpadd_regDP_0()
 		{
-			Debug.Print("dpadd(), regDP = 0");
+			TestContext.WriteLine("dpadd(), regDP = 0");
 
 			cpu.regDP = 0;
 			cpu.fetch = () => {
@@ -473,7 +472,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(35)]
 		public void dpadd_regDP_0xFF()
 		{
-			Debug.Print("dpadd(), regDP = 0xFF");
+			TestContext.WriteLine("dpadd(), regDP = 0xFF");
 
 			cpu.regDP = 0xFF;
 			cpu.fetch = () => {
@@ -486,7 +485,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(36)]
 		public void oNEG_0()
 		{
-			Debug.Print("oNEG(0)");
+			TestContext.WriteLine("oNEG(0)");
 
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0);
@@ -497,7 +496,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(37)]
 		public void oNEG_1()
 		{
-			Debug.Print("oNEG(1)");
+			TestContext.WriteLine("oNEG(1)");
 
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(1);
@@ -508,7 +507,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(38)]
 		public void oNEG_0x7F()
 		{
-			Debug.Print("oNEG(0x7F)");
+			TestContext.WriteLine("oNEG(0x7F)");
 
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0x7F);
@@ -519,7 +518,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(39)]
 		public void oNEG_0x80()
 		{
-			Debug.Print("oNEG(0x80)");
+			TestContext.WriteLine("oNEG(0x80)");
 
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0x80);
@@ -530,7 +529,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(40)]
 		public void oNEG_0xFF()
 		{
-			Debug.Print("oNEG(0xFF)");
+			TestContext.WriteLine("oNEG(0xFF)");
 
 			cpu.set("flags", 0);
 			byte result = cpu.oNEG(0xFF);
@@ -541,7 +540,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(41)]
 		public void SetPostByteRegister_0_0xFFFF()
 		{
-			Debug.Print("setPostByteRegister(0, 0xFFFF)");
+			TestContext.WriteLine("setPostByteRegister(0, 0xFFFF)");
 
 			cpu.setPostByteRegister(0, 0xFFFF);
 			Assert.AreEqual(0xFF, cpu.regA);
@@ -551,7 +550,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(42)]
 		public void SetPostByteRegister_0x8_0xFFFF()
 		{
-			Debug.Print("setPostByteRegister(0x8, 0xFFFF)");
+			TestContext.WriteLine("setPostByteRegister(0x8, 0xFFFF)");
 
 			cpu.setPostByteRegister(0x8, 0xFFFF);
 			Assert.AreEqual(0xFF, cpu.regA);
@@ -560,7 +559,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(43)]
 		public void GetPostByteRegister_0x0_D()
 		{
-			Debug.Print("getPostByteRegister(0x0) - D");
+			TestContext.WriteLine("getPostByteRegister(0x0) - D");
 
 			cpu.regA = 0x44;
 			cpu.regB = 0x99;
@@ -571,7 +570,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(44)]
 		public void GetPostByteRegister_0x5_PC()
 		{
-			Debug.Print("getPostByteRegister(0x5) - PC");
+			TestContext.WriteLine("getPostByteRegister(0x5) - PC");
 
 			cpu.regPC = 0x1234;
 			ushort result = cpu.getPostByteRegister(0x5);
@@ -581,7 +580,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(45)]
 		public void GetPostByteRegister_0xA_CC()
 		{
-			Debug.Print("getPostByteRegister(0xA) - CC");
+			TestContext.WriteLine("getPostByteRegister(0xA) - CC");
 
 			cpu.regCC = 0xFF;
 			ushort result = cpu.getPostByteRegister(0xA);
@@ -591,7 +590,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(46)]
 		public void TFREXG_Transfer_X_Y()
 		{
-			Debug.Print("TFREXG - transfer X -> Y");
+			TestContext.WriteLine("TFREXG - transfer X -> Y");
 
 			cpu.regX = 0xFFFF;
 			cpu.regY = 0x7F;
@@ -603,7 +602,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(47)]
 		public void TFREXG_Exchange_U_S()
 		{
-			Debug.Print("TFREXG - exchange U <-> S");
+			TestContext.WriteLine("TFREXG - exchange U <-> S");
 
 			cpu.regU = 0xFFFF;
 			cpu.regS = 0x7F;
@@ -615,7 +614,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(48)]
 		public void TFREXG_Transfer_A_CC()
 		{
-			Debug.Print("TFREXG - transfer A -> CC");
+			TestContext.WriteLine("TFREXG - transfer A -> CC");
 
 			cpu.regA = 0xFF;
 			cpu.regCC = 0x7F;
@@ -627,7 +626,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(49)]
 		public void TFREXG_Exchange_B_DP()
 		{
-			Debug.Print("TFREXG - exchange b <-> DP");
+			TestContext.WriteLine("TFREXG - exchange b <-> DP");
 
 			cpu.regB = 0xFF;
 			cpu.regDP = 0x7F;
@@ -639,7 +638,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(50)]
 		public void GetAndSetState()
 		{
-			Debug.Print("get and set state");
+			TestContext.WriteLine("get and set state");
 
 			cpu.regA = 0x44;
 			Cpu6809.State state = cpu.getState();

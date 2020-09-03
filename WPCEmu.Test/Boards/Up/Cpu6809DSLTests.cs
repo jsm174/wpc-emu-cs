@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System;
 using NUnit.Framework;
 using WPCEmu.Boards.Up;
-using System.Linq;
-using System.Diagnostics;
-using System;
 
 namespace WPCEmu.Test.Boards.Up
 {
@@ -450,7 +449,7 @@ namespace WPCEmu.Test.Boards.Up
 						break;
 					case FLAG_UNAFFECTED:
 						byte unaffectedFlag = (byte)(cpu.regCC & mask);
-						Debug.Print("offset: {0}, {1}, mask: {2}", x, unaffectedFlag, mask);
+						TestContext.WriteLine("offset: {0}, {1}, mask: {2}", x, unaffectedFlag, mask);
 						Assert.IsTrue(unaffectedFlag > 0);
 						break;
 					default:
@@ -479,14 +478,14 @@ namespace WPCEmu.Test.Boards.Up
 
 			marshall(PAGE0_OPS).ForEach(delegate (InstructionStruct testData)
 			{
-				Debug.Print("PAGE0 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
+				TestContext.WriteLine("PAGE0 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				runCyclecountTest(testData, 0x00);
 
-				Debug.Print("PAGE0 CYCLECOUNT(flags 0xFF): 0x{0}: {1}", testData.desc, testData.cycles);
+				TestContext.WriteLine("PAGE0 CYCLECOUNT(flags 0xFF): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
 				runCyclecountTest(testData, 0xFF);
 
-				Debug.Print("PAGE0 FLAGCHECK: 0x{0}: {1}", testData.desc, testData.flags);
+				TestContext.WriteLine("PAGE0 FLAGCHECK: 0x{0}: {1}", testData.desc, testData.flags);
 				Init();
 				// add command in reverse order
 				readMemoryAddress = new List<byte>()
@@ -524,11 +523,11 @@ namespace WPCEmu.Test.Boards.Up
 
 			marshall(PAGE1_OPS).ForEach(delegate (InstructionStruct testData)
 			{
-				Debug.Print("PAGE1 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
+				TestContext.WriteLine("PAGE1 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
 				runCyclecountTest(testData, 0x00, testData.cycles);
 
-				Debug.Print("PAGE1 CYCLECOUNT(flags 0xFF): 0x{0}: {1}", testData.desc, testData.cycles);
+				TestContext.WriteLine("PAGE1 CYCLECOUNT(flags 0xFF): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
 				int expectedTickCount = testData.op > 0x1021 && testData.op < 0x103F ?
 				(testData.cycles == 5) ? 6 : 5 :
@@ -542,7 +541,7 @@ namespace WPCEmu.Test.Boards.Up
 					runCyclecountTest(testData, 0xFF, expectedTickCount);
 				}
 
-				Debug.Print("PAGE1 FLAGCHECK: 0x{0}: {1}", testData.desc, testData.flags);
+				TestContext.WriteLine("PAGE1 FLAGCHECK: 0x{0}: {1}", testData.desc, testData.flags);
 				Init();
 				// add command in reverse order
 				readMemoryAddress = new List<byte>()
@@ -575,15 +574,15 @@ namespace WPCEmu.Test.Boards.Up
 
 			marshall(PAGE2_OPS).ForEach(delegate (InstructionStruct testData)
 			{
-				Debug.Print("PAGE2 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
+				TestContext.WriteLine("PAGE2 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
 				runCyclecountTest(testData, 0x00);
 
-				Debug.Print("PAGE2 CYCLECOUNT(flags 0xFF): 0x{0}: {1}", testData.desc, testData.cycles);
+				TestContext.WriteLine("PAGE2 CYCLECOUNT(flags 0xFF): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
 				runCyclecountTest(testData, 0xFF);
 
-				Debug.Print("PAGE2 FLAGCHECK: 0x{0}: {1}", testData.desc, testData.flags);
+				TestContext.WriteLine("PAGE2 FLAGCHECK: 0x{0}: {1}", testData.desc, testData.flags);
 				Init();
 				// add command in reverse order
 				readMemoryAddress = new List<byte>()

@@ -28,12 +28,12 @@ namespace WPCEmu.Boards.Mapper
         const string SUBSYSTEM_BANKSWITCHED = "bank";
         const string SUBSYSTEM_SYSTEMROM = "system";
 
-        public static Model getAddress(uint offset)
+        public static Model getAddress(int? offset)
         {
-            //if (!offset.HasValue) 
-            //{
-            //    throw new Exception("MEMORY_GET_ADDRESS_UNDEFINED");
-            //}
+            if (!offset.HasValue) 
+            {
+                throw new Exception("MEMORY_GET_ADDRESS_UNDEFINED");
+            }
             offset &= 0xFFFF;
 
             bool isRam2Region = offset >= MEMORY_ADDR_RAM2_START && offset <= MEMORY_ADDR_RAM2_END;
@@ -54,7 +54,7 @@ namespace WPCEmu.Boards.Mapper
             {
                 return new Model((ushort)(offset - 0x8000), SUBSYSTEM_SYSTEMROM);
             }
-            throw new Exception("MEMORY_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.ToString("X"));
+            throw new Exception("MEMORY_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
         }
     }
 }

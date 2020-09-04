@@ -4,7 +4,7 @@ using WPCEmu.Boards.Mapper;
 namespace WPCEmu.Test.Boards.Mapper
 {
 	[TestFixture]
-	public class HardwareTests
+	public class HardwareMapperTests
 	{
 		[Test, Order(1)]
 		public void ShouldGet_0x3FC2()
@@ -32,7 +32,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, -1");
 
-			Assert.Throws<System.Exception>(() => HardwareMapper.getAddress(0xFFFF) /*{ message: 'HW_GET_ADDRESS_INVALID_MEMORY_REGION_0xffff' }*/);
+			Assert.Throws<System.Exception>(() => HardwareMapper.getAddress(-1) /*{ message: 'HW_GET_ADDRESS_INVALID_MEMORY_REGION_0xffff' }*/);
 		}
 
 		[Test, Order(4)]
@@ -95,13 +95,13 @@ namespace WPCEmu.Test.Boards.Mapper
 			Assert.Throws<System.Exception>(() => HardwareMapper.getAddress(0xFFFF) /*{ message: 'HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x4000' }*/);
 		}
 
-		//[Test, Order(9)]
-		//public void ShouldFail_InvalidOffset()
-		//{
-		//	TestContext.WriteLine("HardwareMapper, should fail to get invalid offset");
-		//
-		//	Assert.Throws<System.Exception>(() => Hardware.getAddress() /*{ message: 'HW_GET_ADDRESS_UNDEFINED' }*/);
-		//}
+		[Test, Order(9)]
+		public void ShouldFail_InvalidOffset()
+		{
+			TestContext.WriteLine("HardwareMapper, should fail to get invalid offset");
+		
+			Assert.Throws<System.Exception>(() => HardwareMapper.getAddress(null) /*{ message: 'HW_GET_ADDRESS_UNDEFINED' }*/);
+		}
 
 		[Test, Order(10)]
 		public void ShouldFail_0x2000()

@@ -39,39 +39,39 @@ namespace WPCEmu.Boards.Mapper
             return new Model(offset, subsystem);
         }
 
-        public static Model getAddress(ushort offset)
+        public static Model getAddress(int? offset)
         {
-            //if (!offset.HasValue) 
-            //{
-            //    throw new Exception("HW_GET_ADDRESS_UNDEFINED");
-            //}
+            if (!offset.HasValue) 
+            {
+                throw new Exception("HW_GET_ADDRESS_UNDEFINED");
+            }
             offset &= 0xFFFF;
 
             if (offset < MEMORY_ADDR_EXPANSION_START)
             {
-                throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.ToString("X"));
+                throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
             }
-            if (offset < MEMORY_ADDR_DMD || MEMORY_ALPHANUMERIC_DISPLAY.Contains(offset))
+            if (offset < MEMORY_ADDR_DMD || MEMORY_ALPHANUMERIC_DISPLAY.Contains((ushort)offset))
             {
-                return buildReturnModel(offset, SUBSYSTEM_DISPLAY);
+                return buildReturnModel((ushort)offset, SUBSYSTEM_DISPLAY);
             }
             if (offset == MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A)
             {
-                return buildReturnModel(offset, SUBSYSTEM_WPCIO);
+                return buildReturnModel((ushort)offset, SUBSYSTEM_WPCIO);
             }
             if (offset < MEMORY_ADDR_EXTERNAL_IO)
             {
-                return buildReturnModel(offset, SUBSYSTEM_EXTERNAL_IO);
+                return buildReturnModel((ushort)offset, SUBSYSTEM_EXTERNAL_IO);
             }
             if (offset < MEMORY_ADDR_SOUND)
             {
-                return buildReturnModel(offset, SUBSYSTEM_SOUND);
+                return buildReturnModel((ushort)offset, SUBSYSTEM_SOUND);
             }
             if (offset < MEMORY_ADDR_WPC_IO)
             {
-                return buildReturnModel(offset, SUBSYSTEM_WPCIO);
+                return buildReturnModel((ushort)offset, SUBSYSTEM_WPCIO);
             }
-            throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.ToString("X"));
+            throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
         }
     }
 }

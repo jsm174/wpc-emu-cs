@@ -4,7 +4,7 @@ using WPCEmu.Boards.Mapper;
 namespace WPCEmu.Test.Boards.Mapper
 {
 	[TestFixture]
-	public class MemoryTests
+	public class MemoryMapperTests
 	{
 		[Test, Order(1)]
 		public void ShouldGet_16322()
@@ -32,26 +32,26 @@ namespace WPCEmu.Test.Boards.Mapper
 			Assert.AreEqual(expectedResult, result);
 		}
 
-		//[Test, Order(3)]
-		//public void ShouldFail_InvalidOffset()
-		//{
-		//	TestContext.WriteLine("MemoryMapper, should fail when using invalid offset");
-		//
-		//	Assert.Throws<System.Exception>(() => MemoryMapper.getAddress() /*{ message: 'MEMORY_GET_ADDRESS_UNDEFINED' }*/);
-		//}
+		[Test, Order(3)]
+		public void ShouldFail_InvalidOffset()
+		{
+			TestContext.WriteLine("MemoryMapper, should fail when using invalid offset");
+		
+			Assert.Throws<System.Exception>(() => MemoryMapper.getAddress(null) /*{ message: 'MEMORY_GET_ADDRESS_UNDEFINED' }*/);
+		}
 
-		//[Test, Order(4)]
-		//public void ShouldGet_Negative1()
-		//{
-		//	TestContext.WriteLine("MemoryMapper, should get address, -1");
-		//
-		//	MemoryMapper.ReturnModelStruct expectedResult = new MemoryMapper.ReturnModelStruct(
-		//		32767,
-		//		"system");
-		//
-		//	MemoryMapper.ReturnModelStruct result = MemoryMapper.getAddress(-1);
-		//	Assert.AreEqual(expectedResult, result);
-		//}
+		[Test, Order(4)]
+		public void ShouldGet_Negative1()
+		{
+			TestContext.WriteLine("MemoryMapper, should get address, -1");
+		
+			MemoryMapper.Model expectedResult = new MemoryMapper.Model(
+				32767,
+				"system");
+		
+			MemoryMapper.Model result = MemoryMapper.getAddress(-1);
+			Assert.AreEqual(expectedResult, result);
+		}
 
 		[Test, Order(5)]
 		public void ShouldGet_0()

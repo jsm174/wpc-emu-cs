@@ -1,6 +1,6 @@
 ﻿namespace WPCEmu.Boards.Static
 {
-    public class DipSwitchCountry
+    public static class DipSwitchCountry
     {
         /*
         define w15 - w18

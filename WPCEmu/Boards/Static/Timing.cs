@@ -1,6 +1,6 @@
 ﻿namespace WPCEmu.Boards.Static
 {
-    public class Timing
+    public static class Timing
     {
         /*
          Timing SOURCE: freewpc/build/sched_irq.c

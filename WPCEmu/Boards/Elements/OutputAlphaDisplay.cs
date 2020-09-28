@@ -14,11 +14,6 @@ namespace WPCEmu.Boards.Elements
 {
     public class OutputAlphaDisplay
     {
-        public static OutputAlphaDisplay GetInstance(ushort dmdPageSize)
-        {
-            return new OutputAlphaDisplay(dmdPageSize);
-        }
-
         /*
            ___      SEG_TOP
           |\|/|     SEG_UPPER_LEFT SEG_UPPER_LEFT_DIAGONAL SEG_VERT_TOP SEG_UPPER_RIGHT_DIAGONAL SEG_UPPER_RIGHT
@@ -37,6 +32,13 @@ namespace WPCEmu.Boards.Elements
           3 0 3 0 3 0 0
           3 3 3 3 3 0 3
         */
+
+        public struct State
+        {
+            public byte scanline;
+            public byte[] dmdShaddedBuffer;
+            public byte[] dmdPageMapping;
+        };
 
         const ushort SEG_UPPER_LEFT_DIAGONAL = 0x0001;
         const ushort SEG_VERT_TOP = 0x0002;
@@ -69,12 +71,10 @@ namespace WPCEmu.Boards.Elements
         public ushort[] displayData;
         ushort[] displayDataLatched;
 
-        public struct State
+        public static OutputAlphaDisplay GetInstance(ushort dmdPageSize)
         {
-            public byte scanline;
-            public byte[] dmdShaddedBuffer;
-            /*public byte[] dmdPageMapping;*/
-        };
+            return new OutputAlphaDisplay(dmdPageSize);
+        }
 
         public OutputAlphaDisplay(ushort dmdPageSize)
         {
@@ -91,7 +91,8 @@ namespace WPCEmu.Boards.Elements
             return new State
             {
                 scanline = segmentColumn,
-                dmdShaddedBuffer = _getShadedOutputVideoFrame()
+                dmdShaddedBuffer = _getShadedOutputVideoFrame(),
+                dmdPageMapping = new byte[] { 0, 0 }
             };
         }
 

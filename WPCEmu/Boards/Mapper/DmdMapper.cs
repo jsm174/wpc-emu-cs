@@ -1,22 +1,14 @@
-﻿using System.Linq;
-using System;
+﻿using System;
 
 namespace WPCEmu.Boards.Mapper
 {
-    public static class DMDMapper
+    public static class DmdMapper
     {
         public struct Model
         {
             public ushort offset;
             public string subsystem;
             public byte? bank;
-
-            public Model(ushort offset, string subsystem, byte? bank)
-            {
-                this.offset = offset;
-                this.subsystem = subsystem;
-                this.bank = bank;
-            }
         }
 
         const ushort MEMORY_ADDR_DMD_PAGE3000 = 0x3000;
@@ -31,7 +23,12 @@ namespace WPCEmu.Boards.Mapper
 
         static Model buildReturnModel(ushort offset, string subsystem, byte? bank)
         {
-            return new Model(offset, subsystem, bank);
+            return new Model
+            {
+                offset = offset,
+                subsystem = subsystem,
+                bank = bank
+            };
         }
 
         public static Model getAddress(int? offset)

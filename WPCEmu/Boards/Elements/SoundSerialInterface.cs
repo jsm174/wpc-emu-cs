@@ -6,6 +6,14 @@ namespace WPCEmu.Boards.Elements
 {
     public class SoundSerialInterface
     {
+        public struct SoundBoardCallbackData
+        {
+            public string command;
+            public ushort id;
+            public byte channel;
+            public byte value;
+        };
+
         const byte SAMPLE_ID_STOP = 0x00;
 
         const byte DCS_VOLUME_COMMAND = 0x55;
@@ -51,16 +59,8 @@ namespace WPCEmu.Boards.Elements
 
         const byte DEFAULT_VOLUME = 8;
 
-        public struct SoundBoardCallbackStruct
-        {
-            public string command;
-            public ushort id;
-            public byte channel;
-            public byte value;
-        };
-
         bool isPreDcsSoundBoard;
-        Action<SoundBoardCallbackStruct> soundBoardCallback;
+        Action<SoundBoardCallbackData> soundBoardCallback;
         byte volume;
         int lastUnknownControlWrite;
         Queue<byte> writeQueue;
@@ -90,7 +90,7 @@ namespace WPCEmu.Boards.Elements
             lastUnknownControlWrite = -1;
         }
 
-        public void registerCallBack(Action<SoundBoardCallbackStruct> callbackFunction)
+        public void registerCallBack(Action<SoundBoardCallbackData> callbackFunction)
         {
             soundBoardCallback = callbackFunction;
         }
@@ -275,7 +275,7 @@ namespace WPCEmu.Boards.Elements
 
         void _callbackStopAllSamples()
         {
-            soundBoardCallback(new SoundBoardCallbackStruct
+            soundBoardCallback(new SoundBoardCallbackData
             {
                 command = COMMAND_STOPSOUND
             });
@@ -288,7 +288,7 @@ namespace WPCEmu.Boards.Elements
                 _callbackStopAllSamples();
                 return;
             }
-            soundBoardCallback(new SoundBoardCallbackStruct
+            soundBoardCallback(new SoundBoardCallbackData
             {
                 command = COMMAND_PLAYSAMPLE,
                 id = id
@@ -297,7 +297,7 @@ namespace WPCEmu.Boards.Elements
 
         void _callbackChannelOff(byte channel)
         {
-            soundBoardCallback(new SoundBoardCallbackStruct
+            soundBoardCallback(new SoundBoardCallbackData
             {
                 command = COMMAND_CHANNELOFF,
                 channel = channel
@@ -306,7 +306,7 @@ namespace WPCEmu.Boards.Elements
 
         void _callbackMainVolume(byte value)
         {
-            soundBoardCallback(new SoundBoardCallbackStruct
+            soundBoardCallback(new SoundBoardCallbackData
             {
                 command = COMMAND_MAINVOLUME,
                 value = value

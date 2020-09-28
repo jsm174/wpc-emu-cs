@@ -9,7 +9,7 @@ namespace WPCEmu.Test.Boards.Up
 	[TestFixture]
 	public class Cpu6809DSLTests
 	{
-		struct InstructionStruct
+		struct InstructionData
 		{
 			public ushort op;
 			public string instruction;
@@ -19,16 +19,10 @@ namespace WPCEmu.Test.Boards.Up
 			public string desc;
 		}
 
-		struct AddressValueStruct
+		struct AddressValueData
 		{
 			public ushort address;
 			public byte value;
-
-			public AddressValueStruct(ushort address, byte value)
-			{
-				this.address = address;
-				this.value = value;
-			}
 		}
 
 		const byte RESET_VECTOR_VALUE_LO = 0x01;
@@ -396,7 +390,7 @@ namespace WPCEmu.Test.Boards.Up
 
 		List<ushort> readMemoryAddressAccess;
 		List<byte> readMemoryAddress;
-		List<AddressValueStruct> writeMemoryAddress;
+		List<AddressValueData> writeMemoryAddress;
 
 		Cpu6809 cpu;
 
@@ -416,7 +410,11 @@ namespace WPCEmu.Test.Boards.Up
 
 		void WriteMemoryMock(ushort address, byte value)
 		{
-			writeMemoryAddress.Add(new AddressValueStruct(address, value));
+			writeMemoryAddress.Add(new AddressValueData
+			{
+				address = address,
+				value = value
+			});
 		}
 
 		[SetUp]
@@ -424,12 +422,12 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			readMemoryAddressAccess = new List<ushort>();
 			readMemoryAddress = new List<byte>();
-			writeMemoryAddress = new List<AddressValueStruct>();
+			writeMemoryAddress = new List<AddressValueData>();
 
 			cpu = Cpu6809.GetInstance(WriteMemoryMock, ReadMemoryMock);
 		}
 
-		private void flagCheckTest(InstructionStruct testData)
+		private void flagCheckTest(InstructionData testData)
 		{
 			cpu.reset();
 			cpu.set("flags", 0xFF);
@@ -461,7 +459,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(1)]
 		public void Page0_OPS()
 		{
-			void runCyclecountTest(InstructionStruct testData, ushort flags)
+			void runCyclecountTest(InstructionData testData, ushort flags)
 			{
 				// add command in reverse order
 				readMemoryAddress = new List<byte>()
@@ -476,7 +474,7 @@ namespace WPCEmu.Test.Boards.Up
 				Assert.AreEqual(cpu.tickCount, testData.cycles);
 			}
 
-			marshall(PAGE0_OPS).ForEach(delegate (InstructionStruct testData)
+			marshall(PAGE0_OPS).ForEach(delegate (InstructionData testData)
 			{
 				TestContext.WriteLine("PAGE0 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				runCyclecountTest(testData, 0x00);
@@ -505,7 +503,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(2)]
 		public void Page1_OPS()
 		{
-			void runCyclecountTest(InstructionStruct testData, ushort flags, int expectedTickCount)
+			void runCyclecountTest(InstructionData testData, ushort flags, int expectedTickCount)
 			{
 				const byte OP_0X10_OPCODE_CYCLE = 1;
 				// add command in reverse order
@@ -521,7 +519,7 @@ namespace WPCEmu.Test.Boards.Up
 				Assert.AreEqual(cpu.tickCount - OP_0X10_OPCODE_CYCLE, expectedTickCount);
 			}
 
-			marshall(PAGE1_OPS).ForEach(delegate (InstructionStruct testData)
+			marshall(PAGE1_OPS).ForEach(delegate (InstructionData testData)
 			{
 				TestContext.WriteLine("PAGE1 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
@@ -556,7 +554,7 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(3)]
 		public void Page2_OPS()
 		{
-			void runCyclecountTest(InstructionStruct testData, ushort flags)
+			void runCyclecountTest(InstructionData testData, ushort flags)
 			{
 				const byte OP_0X11_OPCODE_CYCLE = 1;
 				// add command in reverse order
@@ -572,7 +570,7 @@ namespace WPCEmu.Test.Boards.Up
 				Assert.AreEqual(cpu.tickCount - OP_0X11_OPCODE_CYCLE, testData.cycles);
 			}
 
-			marshall(PAGE2_OPS).ForEach(delegate (InstructionStruct testData)
+			marshall(PAGE2_OPS).ForEach(delegate (InstructionData testData)
 			{
 				TestContext.WriteLine("PAGE2 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
@@ -594,9 +592,9 @@ namespace WPCEmu.Test.Boards.Up
 			});
 		}
 
-		private List<InstructionStruct> marshall(string instructions)
+		private List<InstructionData> marshall(string instructions)
 		{
-			List<InstructionStruct> list = new List<InstructionStruct>();
+			List<InstructionData> list = new List<InstructionData>();
 
 			foreach (string line in instructions.Split("\n"))
 			{
@@ -607,19 +605,19 @@ namespace WPCEmu.Test.Boards.Up
 
 					if (!ADDRESSMODE_TO_IGNORE.Any(addressMode.Contains))
 					{
-						InstructionStruct instructionStruct = new InstructionStruct();
-						instructionStruct.op = (ushort)Convert.ToUInt16(junks[1].Trim().Split(" ")[0], 16);
-						instructionStruct.instruction = junks[2].Trim();
-						instructionStruct.addressMode = junks[3].Trim();
-						instructionStruct.cycles = Convert.ToInt32(junks[4].Trim(), 10);
+						InstructionData InstructionData = new InstructionData();
+						InstructionData.op = (ushort)Convert.ToUInt16(junks[1].Trim().Split(" ")[0], 16);
+						InstructionData.instruction = junks[2].Trim();
+						InstructionData.addressMode = junks[3].Trim();
+						InstructionData.cycles = Convert.ToInt32(junks[4].Trim(), 10);
 						if (junks[7].Length > 0)
 						{
-							instructionStruct.cycles += Convert.ToInt32(junks[7].Trim(), 10);
+							InstructionData.cycles += Convert.ToInt32(junks[7].Trim(), 10);
 						}
-						instructionStruct.flags = junks[6].Trim();
-						instructionStruct.desc = (junks[1] + junks[2] + junks[3]).Trim();
+						InstructionData.flags = junks[6].Trim();
+						InstructionData.desc = (junks[1] + junks[2] + junks[3]).Trim();
 
-						list.Add(instructionStruct);
+						list.Add(InstructionData);
 					}
 				}
 			}

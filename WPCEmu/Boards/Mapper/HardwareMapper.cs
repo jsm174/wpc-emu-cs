@@ -9,12 +9,6 @@ namespace WPCEmu.Boards.Mapper
         {
             public ushort offset;
             public string subsystem;
-
-            public Model(ushort offset, string subsystem)
-            {
-                this.offset = offset;
-                this.subsystem = subsystem;
-            }
         }
 
         const ushort MEMORY_ADDR_EXPANSION_START = 0x3000;
@@ -36,7 +30,11 @@ namespace WPCEmu.Boards.Mapper
 
         static Model buildReturnModel(ushort offset, string subsystem)
         {
-            return new Model(offset, subsystem);
+            return new Model
+            {
+                offset = offset,
+                subsystem = subsystem
+            };
         }
 
         public static Model getAddress(int? offset)

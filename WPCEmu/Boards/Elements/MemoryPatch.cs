@@ -12,13 +12,6 @@ namespace WPCEmu.Boards.Elements
             public ushort offset;
             public byte value;
             public bool isVolatile;
-
-            public Patch(ushort offset, byte value, bool isVolatile)
-            {
-                this.offset = offset;
-                this.value = value;
-                this.isVolatile = isVolatile;
-            }
         }
 
         Dictionary<ushort, Patch> patch;
@@ -35,7 +28,12 @@ namespace WPCEmu.Boards.Elements
 
         public void addPatch(ushort memoryOffset, byte value, bool isVolatile = false)
         {
-            patch.Add(memoryOffset, new Patch(memoryOffset, value, isVolatile));
+            patch.Add(memoryOffset, new Patch
+            {
+                offset = memoryOffset,
+                value = value,
+                isVolatile = isVolatile
+            });
         }
 
         public void removePatch(ushort memoryOffset)

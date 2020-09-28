@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using NUnit.Framework;
 using WPCEmu.Boards.Up;
 
@@ -7,21 +8,13 @@ namespace WPCEmu.Test.Boards.Up
 	[TestFixture]
 	public class Cpu6809OpcodesTests
 	{
-		delegate void PostCpuResetInitDelegate();
-
-		struct AddressValueStruct
+		struct AddressValueData
 		{
 			public ushort address;
 			public byte value;
-
-			public AddressValueStruct(ushort address, byte value)
-			{
-				this.address = address;
-				this.value = value;
-			}
 		}
 
-		struct ComplexStruct
+		struct ComplexData
 		{
 			public byte offset;
 			public string register;
@@ -32,7 +25,7 @@ namespace WPCEmu.Test.Boards.Up
 			public ushort expectedReturn;
 			public ushort[] expectedMemoryRead;
 
-			public ComplexStruct(byte offset, string register, ushort? initialValue, byte? initialRegB, ushort expectedResult, int expectedTicks, ushort expectedReturn, ushort[] expectedMemoryRead)
+			public ComplexData(byte offset, string register, ushort? initialValue, byte? initialRegB, ushort expectedResult, int expectedTicks, ushort expectedReturn, ushort[] expectedMemoryRead)
 			{
 				this.offset = offset;
 				this.register = register;
@@ -56,7 +49,7 @@ namespace WPCEmu.Test.Boards.Up
 
 		List<ushort> readMemoryAddressAccess;
 		List<byte> readMemoryAddress;
-		List<AddressValueStruct> writeMemoryAddress;
+		List<AddressValueData> writeMemoryAddress;
 
 		Cpu6809 cpu;
 
@@ -76,7 +69,11 @@ namespace WPCEmu.Test.Boards.Up
 
 		void WriteMemoryMock(ushort address, byte value)
 		{
-			writeMemoryAddress.Add(new AddressValueStruct(address, value));
+			writeMemoryAddress.Add(new AddressValueData
+			{
+				address = address,
+				value = value
+			});
 		}
 
 		[SetUp]
@@ -84,7 +81,7 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			readMemoryAddressAccess = new List<ushort>();
 			readMemoryAddress = new List<byte>();
-			writeMemoryAddress = new List<AddressValueStruct>();
+			writeMemoryAddress = new List<AddressValueData>();
 
 			cpu = Cpu6809.GetInstance(WriteMemoryMock, ReadMemoryMock);
 		}
@@ -435,7 +432,7 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(0x12, writeMemoryAddress[1].value);
 		}
 
-		void runRegisterATest(byte opcode, byte registerA, PostCpuResetInitDelegate postCpuResetInitFunction = null)
+		void runRegisterATest(byte opcode, byte registerA, Action postCpuResetInitFunction = null)
 		{
 			// add command in reverse order
 			readMemoryAddress = new List<byte>()
@@ -454,7 +451,7 @@ namespace WPCEmu.Test.Boards.Up
 			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_LO, readMemoryAddressAccess[2]);
 		}
 
-		void runExtendedMemoryTest(byte opcode, byte memoryContent, PostCpuResetInitDelegate postCpuResetInitFunction = null)
+		void runExtendedMemoryTest(byte opcode, byte memoryContent, Action postCpuResetInitFunction = null)
 		{
 			const byte hardcodedReadOffsetLo = 0x11;
 			const byte hardcodedReadOffsetHi = 0x22;
@@ -577,45 +574,45 @@ namespace WPCEmu.Test.Boards.Up
 		[Test, Order(30)]
 		public void PostByteComplex()
 		{
-			List<ComplexStruct> list = new List<ComplexStruct>()
+			List<ComplexData> list = new List<ComplexData>()
 			{
-				new ComplexStruct(0x80, "regX", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexStruct(0x81, "regX", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexStruct(0x85, "regX", 0xFFFF, 10, 0xFFFF, 1, 9, new ushort[] { 0 }),
-				new ComplexStruct(0x88, "regX", null, null, 10, 1, 9 /*0*/, new ushort[] { 0, 1 }),
-				new ComplexStruct(0x88, "regX", 100, null, 100, 1, 99 /*0*/, new ushort[] { 0, 1 }),
-				new ComplexStruct(0x89, "regX", null, null, 10, 4, 9 /*0*/, new ushort[] { 0, 1, 2 }),
-				new ComplexStruct(0x8B, "regX", null, null, 10, 4, 10, new ushort[] { 0 }),
-				new ComplexStruct(0x8B, "regX", null, 5, 10, 4, 15, new ushort[] { 0 }),
-				new ComplexStruct(0x8C, "regX", null, null, 10, 1, 1 /*0*/, new ushort[] { 0, 1 }),
-				new ComplexStruct(0x8D, "regX", null, null, 10, 5, 2 /*0*/, new ushort[] { 0, 1, 2 }),
-				new ComplexStruct(0x8F, "regX", null, null, 10, 5, 0xFFFF /*0*/, new ushort[] { 0, 1, 2 }),
-				new ComplexStruct(0x90, "regX", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0x91, "regX", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0x91, "regX", 0xFFFF, null, 1, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexStruct(0x92, "regX", null, null, 9, 5, 0xFFFF /*0*/, new ushort[] { 0, 9, 10 }),
-				new ComplexStruct(0x92, "regX", 0, null, 0xFFFF, 5, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexStruct(0x93, "regX", null, null, 8, 6, 0xFFFF /*0*/, new ushort[] { 0, 8, 9 }),
-				new ComplexStruct(0x93, "regX", 0, null, 0xFFFE, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFE, 0xFFFF }),
-				new ComplexStruct(0x94, "regX", null, null, 10, 3, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0x94, "regX", 0xFFFF, null, 0xFFFF, 3, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexStruct(0x95, "regX", null, 10, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 20, 21 }),
-				new ComplexStruct(0x95, "regX", null, 0x80, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 0xFF8A, 0xFF8B }),
-				new ComplexStruct(0xA0, "regY", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xA1, "regY", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xB0, "regY", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xB1, "regY", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xC0, "regU", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xC1, "regU", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xD0, "regU", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xD1, "regU", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xE0, "regS", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xE1, "regS", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexStruct(0xF0, "regS", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexStruct(0xF1, "regS", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 })
+				new ComplexData(0x80, "regX", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new ComplexData(0x81, "regX", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new ComplexData(0x85, "regX", 0xFFFF, 10, 0xFFFF, 1, 9, new ushort[] { 0 }),
+				new ComplexData(0x88, "regX", null, null, 10, 1, 9 /*0*/, new ushort[] { 0, 1 }),
+				new ComplexData(0x88, "regX", 100, null, 100, 1, 99 /*0*/, new ushort[] { 0, 1 }),
+				new ComplexData(0x89, "regX", null, null, 10, 4, 9 /*0*/, new ushort[] { 0, 1, 2 }),
+				new ComplexData(0x8B, "regX", null, null, 10, 4, 10, new ushort[] { 0 }),
+				new ComplexData(0x8B, "regX", null, 5, 10, 4, 15, new ushort[] { 0 }),
+				new ComplexData(0x8C, "regX", null, null, 10, 1, 1 /*0*/, new ushort[] { 0, 1 }),
+				new ComplexData(0x8D, "regX", null, null, 10, 5, 2 /*0*/, new ushort[] { 0, 1, 2 }),
+				new ComplexData(0x8F, "regX", null, null, 10, 5, 0xFFFF /*0*/, new ushort[] { 0, 1, 2 }),
+				new ComplexData(0x90, "regX", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0x91, "regX", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0x91, "regX", 0xFFFF, null, 1, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new ComplexData(0x92, "regX", null, null, 9, 5, 0xFFFF /*0*/, new ushort[] { 0, 9, 10 }),
+				new ComplexData(0x92, "regX", 0, null, 0xFFFF, 5, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new ComplexData(0x93, "regX", null, null, 8, 6, 0xFFFF /*0*/, new ushort[] { 0, 8, 9 }),
+				new ComplexData(0x93, "regX", 0, null, 0xFFFE, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFE, 0xFFFF }),
+				new ComplexData(0x94, "regX", null, null, 10, 3, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0x94, "regX", 0xFFFF, null, 0xFFFF, 3, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new ComplexData(0x95, "regX", null, 10, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 20, 21 }),
+				new ComplexData(0x95, "regX", null, 0x80, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 0xFF8A, 0xFF8B }),
+				new ComplexData(0xA0, "regY", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new ComplexData(0xA1, "regY", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new ComplexData(0xB0, "regY", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0xB1, "regY", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0xC0, "regU", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new ComplexData(0xC1, "regU", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new ComplexData(0xD0, "regU", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0xD1, "regU", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0xE0, "regS", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new ComplexData(0xE1, "regS", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new ComplexData(0xF0, "regS", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new ComplexData(0xF1, "regS", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 })
 			};
 			
-			list.ForEach(delegate (ComplexStruct testData)
+			list.ForEach(delegate (ComplexData testData)
 			{
 				ushort initialValue = (ushort)(testData.initialValue.HasValue ? testData.initialValue.Value : 10);
 

@@ -57,10 +57,6 @@ namespace WPCEmu.Boards.Up
 {
     public class Cpu6809
     {
-        public delegate byte ReadMemoryDelegate(ushort address);
-        public delegate void WriteMemoryDelegate(ushort address, byte value);
-        public delegate byte FetchDelegate();
-
         const byte F_CARRY = 1;
         const byte F_OVERFLOW = 2;
         const byte F_ZERO = 4;
@@ -137,9 +133,9 @@ namespace WPCEmu.Boards.Up
           8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8  /* F0-FF */
         };
 
-        WriteMemoryDelegate memoryWriteFunction;
-        ReadMemoryDelegate memoryReadFunction;
-        public FetchDelegate fetch;
+        Action<ushort, byte> memoryWriteFunction;
+        Func<ushort, byte> memoryReadFunction;
+        public Func<byte> fetch;
 
         public int tickCount;
 
@@ -179,13 +175,13 @@ namespace WPCEmu.Boards.Up
             public int nmiCount;
             public int tickCount;
         }
-             
-        public static Cpu6809 GetInstance(WriteMemoryDelegate memoryWriteFunction, ReadMemoryDelegate memoryReadFunction)
+
+        public static Cpu6809 GetInstance(Action<ushort, byte> memoryWriteFunction, Func<ushort, byte> memoryReadFunction)
         {
             return new Cpu6809(memoryWriteFunction, memoryReadFunction);
         }
 
-        public Cpu6809(WriteMemoryDelegate memoryWriteFunction, ReadMemoryDelegate memoryReadFunction)
+        public Cpu6809(Action<ushort, byte> memoryWriteFunction, Func<ushort, byte> memoryReadFunction)
         {
             Debug.Print("INITIALIZE CPU");
 

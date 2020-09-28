@@ -4,19 +4,21 @@ using WPCEmu.Boards.Mapper;
 namespace WPCEmu.Test.Boards.Mapper
 {
 	[TestFixture]
-	public class DMDMapperTests
+	public class DmdMapperTests
 	{
 		[Test, Order(1)]
 		public void ShouldGet_0x3000()
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3000");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				0,
-				"videoram",
-				2);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 0,
+				subsystem = "videoram",
+				bank = 2
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3000);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3000);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -25,12 +27,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3200");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				0,
-				"videoram",
-				3);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 0,
+				subsystem = "videoram",
+				bank = 3
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3200);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3200);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -39,12 +43,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3400");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				0,
-				"videoram",
-				4);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 0,
+				subsystem = "videoram",
+				bank = 4
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3400);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3400);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -53,12 +59,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3600");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				0,
-				"videoram",
-				5);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 0,
+				subsystem = "videoram",
+				bank = 5
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3600);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3600);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -67,12 +75,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3800");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				0,
-				"videoram",
-				0);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 0,
+				subsystem = "videoram",
+				bank = 0
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3800);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3800);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -81,12 +91,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				0,
-				"videoram",
-				1);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 0,
+				subsystem = "videoram",
+				bank = 1
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3A00);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3A00);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -95,12 +107,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00, should calculate offset correct");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				1,
-				"videoram",
-				1);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 1,
+				subsystem = "videoram",
+				bank = 1
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3A01);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3A01);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -109,12 +123,13 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00, should calculate offset correct");
 
-			DMDMapper.Model expectedResult = new DMDMapper.Model(
-				0x3FB9,
-				"command",
-				null);
+			DmdMapper.Model expectedResult = new DmdMapper.Model
+			{
+				offset = 0x3FB9,
+				subsystem = "command"
+			};
 
-			DMDMapper.Model result = DMDMapper.getAddress(0x3FB9);
+			DmdMapper.Model result = DmdMapper.getAddress(0x3FB9);
 			Assert.AreEqual(expectedResult, result);
 		}
 
@@ -123,7 +138,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should throw when using invalid address, -1");
 
-			Assert.Throws<System.Exception>(() => DMDMapper.getAddress(-1) /*{ message: 'INVALID_DMD_ADDRESSRANGE_-1' }*/);
+			Assert.Throws<System.Exception>(() => DmdMapper.getAddress(-1) /*{ message: 'INVALID_DMD_ADDRESSRANGE_-1' }*/);
 		}
 	}
 }

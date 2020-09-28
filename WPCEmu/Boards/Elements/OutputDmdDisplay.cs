@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using System.Diagnostics;
 using WPCEmu.Boards.Static;
 
@@ -36,10 +35,19 @@ namespace WPCEmu.Boards.Elements
 {
     public class OutputDmdDisplay
     {
-        public static OutputDmdDisplay GetInstance(ushort dmdPageSize)
+        public struct State
         {
-            return new OutputDmdDisplay(dmdPageSize);
-        }
+            public byte scanline;
+            public byte activepage;
+            public byte? nextActivePage;
+            public byte[] dmdPageMapping;
+            public byte[] dmdShadedBuffer;
+            public bool requestFIRQ;
+            public byte[] videoRam;
+            public byte[] videoOutputBuffer;
+            public int videoOutputPointer;
+            public int ticksUpdateDmd;
+        };
 
         const byte DMD_WINDOW_HEIGHT = 32;
         const byte DMD_WINDOW_WIDTH_IN_BYTES = (128 / 8);
@@ -63,24 +71,15 @@ namespace WPCEmu.Boards.Elements
         bool requestFIRQ;
         int ticksUpdateDmd;
 
-        public struct State
+        public struct ExecuteCycleData
         {
-            public byte scanline;
-            public byte activepage;
-            public byte? nextActivePage;
-            public byte[] dmdPageMapping;
-            public byte[] dmdShadedBuffer;
             public bool requestFIRQ;
-            public byte[] videoRam;
-            public byte[] videoOutputBuffer;
-            public int videoOutputPointer;
-            public int ticksUpdateDmd;
-        };
+            public byte scanline;
+        }
 
-        public struct ExecuteCycle
+        public static OutputDmdDisplay GetInstance(ushort dmdPageSize)
         {
-            public bool requestFIRQ;
-            public byte scanline;
+            return new OutputDmdDisplay(dmdPageSize);
         }
 
         public OutputDmdDisplay(ushort dmdPageSize)
@@ -99,7 +98,7 @@ namespace WPCEmu.Boards.Elements
             ticksUpdateDmd = 0;
         }
 
-        public ExecuteCycle? executeCycle(int singleTicks)
+        public ExecuteCycleData? executeCycle(int singleTicks)
         {
             ticksUpdateDmd += singleTicks;
             if (ticksUpdateDmd >= Timing.CALL_WPC_UPDATE_DISPLAY_AFTER_TICKS)
@@ -107,7 +106,7 @@ namespace WPCEmu.Boards.Elements
                 ticksUpdateDmd -= Timing.CALL_WPC_UPDATE_DISPLAY_AFTER_TICKS;
                 _copyScanline();
 
-                return new ExecuteCycle
+                return new ExecuteCycleData
                 {
                     requestFIRQ = requestFIRQ,
                     scanline = scanline

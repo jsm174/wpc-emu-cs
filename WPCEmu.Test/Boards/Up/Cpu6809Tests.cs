@@ -8,20 +8,14 @@ namespace WPCEmu.Test.Boards.Up
 	[TestFixture]
 	public class Cpu6809Tests
 	{
-		struct AddressValueStruct
+		struct AddressValueData
 		{
 			public ushort address;
 			public byte value;
-
-			public AddressValueStruct(ushort address, byte value)
-			{
-				this.address = address;
-				this.value = value;
-			}
 		}
 
 		List<ushort> readMemoryAddress;
-		List<AddressValueStruct> writeMemoryAddress;
+		List<AddressValueData> writeMemoryAddress;
 
 		Cpu6809 cpu;
 
@@ -33,14 +27,18 @@ namespace WPCEmu.Test.Boards.Up
 
 		void WriteMemoryMock(ushort address, byte value)
 		{
-			writeMemoryAddress.Add(new AddressValueStruct(address, value));
+			writeMemoryAddress.Add(new AddressValueData
+			{
+				address = address,
+				value = value
+			});
 		}
 
 		[SetUp]
 		public void Init()
 		{
 			readMemoryAddress = new List<ushort>();
-			writeMemoryAddress = new List<AddressValueStruct>();
+			writeMemoryAddress = new List<AddressValueData>();
 		
 			cpu = Cpu6809.GetInstance(WriteMemoryMock, ReadMemoryMock);
 			cpu.reset();

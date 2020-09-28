@@ -5,11 +5,6 @@ namespace WPCEmu.Boards.Elements
 {
     public class OutputGeneralIllumination
     {
-        public static OutputGeneralIllumination GetInstance(bool isWpc95)
-        {
-            return new OutputGeneralIllumination(isWpc95);
-        }
-
         // general illumination supports up to 5 lamp groups, Coin door enable relay (Bit 5), Flipper enable relay (Bit 7)
         // TODO: brightness level 7+8 do not work, no IRQ count for those entries
         const byte MATRIX_COLUMN_SIZE = 8;
@@ -21,6 +16,11 @@ namespace WPCEmu.Boards.Elements
 
         public byte[] generalIlluminationState;
         bool isWpc95;
+
+        public static OutputGeneralIllumination GetInstance(bool isWpc95)
+        {
+            return new OutputGeneralIllumination(isWpc95);
+        }
 
         public OutputGeneralIllumination(bool isWpc95)
         {

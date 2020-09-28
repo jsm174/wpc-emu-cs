@@ -27,11 +27,6 @@ namespace WPCEmu.Boards.Elements
 {
     public class OutputSolenoidMatrix
     {
-        public static OutputSolenoidMatrix GetInstance(int updateAfterTicks)
-        {
-            return new OutputSolenoidMatrix(updateAfterTicks);
-        }
-
         const byte NUMBER_OF_SOLENOIDS = 48;
         const byte ALL_SOLENOID_OFF = 0x00;
 
@@ -49,6 +44,11 @@ namespace WPCEmu.Boards.Elements
         int updateAfterTicks;
         public byte[] solenoidState;
         int ticks;
+
+        public static OutputSolenoidMatrix GetInstance(int updateAfterTicks)
+        {
+            return new OutputSolenoidMatrix(updateAfterTicks);
+        }
 
         public OutputSolenoidMatrix(int updateAfterTicks)
         {

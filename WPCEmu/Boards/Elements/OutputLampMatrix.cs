@@ -5,11 +5,6 @@ namespace WPCEmu.Boards.Elements
 {
     public class OutputLampMatrix
     {
-        public static OutputLampMatrix GetInstance(int updateLampTicks)
-        {
-            return new OutputLampMatrix(updateLampTicks);
-        }
-
         const byte MATRIX_COLUMN_SIZE = 64;
         const byte ALL_LAMPS_OFF = 0x00;
 
@@ -18,6 +13,11 @@ namespace WPCEmu.Boards.Elements
         byte activeRow;
         byte activeColumn;
         int ticks;
+
+        public static OutputLampMatrix GetInstance(int updateLampTicks)
+        {
+            return new OutputLampMatrix(updateLampTicks);
+        }
 
         public OutputLampMatrix(int updateAfterTicks)
         {

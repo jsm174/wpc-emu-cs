@@ -1,12 +1,11 @@
 ﻿using System.Linq;
 using System.Diagnostics;
+using System;
 
 namespace WPCEmu.Boards.Up
 {
     public class SecurityPic
     {
-        public delegate byte GetRowDelegate(byte col);
-
         const int PIC_SERIAL_SIZE = 16;
         const byte WPC_PIC_RESET = 0x00;
         const byte WPC_PIC_COUNTER = 0x0D;
@@ -108,7 +107,7 @@ namespace WPCEmu.Boards.Up
             Debug.Print("RESET SECURITY PIC");
         }
 
-        public byte read(GetRowDelegate getRowFunction = null)
+        public byte read(Func<byte, byte> getRowFunction = null)
         {
             if (lastByteWrite == WPC_PIC_COUNTER)
             {

@@ -11,9 +11,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3FC2");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FC2,
-				"externalIo");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FC2,
+				subsystem = "externalIo"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FC2);
 			Assert.AreEqual(expectedResult, result);
@@ -40,9 +42,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3200 (DMD PAGE)");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3200,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3200,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3200);
 			Assert.AreEqual(expectedResult, result);
@@ -53,9 +57,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3BFF (DMD PAGE)");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3BFF,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3BFF,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3BFF);
 			Assert.AreEqual(expectedResult, result);
@@ -66,9 +72,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3800 (DMD PAGE 1)");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3800,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3800,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3800);
 			Assert.AreEqual(expectedResult, result);
@@ -79,9 +87,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3A00 (DMD PAGE 2)");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3A00,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3A00,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3A00);
 			Assert.AreEqual(expectedResult, result);
@@ -116,9 +126,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3c00");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3C00,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3C00,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3C00);
 			Assert.AreEqual(expectedResult, result);
@@ -129,9 +141,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3E66 - WPC_SERIAL_CONTROL_PORT **FIXME**");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3E66,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3E66,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3E66);
 			Assert.AreEqual(expectedResult, result);
@@ -142,9 +156,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FC0");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FC0,
-				"externalIo");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FC0,
+				subsystem = "externalIo"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FC0);
 			Assert.AreEqual(expectedResult, result);
@@ -155,9 +171,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FD6");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FD6,
-				"externalIo");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FD6,
+				subsystem = "externalIo"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FD6);
 			Assert.AreEqual(expectedResult, result);
@@ -168,9 +186,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FDC - WPCS_DATA");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FDC,
-				"sound");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FDC,
+				subsystem = "sound"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FDC);
 			Assert.AreEqual(expectedResult, result);
@@ -181,9 +201,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FDD - WPCS_CONTROL_STATUS");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FDD,
-				"sound");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FDD,
+				subsystem = "sound"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FDD);
 			Assert.AreEqual(expectedResult, result);
@@ -194,9 +216,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FDE");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FDE,
-				"sound");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FDE,
+				subsystem = "sound"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FDE);
 			Assert.AreEqual(expectedResult, result);
@@ -207,9 +231,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FE0");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FE0,
-				"wpcio");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FE0,
+				subsystem = "wpcio"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FE0);
 			Assert.AreEqual(expectedResult, result);
@@ -220,9 +246,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get exception for fliptronics address");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				HardwareMapper.MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A,
-				"wpcio");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = HardwareMapper.MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A,
+				subsystem = "wpcio"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(HardwareMapper.MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A);
 			Assert.AreEqual(expectedResult, result);
@@ -233,9 +261,11 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get display address, 0x3FEB");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FEB,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FEB,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FEB);
 			Assert.AreEqual(expectedResult, result);
@@ -246,13 +276,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get display address, 0x3FEF");
 
-			HardwareMapper.Model expectedResult = new HardwareMapper.Model(
-				0x3FEF,
-				"display");
+			HardwareMapper.Model expectedResult = new HardwareMapper.Model
+			{
+				offset = 0x3FEF,
+				subsystem = "display"
+			};
 
 			HardwareMapper.Model result = HardwareMapper.getAddress(0x3FEF);
 			Assert.AreEqual(expectedResult, result);
 		}
-
 	}
 }

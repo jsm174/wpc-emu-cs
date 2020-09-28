@@ -8,12 +8,6 @@ namespace WPCEmu.Boards.Mapper
         {
             public ushort offset;
             public string subsystem;
-
-            public Model(ushort offset, string subsystem)
-            {
-                this.offset = offset;
-                this.subsystem = subsystem;
-            }
         }
 
         const ushort MEMORY_ADDR_RAM = 0x3000;
@@ -40,19 +34,35 @@ namespace WPCEmu.Boards.Mapper
 
             if (offset < MEMORY_ADDR_RAM || isRam2Region)
             {
-                return new Model((ushort) offset, SUBSYSTEM_RAM);
+                return new Model
+                {
+                    offset = (ushort) offset,
+                    subsystem = SUBSYSTEM_RAM
+                };
             }
             if (offset < MEMORY_ADDR_HARDWARE)
             {
-                return new Model((ushort) offset, SUBSYSTEM_HARDWARE);
+                return new Model
+                {
+                    offset = (ushort) offset,
+                    subsystem = SUBSYSTEM_HARDWARE
+                };
             }
             if (offset < MEMORY_ADDR_BANKSWITCHED_ROM)
             {
-                return new Model((ushort) (offset - 0x4000), SUBSYSTEM_BANKSWITCHED);
+                return new Model
+                {
+                    offset = (ushort) (offset - 0x4000),
+                    subsystem = SUBSYSTEM_BANKSWITCHED
+                };
             }
             if (offset < MEMORY_ADDR_SYSTEMROM)
             {
-                return new Model((ushort)(offset - 0x8000), SUBSYSTEM_SYSTEMROM);
+                return new Model
+                {
+                    offset = (ushort)(offset - 0x8000),
+                    subsystem = SUBSYSTEM_SYSTEMROM
+                };
             }
             throw new Exception("MEMORY_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
         }

@@ -13,7 +13,7 @@ namespace WPCEmu.Boards.Mapper
         const ushort MEMORY_ADDR_RAM = 0x3000;
         const ushort MEMORY_ADDR_RAM2_START = 0x3C00;
         const ushort MEMORY_ADDR_RAM2_END = 0x3FAF;
-        const ushort MEMORY_ADDR_HARDWARE = 0x4000;
+        public const ushort MEMORY_ADDR_HARDWARE = 0x4000;
         const ushort MEMORY_ADDR_BANKSWITCHED_ROM = 0x8000;
         const uint MEMORY_ADDR_SYSTEMROM = 0x10000;
 

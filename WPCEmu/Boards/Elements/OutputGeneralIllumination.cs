@@ -28,7 +28,7 @@ namespace WPCEmu.Boards.Elements
             this.isWpc95 = isWpc95;
         }
 
-        public void update(byte value, byte irqCountGI = 0)
+        public void update(byte value, int irqCountGI = 0)
         {
             // WPC-95 only controls 3 of the 5 Triacs, the other 2 are ALWAYS ON, power wired directly
             byte normalizedValue = isWpc95 ? (byte) ((value & WPC95_TRIAC_MASK) | 0x18) : value;
@@ -58,7 +58,7 @@ namespace WPCEmu.Boards.Elements
             generalIlluminationState[FLIPPER_RELAY_BIT] = (byte) (((normalizedValue & (1 << FLIPPER_RELAY_BIT)) != 0) ? 7 : 0);
         }
 
-        byte[] getNormalizedState()
+        public byte[] getNormalizedState()
         {
             return generalIlluminationState.Select(value => (byte) (value * 31)).ToArray();
         }

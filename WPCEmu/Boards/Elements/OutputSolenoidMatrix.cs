@@ -84,7 +84,7 @@ namespace WPCEmu.Boards.Elements
             }
         }
 
-        void writeFliptronic(byte value)
+        public void writeFliptronic(byte value)
         {
             Debug.Print("UPDATE_FLIPPER_SOLENOIDS");
             _updateSolenoidsPacked(OFFSET_SOLENOID_FLIPTRONIC, value);

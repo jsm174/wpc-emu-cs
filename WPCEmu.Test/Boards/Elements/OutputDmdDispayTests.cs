@@ -117,13 +117,13 @@ namespace WPCEmu.Test.Boards.Elements
 			Assert.AreEqual("1ceaf73df40e531df3bfb26b4fb7cd95fb7bff1d", dmdHash);
 		}
 
-		//[Test, Order(10)]
-		//public void EmptySetState()
-		//{
-		//	TestContext.WriteLine("outputDmdDisplay, empty setState");
-		//
-		//	var result = outputDmdDisplay.setState();
-		//	Assert.AreEqual(false, result);
-		//}
+		[Test, Order(10)]
+		public void EmptySetState()
+		{
+			TestContext.WriteLine("outputDmdDisplay, empty setState");
+		
+			var result = outputDmdDisplay.setState();
+			Assert.AreEqual(false, result);
+		}
 	}
 }

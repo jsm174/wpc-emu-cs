@@ -96,13 +96,15 @@ namespace WPCEmu.Boards.Elements
             };
         }
 
-        public void setState(State? displayState)
+        public bool? setState(State? _displayState = null)
         {
-            if (displayState == null)
+            if (_displayState == null)
             {
-                return /*false*/;
+                return false;
             }
-            segmentColumn = (byte)(displayState?.scanline);            
+            var displayState = (State)_displayState;
+            segmentColumn = (byte)(displayState.scanline);
+            return null;
         }
 
         public void setSegmentColumn(byte value)

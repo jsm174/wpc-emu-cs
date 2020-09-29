@@ -1,9 +1,8 @@
-﻿using System.Linq;
-using System;
+﻿using System;
 
 namespace WPCEmu.Boards.Mapper
 {
-    public static class HardwareMapper
+    public static class Memory
     {
         public struct Model
         {
@@ -11,75 +10,114 @@ namespace WPCEmu.Boards.Mapper
             public string subsystem;
         }
 
-        const ushort MEMORY_ADDR_EXPANSION_START = 0x3000;
-        const ushort MEMORY_ADDR_DMD = 0x3FC0;
-        const ushort MEMORY_ADDR_EXTERNAL_IO = 0x3FDC;
-        const ushort MEMORY_ADDR_SOUND = 0x3FE0;
+        const ushort MEMORY_ADDR_RAM = 0x3000;
+        const ushort MEMORY_ADDR_RAM2_START = 0x3C00;
+        const ushort MEMORY_ADDR_RAM2_END = 0x3FAF;
+        const ushort MEMORY_ADDR_HARDWARE = 0x4000;
+        const ushort MEMORY_ADDR_BANKSWITCHED_ROM = 0x8000;
+        const uint MEMORY_ADDR_SYSTEMROM = 0x10000;
 
-        public const ushort MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A = 0x3FD4;
-
-        const ushort MEMORY_ADDR_WPC_IO = 0x4000;
-
-        //TODO: enable me only for alphanumeric displays -> instance of
-        readonly static ushort[] MEMORY_ALPHANUMERIC_DISPLAY = { 0x3FEB, 0x3FEC, 0x3FED, 0x3FEE, 0x3FEF };
-
-        const string SUBSYSTEM_WPCIO = "wpcio";
-        const string SUBSYSTEM_SOUND = "sound";
-        const string SUBSYSTEM_EXTERNAL_IO = "externalIo";
-        const string SUBSYSTEM_DISPLAY = "display";
-
-        static Model buildReturnModel(ushort offset, string subsystem)
-        {
-            return new Model
-            {
-                offset = offset,
-                subsystem = subsystem
-            };
-        }
+        const string SUBSYSTEM_RAM = "ram";
+        const string SUBSYSTEM_HARDWARE = "hardware";
+        const string SUBSYSTEM_BANKSWITCHED = "bank";
+        const string SUBSYSTEM_SYSTEMROM = "system";
 
         public static Model getAddress(int? offset)
         {
             if (!offset.HasValue) 
             {
-                throw new Exception("HW_GET_ADDRESS_UNDEFINED");
+                throw new Exception("MEMORY_GET_ADDRESS_UNDEFINED");
             }
             offset &= 0xFFFF;
 
-            if (offset < MEMORY_ADDR_EXPANSION_START)
+            bool isRam2Region = offset >= MEMORY_ADDR_RAM2_START && offset <= MEMORY_ADDR_RAM2_END;
+
+            if (offset < MEMORY_ADDR_RAM || isRam2Region)
             {
-                throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
+                return new Model
+                {
+                    offset = (ushort) offset,
+                    subsystem = SUBSYSTEM_RAM
+                };
             }
-            if (offset < MEMORY_ADDR_DMD || MEMORY_ALPHANUMERIC_DISPLAY.Contains((ushort)offset))
+            if (offset < MEMORY_ADDR_HARDWARE)
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_DISPLAY);
+                return new Model
+                {
+                    offset = (ushort) offset,
+                    subsystem = SUBSYSTEM_HARDWARE
+                };
             }
-            if (offset == MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A)
+            if (offset < MEMORY_ADDR_BANKSWITCHED_ROM)
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_WPCIO);
+                return new Model
+                {
+                    offset = (ushort) (offset - 0x4000),
+                    subsystem = SUBSYSTEM_BANKSWITCHED
+                };
             }
-            if (offset < MEMORY_ADDR_EXTERNAL_IO)
+            if (offset < MEMORY_ADDR_SYSTEMROM)
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_EXTERNAL_IO);
+                return new Model
+                {
+                    offset = (ushort)(offset - 0x8000),
+                    subsystem = SUBSYSTEM_SYSTEMROM
+                };
             }
-            if (offset < MEMORY_ADDR_SOUND)
-            {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_SOUND);
-            }
-            if (offset < MEMORY_ADDR_WPC_IO)
-            {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_WPCIO);
-            }
-            throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
+            throw new Exception("MEMORY_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
         }
     }
 }
 
 /*
+6809 memory map for WPC machines, source: http://www.maddes.net/pinball/wpc_debugging.htm and https://github.com/bcd/freewpc/blob/master/doc/hardware.texi
+//MAME definition for WPC DMD - https://github.com/mamedev/mame/blob/115bb9936c5cd3faf955d7eb1e251a94e4744b7b/src/mame/drivers/wpc_dot.cpp
+map(0x0000, 0x2fff).rw(this, FUNC(wpc_dot_state::ram_r), FUNC(wpc_dot_state::ram_w));
+map(0x3000, 0x31ff).bankrw("dmdbank1");
+map(0x3200, 0x33ff).bankrw("dmdbank2");
+map(0x3400, 0x35ff).bankrw("dmdbank3");
+map(0x3600, 0x37ff).bankrw("dmdbank4");
+map(0x3800, 0x39ff).bankrw("dmdbank5");
+map(0x3a00, 0x3bff).bankrw("dmdbank6");
+map(0x3c00, 0x3faf).ram();
+map(0x3fb0, 0x3fff).rw(m_wpc, FUNC(wpc_device::read), FUNC(wpc_device::write)); // WPC device
+map(0x4000, 0x7fff).bankr("cpubank");
+map(0x8000, 0xffff).bankr("fixedbank");
+{ 0x0000, 0x2fff, MRA_RAM },
+{ 0x3000, 0x31ff, MRA_BANK4 },   DMD
+{ 0x3200, 0x33ff, MRA_BANK5 },   DMD
+{ 0x3400, 0x35ff, MRA_BANK6 },   DMD
+{ 0x3600, 0x37ff, MRA_BANK7 },   DMD
+{ 0x3800, 0x39ff, MRA_BANK2 },   DMD
+{ 0x3A00, 0x3bff, MRA_BANK3 },   DMD
+{ 0x3c00, 0x3faf, MRA_RAM },
+{ 0x3fb0, 0x3fff, wpc_r },
+{ 0x4000, 0x7fff, MRA_BANK1 },
+{ 0x8000, 0xffff, MRA_ROM },
+$0000-$1FFF (8 KiB)	RAM
 $2000-$3FFF (8 KiB)	Hardware
             Address range	  Description
-            $2000-$37FF	    Expansion (maybe security chip of WPC-S and WPC-95)
+            // mame definition
+            map(0x3000, 0x31ff).bankrw("dmdbank1");
+          	map(0x3200, 0x33ff).bankrw("dmdbank2");
+          	map(0x3400, 0x35ff).bankrw("dmdbank3");
+          	map(0x3600, 0x37ff).bankrw("dmdbank4");
+          	map(0x3800, 0x39ff).bankrw("dmdbank5");
+          	map(0x3a00, 0x3bff).bankrw("dmdbank6");
+            $3c00-$3faf     RAM
             $3800-$39FF	    DMD Page 1
+                            Address	  Format	 Description
+                            $3800     ??       WPC_DMD_RAM_BASE
+                                                Display RAM (1K).  Which 1K portion of the 16K SRAM
+                                                appears here is controlled by writing to two display
+                                                paging registers, WPC_DMD_HIGH_PAGE and WPC_DMD_LOW_PAGE.
             $3A00-$3BFF	    DMD Page 2
+            $3C00-$3FAF	    ??? Expansion -> RAM?
+                            Address	  Format	 Description
+                            $3D60     Byte     WPC_DEBUG_DATA_PORT
+                            $3D61     Byte     WPC_DEBUG_CONTROL_PORT
+                            $3D66     Byte     WPC_SERIAL_CONTROL_PORT
+                            $3D67     Byte     WPC_SERIAL_DATA_PORT
             $3FBC-$3FBF	    DMD display control
                             Address	  Format	 Description
                             $3FBC     Byte     WPC_DMD_HIGH_PAGE
@@ -132,11 +170,8 @@ $2000-$3FFF (8 KiB)	Hardware
                                                 1: R: Down button
                                                 0: R: Escape (Service Credit) button
                             $3FEB     Byte     WPC_EXTBOARD1 (On DMD games, this is a general I/O that is used for machine-specific purposes)
-                                                WPC_ALPHA_POS
                             $3FEC     Byte     WPC_EXTBOARD2 (On DMD games, this is a general I/O that is used for machine-specific purposes)
-                                                WPC_ALPHA_ROW1
                             $3FED     Byte     WPC_EXTBOARD3 (On DMD games, this is a general I/O that is used for machine-specific purposes)
-                            $3FEE     Byte     WPC_ALPHA_ROW2
                             $3FF2     Byte     WPC_LEDS (7: R/W: The state of the diagnostic LED. >0=Off >1=On)
                             $3FF4     Word     WPC_SHIFTADDR
                                                 15-0: R/W: The base address for the bit shifter.
@@ -167,4 +202,19 @@ $2000-$3FFF (8 KiB)	Hardware
                                                 >0=Periodic IRQ disabled
                                                 >1=Periodic IRQ enabled
                                                 2: W: Writing a 1 here resets the watchdog.
+$4000-$7FFF (16 KiB)	Bankswitched ROM (paging area) - READ ONLY
+$8000-$FFFF (32 KiB)	Non-bankswitched "System ROM"
+Contains the last 32 KiB of Game ROM
+            Address	  Format	 Description
+            $FFEC	    Word	   Checksum "correction"
+            $FFEE	    Word	   Checksum
+            $FFEF	    Byte	   ROM Version, low byte of the checksum
+            $FFF0	    Word	   Reserved by Motorola
+            $FFF2	    Word	   Software Interrupt 3 (SW3) vector
+            $FFF4	    Word	   Software Interrupt 2 (SW2) vector
+            $FFF6	    Word	   Fast Interrupt Request (FIRQ), DISABLED on WPC
+            $FFF8	    Word	   Interrupt Request (IRQ) vector, DISABLED on WPC
+            $FFFA	    Word	   Software Interrupt [1] (SWI) vector
+            $FFFC	    Word	   Non-maskable Interrupt (NMI) vector
+            $FFFE	    Word	   Reset vector (address of the first instruction)
 */

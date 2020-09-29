@@ -18,7 +18,7 @@ namespace WPCEmu.Boards.Elements
         byte cabinetKeyState;
         long cabinetKeyAutoreleaseTs;
         public byte[] switchState;
-        byte activeColumn;
+        public byte activeColumn;
 
         public static InputSwitchMatrix GetInstance()
         {
@@ -128,7 +128,7 @@ namespace WPCEmu.Boards.Elements
             switchState[2] |= 0x08;
         }
 
-        byte getActiveRow()
+        public byte getActiveRow()
         {
             Debug.Print("GET ACTIVE_ROW_STATE {0}", switchState[activeColumn]);
             return switchState[activeColumn];

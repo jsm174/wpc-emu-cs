@@ -35,14 +35,14 @@ namespace WPCEmu.Test.Boards.Elements
 			Assert.AreEqual(Enumerable.Repeat((byte)0, 0x200 * 8).ToArray(), result.dmdShaddedBuffer);
 		}
 
-		//[Test, Order(3)]
-		//public void EmptySetState()
-		//{
-		//	TestContext.WriteLine("outputAlphaDisplay, empty setState");
-		//
-		//	var result = outputAlphaDisplay.setState(null);
-		//	Assert.AreEqual(false, result);
-		//}
+		[Test, Order(3)]
+		public void EmptySetState()
+		{
+			TestContext.WriteLine("outputAlphaDisplay, empty setState");
+		
+			var result = outputAlphaDisplay.setState();
+			Assert.AreEqual(false, result);
+		}
 
 		[Test, Order(4)]
 		public void SetState()

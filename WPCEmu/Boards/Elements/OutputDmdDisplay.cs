@@ -49,6 +49,12 @@ namespace WPCEmu.Boards.Elements
             public int ticksUpdateDmd;
         };
 
+        public struct ExecuteCycleData
+        {
+            public bool requestFIRQ;
+            public byte scanline;
+        }
+
         const byte DMD_WINDOW_HEIGHT = 32;
         const byte DMD_WINDOW_WIDTH_IN_BYTES = (128 / 8);
 
@@ -70,12 +76,6 @@ namespace WPCEmu.Boards.Elements
         int videoOutputPointer;
         bool requestFIRQ;
         int ticksUpdateDmd;
-
-        public struct ExecuteCycleData
-        {
-            public bool requestFIRQ;
-            public byte scanline;
-        }
 
         public static OutputDmdDisplay GetInstance(ushort dmdPageSize)
         {
@@ -134,12 +134,13 @@ namespace WPCEmu.Boards.Elements
             };
         }
 
-        public void setState(State displayState)
+        public bool? setState(State? _displayState = null)
         {
-            //if (displayState == null)
-            //{
-            //    return false;
-            //}
+            if (_displayState == null)
+            {
+                return false;
+            }
+            State displayState = (State)_displayState;
             scanline = displayState.scanline;
             activePage = displayState.activepage;
             dmdPageMapping = displayState.dmdPageMapping;
@@ -150,9 +151,9 @@ namespace WPCEmu.Boards.Elements
             setNextActivePage((byte)displayState.nextActivePage);
             //if (typeof displayState.videoRam === 'object')
             //{
-            //    this.videoRam = Uint8Array.from(displayState.videoRam);
+                videoRam = displayState.videoRam.Take(displayState.videoRam.Length).ToArray();
             //}
-            videoRam = displayState.videoRam.Take(displayState.videoRam.Length).ToArray();
+            return null;
         }
 
         public void selectDmdPage(byte bank, byte value)

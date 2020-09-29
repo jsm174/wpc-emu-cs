@@ -9,9 +9,9 @@ namespace WPCEmu.Boards.Elements
         const byte ALL_LAMPS_OFF = 0x00;
 
         int updateAfterTicks;
-        byte[] lampState;
-        byte activeRow;
-        byte activeColumn;
+        public byte[] lampState;
+        public byte activeRow;
+        public byte activeColumn;
         int ticks;
 
         public static OutputLampMatrix GetInstance(int updateLampTicks)
@@ -50,7 +50,7 @@ namespace WPCEmu.Boards.Elements
             }
         }
 
-        void executeCycle(int ticks)
+        public void executeCycle(int ticks)
         {
             this.ticks += ticks;
             if (this.ticks >= updateAfterTicks)
@@ -68,14 +68,14 @@ namespace WPCEmu.Boards.Elements
             }
         }
 
-        void setActiveRow(byte activeRow)
+        public void setActiveRow(byte activeRow)
         {
             this.activeRow = activeRow;
             Debug.Print("SET ACTIVE_ROW {0}", this.activeRow);
             _updateLampState();
         }
 
-        void setActiveColumn(byte activeColumn)
+        public void setActiveColumn(byte activeColumn)
         {
             this.activeColumn = activeColumn;
             Debug.Print("SET ACTIVE_COLUMN {0}", this.activeColumn);

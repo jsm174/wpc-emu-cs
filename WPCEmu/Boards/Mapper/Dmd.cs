@@ -2,7 +2,7 @@
 
 namespace WPCEmu.Boards.Mapper
 {
-    public static class DmdMapper
+    public static class Dmd
     {
         public struct Model
         {

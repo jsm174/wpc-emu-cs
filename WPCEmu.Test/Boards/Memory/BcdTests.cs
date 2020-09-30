@@ -1,18 +1,17 @@
-﻿using System.Linq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using WPCEmu.Boards.Memory;
 
 namespace WPCEmu.Test.Boards.Memory
 {
 	[TestFixture]
-	public class BCDTests
+	public class BcdTests
 	{
 		[Test, Order(1)]
 		public void toBCD_12345()
 		{
 			TestContext.WriteLine("BCD: toBCD, encode 12345 to BCD");
 
-			var result = BCD.toBCD(12345);
+			var result = Bcd.toBCD(12345);
 			Assert.That(result, Is.EqualTo(new byte[] { 0x01, 0x23, 0x45 }));
 		}
 
@@ -21,7 +20,7 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toBCD, encode 1000020 to BCD");
 
-			var result = BCD.toBCD(1000020);
+			var result = Bcd.toBCD(1000020);
 			Assert.That(result, Is.EqualTo(new byte[] { 0x01, 0x00, 0x00, 0x20 }));
 		}
 
@@ -30,7 +29,7 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toNumber, 0x123456)");
 
-			var result = BCD.toNumber(new byte[] { 0x12, 0x34, 0x56 });
+			var result = Bcd.toNumber(new byte[] { 0x12, 0x34, 0x56 });
 			Assert.That(result, Is.EqualTo(123456));
 		}
 
@@ -39,7 +38,7 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toNumber, 0x1234)");
 
-			var result = BCD.toNumber(new byte[] { 0x12, 0x34 });
+			var result = Bcd.toNumber(new byte[] { 0x12, 0x34 });
 			Assert.That(result, Is.EqualTo(1234));
 		}
 
@@ -48,7 +47,7 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toNumber, empty");
 
-			var result = BCD.toNumber(new byte[] { });
+			var result = Bcd.toNumber(new byte[] { });
 			Assert.That(result, Is.EqualTo(0));
 		}
 	}

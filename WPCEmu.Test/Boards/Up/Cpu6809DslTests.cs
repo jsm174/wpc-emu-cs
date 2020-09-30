@@ -7,7 +7,7 @@ using WPCEmu.Boards.Up;
 namespace WPCEmu.Test.Boards.Up
 {
 	[TestFixture]
-	public class Cpu6809DSLTests
+	public class Cpu6809DslTests
 	{
 		struct InstructionData
 		{

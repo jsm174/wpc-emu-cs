@@ -2,7 +2,7 @@
 
 namespace WPCEmu.Boards.Memory
 {
-    public static class BCD
+    public static class Bcd
     {
         // based on https://gist.githubusercontent.com/joaomaia/3892692/raw/cb5eaef7ff9b6103490d4fc29b04cf95c5fde0b1/bcd2number.js
 

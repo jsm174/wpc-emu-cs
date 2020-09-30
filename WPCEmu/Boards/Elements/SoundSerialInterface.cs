@@ -1,5 +1,5 @@
-﻿using System.Diagnostics;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 
 namespace WPCEmu.Boards.Elements

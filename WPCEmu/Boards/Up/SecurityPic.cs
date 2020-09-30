@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Diagnostics;
-using System;
 
 namespace WPCEmu.Boards.Up
 {

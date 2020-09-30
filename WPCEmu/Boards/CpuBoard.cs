@@ -1,11 +1,11 @@
 ﻿using System;
+using System.Linq;
 using System.Diagnostics;
 using WPCEmu.Boards.Elements;
 using WPCEmu.Boards.Static;
 using WPCEmu.Boards.Up;
 using memoryMapper = WPCEmu.Boards.Mapper.Memory;
 using hardwareMapper = WPCEmu.Boards.Mapper.Hardware;
-using System.Linq;
 
 namespace WPCEmu.Boards
 {

@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using System.Diagnostics;
-using System;
 
 /*
 All versions of the power driver board support 28 controlled outputs for

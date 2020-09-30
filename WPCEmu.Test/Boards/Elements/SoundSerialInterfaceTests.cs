@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
-using WPCEmu.Boards.Elements;
 using System.Collections.Generic;
+using WPCEmu.Boards.Elements;
 
 namespace WPCEmu.Test.Boards.Elements
 {

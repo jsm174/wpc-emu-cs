@@ -33,7 +33,7 @@ namespace WPCEmu.Boards.Mapper
 
         public static Model getAddress(int? offset)
         {
-            if (!offset.HasValue) 
+            if (offset == null) 
             {
                 throw new Exception("DMD_GET_ADDRESS_UNDEFINED");
             }

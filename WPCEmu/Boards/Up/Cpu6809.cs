@@ -745,22 +745,22 @@ namespace WPCEmu.Boards.Up
                 tickCount += 1;
             }
 
-            if (xchg.HasValue)
+            if (xchg != null)
             {
                 xchg &= 0xFFFF;
                 switch (postByte & REGISTER_FIELD)
                 {
                     case 0:
-                        regX = xchg.Value;
+                        regX = (ushort) xchg;
                         break;
                     case 0x20:
-                        regY = xchg.Value;
+                        regY = (ushort) xchg;
                         break;
                     case 0x40:
-                        regU = xchg.Value;
+                        regU = (ushort) xchg;
                         break;
                     case 0x60:
-                        regS = xchg.Value;
+                        regS = (ushort) xchg;
                         break;
                     default:
                         throw new Exception("PB_INVALID_XCHG_VALUE_" + postByte);

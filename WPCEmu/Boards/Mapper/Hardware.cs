@@ -39,7 +39,7 @@ namespace WPCEmu.Boards.Mapper
 
         public static Model getAddress(int? offset)
         {
-            if (!offset.HasValue) 
+            if (offset == null) 
             {
                 throw new Exception("HW_GET_ADDRESS_UNDEFINED");
             }

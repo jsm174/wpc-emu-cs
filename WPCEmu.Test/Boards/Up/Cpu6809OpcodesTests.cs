@@ -614,7 +614,7 @@ namespace WPCEmu.Test.Boards.Up
 			
 			list.ForEach((testData) => 
 			{
-				var initialValue = (ushort)(testData.initialValue.HasValue ? testData.initialValue.Value : 10);
+				var initialValue = (ushort)(testData.initialValue != null ? testData.initialValue : 10);
 
 				TestContext.WriteLine("test: postbyte complex {0}: {1}", testData.register, initialValue);
 
@@ -624,7 +624,7 @@ namespace WPCEmu.Test.Boards.Up
 					testData.offset
 				};
 				cpu.set("flags", 0);
-				cpu.regB = (byte) (testData.initialRegB.HasValue ? testData.initialRegB.Value : 0);
+				cpu.regB = (byte) (testData.initialRegB != null ? testData.initialRegB : 0);
 				switch (testData.register)
 				{
 					case "regX":

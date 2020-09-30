@@ -79,12 +79,12 @@ namespace WPCEmu.Boards.Elements
             byte column = (byte)((value[1] - '0') - 1);
             Debug.Print("setFliptronicsInput {0} {1}", value, optionalValue);
 
-            if (optionalValue.HasValue && optionalValue.Value)
+            if (optionalValue != null && optionalValue == true)
             {
                 Debug.Print("SET_FLIPTRONICS_INPUT_KEY {0}", column);
                 switchState[FLIPTRONICS_COLUMN] |= Bitmagic.setMsbBit(column);
             }
-            else if (optionalValue.HasValue && !optionalValue.Value)
+            else if (optionalValue != null && optionalValue == false)
             {
                 Debug.Print("CLEAR_FLIPTRONICS_INPUT_KEY {0}", column);
                 switchState[FLIPTRONICS_COLUMN] &= (byte)~(Bitmagic.setMsbBit(column));
@@ -109,12 +109,12 @@ namespace WPCEmu.Boards.Elements
             byte row = (byte)(normalizedKeyValue / 10); //Number.parseInt(normalizedKeyValue / 10, 10);
             byte column = (byte)(normalizedKeyValue % 10); //Number.parseInt(normalizedKeyValue % 10, 10);
 
-            if (optionalValue.HasValue && optionalValue.Value)
+            if (optionalValue != null && optionalValue == true)
             {
                 Debug.Print("SET_INPUT_KEY {0} {1}", row, column);
                 switchState[row] |= Bitmagic.setMsbBit(column);
             }
-            else if (optionalValue.HasValue && !optionalValue.Value)
+            else if (optionalValue != null && optionalValue == false)
             {
                 Debug.Print("CLEAR_INPUT_KEY {0} {1}", row, column);
                 switchState[row] &= (byte)~(Bitmagic.setMsbBit(column));

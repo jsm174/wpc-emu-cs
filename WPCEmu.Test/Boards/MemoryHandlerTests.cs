@@ -33,19 +33,19 @@ namespace WPCEmu.Test.Boards
 		{
 			TestContext.WriteLine("MemoryHandler: should not update checksum");
 
-			ushort OFFSET = 0;
+			const ushort OFFSET = 0;
 			memoryHandler.writeMemory(OFFSET, (byte)1);
-			bool newValueWritten = memoryHandler.ram[OFFSET] == 1;
-			int valuesNotZero = 0;
-			foreach (byte n in memoryHandler.ram)
+			var newValueWritten = memoryHandler.ram[OFFSET] == 1;
+			var valuesNotZero = 0;
+			foreach (var n in memoryHandler.ram)
 			{
 				if (n != 0)
 				{
 					valuesNotZero++;
 				}
 			}
-			Assert.AreEqual(true, newValueWritten);
-			Assert.AreEqual(1, valuesNotZero);
+			Assert.That(newValueWritten, Is.EqualTo(true));
+			Assert.That(valuesNotZero, Is.EqualTo(1));
 		}
 
 		[Test, Order(2)]
@@ -53,10 +53,10 @@ namespace WPCEmu.Test.Boards
 		{
 			TestContext.WriteLine("MemoryHandler: should write number, check checksum");
 
-			ushort OFFSET = 0x1D29;
+			const ushort OFFSET = 0x1D29;
 			memoryHandler.writeMemory(OFFSET, (byte)1);
-			Assert.AreEqual(0xFF, memoryHandler.ram[0x1D49]);
-			Assert.AreEqual(0xFE, memoryHandler.ram[0x1D4A]);
+			Assert.That(memoryHandler.ram[0x1D49], Is.EqualTo(0xFF));
+			Assert.That(memoryHandler.ram[0x1D4A], Is.EqualTo(0xFE));
 		}
 
 		[Test, Order(3)]
@@ -64,10 +64,10 @@ namespace WPCEmu.Test.Boards
 		{
 			TestContext.WriteLine("MemoryHandler: should write number, check checksum");
 
-			ushort OFFSET = 0x1D29;
+			const ushort OFFSET = 0x1D29;
 			memoryHandler.writeMemory(OFFSET, new byte[] { 1 });
-			Assert.AreEqual(0xFF, memoryHandler.ram[0x1D49]);
-			Assert.AreEqual(0xFE, memoryHandler.ram[0x1D4A]);
+			Assert.That(memoryHandler.ram[0x1D49], Is.EqualTo(0xFF));
+			Assert.That(memoryHandler.ram[0x1D4A], Is.EqualTo(0xFE));
 		}
 
 		[Test, Order(4)]
@@ -75,10 +75,10 @@ namespace WPCEmu.Test.Boards
 		{
 			TestContext.WriteLine("MemoryHandler: should write string, check checksum");
 
-			ushort OFFSET = 0x1D29;
+			const ushort OFFSET = 0x1D29;
 			memoryHandler.writeMemory(OFFSET, "\x31");
-			Assert.AreEqual(0xFF, memoryHandler.ram[0x1D49]);
-			Assert.AreEqual(0xFE, memoryHandler.ram[0x1D4A]);
+			Assert.That(memoryHandler.ram[0x1D49], Is.EqualTo(0xFF));
+			Assert.That(memoryHandler.ram[0x1D4A], Is.EqualTo(0xFE));
 		}
 
 		[Test, Order(5)]
@@ -86,19 +86,19 @@ namespace WPCEmu.Test.Boards
 		{
 			TestContext.WriteLine("MemoryHandler: should update checksum (start)");
 
-			ushort OFFSET = 0x1D29;
+			const ushort OFFSET = 0x1D29;
 			memoryHandler.writeMemory(OFFSET, (byte)1);
-			bool newValueWritten = memoryHandler.ram[OFFSET] == 1;
-			int valuesNotZero = 0;
-			foreach (byte n in memoryHandler.ram)
+			var newValueWritten = memoryHandler.ram[OFFSET] == 1;
+			var valuesNotZero = 0;
+			foreach (var n in memoryHandler.ram)
 			{
 				if (n != 0)
 				{
 					valuesNotZero++;
 				}
 			}
-			Assert.AreEqual(true, newValueWritten);
-			Assert.AreEqual(3, valuesNotZero);
+			Assert.That(newValueWritten, Is.EqualTo(true));
+			Assert.That(valuesNotZero, Is.EqualTo(3));
 		}
 
 		[Test, Order(6)]
@@ -106,19 +106,19 @@ namespace WPCEmu.Test.Boards
 		{
 			TestContext.WriteLine("MemoryHandler: should update checksum (end)");
 
-			ushort OFFSET = 0x1D48;
+			const ushort OFFSET = 0x1D48;
 			memoryHandler.writeMemory(OFFSET, (byte)1);
-			bool newValueWritten = memoryHandler.ram[OFFSET] == 1;
-			int valuesNotZero = 0;
-			foreach (byte n in memoryHandler.ram)
+			var newValueWritten = memoryHandler.ram[OFFSET] == 1;
+			var valuesNotZero = 0;
+			foreach (var n in memoryHandler.ram)
 			{
 				if (n != 0)
 				{
 					valuesNotZero++;
 				}
 			}
-			Assert.AreEqual(true, newValueWritten);
-			Assert.AreEqual(3, valuesNotZero);
+			Assert.That(newValueWritten, Is.EqualTo(true));
+			Assert.That(valuesNotZero, Is.EqualTo(3));
 		}
 	}
 }

@@ -403,7 +403,7 @@ namespace WPCEmu.Test.Boards.Up
 				return 0xFF;
 			}
 
-			byte value = readMemoryAddress[(readMemoryAddress.Count - 1)];
+			var value = readMemoryAddress[(readMemoryAddress.Count - 1)];
 			readMemoryAddress.RemoveAt(readMemoryAddress.Count - 1);
 			return value;
 		}
@@ -435,18 +435,18 @@ namespace WPCEmu.Test.Boards.Up
 
 			for (var x = 0; x < testData.flags.Length; x++)
 			{
-				char flag = testData.flags[x];
-				byte mask = EXPECTED_FLAG_MAP[x];
+				var flag = testData.flags[x];
+				var mask = EXPECTED_FLAG_MAP[x];
 				switch (flag)
 				{
 					case FLAG_CLEAR:
-						Assert.AreEqual(0, cpu.regCC & mask);
+						Assert.That(cpu.regCC & mask, Is.EqualTo(0));
 						break;
 					case FLAG_SET:
 						Assert.IsTrue((cpu.regCC & mask) > 0);
 						break;
 					case FLAG_UNAFFECTED:
-						byte unaffectedFlag = (byte)(cpu.regCC & mask);
+						var unaffectedFlag = (byte)(cpu.regCC & mask);
 						TestContext.WriteLine("offset: {0}, {1}, mask: {2}", x, unaffectedFlag, mask);
 						Assert.IsTrue(unaffectedFlag > 0);
 						break;
@@ -471,10 +471,10 @@ namespace WPCEmu.Test.Boards.Up
 				cpu.reset();
 				cpu.set("flags", flags);
 				cpu.step();
-				Assert.AreEqual(cpu.tickCount, testData.cycles);
+				Assert.That(testData.cycles, Is.EqualTo(cpu.tickCount));
 			}
 
-			marshall(PAGE0_OPS).ForEach(delegate (InstructionData testData)
+			marshall(PAGE0_OPS).ForEach((testData) =>
 			{
 				TestContext.WriteLine("PAGE0 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				runCyclecountTest(testData, 0x00);
@@ -516,10 +516,10 @@ namespace WPCEmu.Test.Boards.Up
 				cpu.reset();
 				cpu.set("flags", flags);
 				cpu.step();
-				Assert.AreEqual(cpu.tickCount - OP_0X10_OPCODE_CYCLE, expectedTickCount);
+				Assert.That(expectedTickCount, Is.EqualTo(cpu.tickCount - OP_0X10_OPCODE_CYCLE));
 			}
 
-			marshall(PAGE1_OPS).ForEach(delegate (InstructionData testData)
+			marshall(PAGE1_OPS).ForEach((testData) =>
 			{
 				TestContext.WriteLine("PAGE1 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
@@ -567,10 +567,10 @@ namespace WPCEmu.Test.Boards.Up
 				cpu.reset();
 				cpu.set("flags", flags);
 				cpu.step();
-				Assert.AreEqual(cpu.tickCount - OP_0X11_OPCODE_CYCLE, testData.cycles);
+				Assert.That(testData.cycles, Is.EqualTo(cpu.tickCount - OP_0X11_OPCODE_CYCLE));
 			}
 
-			marshall(PAGE2_OPS).ForEach(delegate (InstructionData testData)
+			marshall(PAGE2_OPS).ForEach((testData) => 
 			{
 				TestContext.WriteLine("PAGE2 CYCLECOUNT(flags 0x00): 0x{0}: {1}", testData.desc, testData.cycles);
 				Init();
@@ -596,17 +596,17 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			List<InstructionData> list = new List<InstructionData>();
 
-			foreach (string line in instructions.Split("\n"))
+			foreach (var line in instructions.Split("\n"))
 			{
 				if (line.StartsWith("|"))
 				{
-					string[] junks = line.Split("|");
-					string addressMode = junks[3].Trim();
+					var junks = line.Split("|");
+					var addressMode = junks[3].Trim();
 
 					if (!ADDRESSMODE_TO_IGNORE.Any(addressMode.Contains))
 					{
 						InstructionData InstructionData = new InstructionData();
-						InstructionData.op = (ushort)Convert.ToUInt16(junks[1].Trim().Split(" ")[0], 16);
+						InstructionData.op = Convert.ToUInt16(junks[1].Trim().Split(" ")[0], 16);
 						InstructionData.instruction = junks[2].Trim();
 						InstructionData.addressMode = junks[3].Trim();
 						InstructionData.cycles = Convert.ToInt32(junks[4].Trim(), 10);

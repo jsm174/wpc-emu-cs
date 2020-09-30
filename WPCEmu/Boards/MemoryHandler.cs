@@ -35,7 +35,7 @@ namespace WPCEmu.Boards
         public byte[] ram;
         ChecksumPosition[] checksumPositions;
 
-        public static MemoryHandler GetInstance(Config config, byte[] ram)
+        public static MemoryHandler GetInstance(Config? config, byte[] ram)
         {
             return new MemoryHandler(config, ram);
         }

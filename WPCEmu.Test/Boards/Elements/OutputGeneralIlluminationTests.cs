@@ -23,14 +23,14 @@ namespace WPCEmu.Test.Boards.Elements
 
 			var generalIllumination = preWpc95;
 			generalIllumination.update(0x0);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[0]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[1]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[2]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[3]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[4]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[5]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[6]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[7]);
+			Assert.That(generalIllumination.generalIlluminationState[0], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[1], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[2], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[3], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[4], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[5], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[6], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[7], Is.EqualTo(0x00));
 		}
 
 		[Test, Order(2)]
@@ -40,14 +40,14 @@ namespace WPCEmu.Test.Boards.Elements
 
 			var generalIllumination = wpc95;
 			generalIllumination.update(0x0);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[0]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[1]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[2]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[3]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[4]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[5]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[6]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[7]);
+			Assert.That(generalIllumination.generalIlluminationState[0], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[1], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[2], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[3], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[4], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[5], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[6], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[7], Is.EqualTo(0x00));
 		}
 
 		[Test, Order(3)]
@@ -57,14 +57,14 @@ namespace WPCEmu.Test.Boards.Elements
 
 			var generalIllumination = preWpc95;
 			generalIllumination.update(0xFF);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[0]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[1]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[2]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[3]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[4]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[5]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[6]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[7]);
+			Assert.That(generalIllumination.generalIlluminationState[0], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[1], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[2], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[3], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[4], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[5], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[6], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[7], Is.EqualTo(0x07));
 		}
 
 		[Test, Order(4)]
@@ -74,14 +74,14 @@ namespace WPCEmu.Test.Boards.Elements
 
 			var generalIllumination = wpc95;
 			generalIllumination.update(0xFF);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[0]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[1]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[2]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[3]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[4]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[5]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[6]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[7]);
+			Assert.That(generalIllumination.generalIlluminationState[0], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[1], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[2], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[3], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[4], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[5], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[6], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[7], Is.EqualTo(0x07));
 		}
 
 		[Test, Order(5)]
@@ -92,10 +92,10 @@ namespace WPCEmu.Test.Boards.Elements
 			var generalIllumination = preWpc95;
 			generalIllumination.update(0x2);
 			generalIllumination.update(0x4);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[0]);
-			Assert.AreEqual(0x06, generalIllumination.generalIlluminationState[1]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[2]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[3]);
+			Assert.That(generalIllumination.generalIlluminationState[0], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[1], Is.EqualTo(0x06));
+			Assert.That(generalIllumination.generalIlluminationState[2], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[3], Is.EqualTo(0x00));
 		}
 
 		[Test, Order(6)]
@@ -106,10 +106,10 @@ namespace WPCEmu.Test.Boards.Elements
 			var generalIllumination = preWpc95;
 			generalIllumination.update(0x4);
 			generalIllumination.update(0x4);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[0]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[1]);
-			Assert.AreEqual(0x07, generalIllumination.generalIlluminationState[2]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[3]);
+			Assert.That(generalIllumination.generalIlluminationState[0], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[1], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[2], Is.EqualTo(0x07));
+			Assert.That(generalIllumination.generalIlluminationState[3], Is.EqualTo(0x00));
 		}
 
 		[Test, Order(7)]
@@ -119,7 +119,7 @@ namespace WPCEmu.Test.Boards.Elements
 
 			var generalIllumination = preWpc95;
 			var result = generalIllumination.getUint8ArrayFromState(new byte[] { 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF });
-			Assert.AreEqual(new byte[] { 8, 8, 8, 8, 8, 8, 8, 8 }, result);
+			Assert.That(result, Is.EqualTo(new byte[] { 8, 8, 8, 8, 8, 8, 8, 8 }));
 		}
 
 		[Test, Order(8)]
@@ -131,14 +131,14 @@ namespace WPCEmu.Test.Boards.Elements
 			generalIllumination.update(0xFF);
 			generalIllumination.update(0x00);
 			generalIllumination.update(0x00);
-			Assert.AreEqual(0x05, generalIllumination.generalIlluminationState[0]);
-			Assert.AreEqual(0x05, generalIllumination.generalIlluminationState[1]);
-			Assert.AreEqual(0x05, generalIllumination.generalIlluminationState[2]);
-			Assert.AreEqual(0x05, generalIllumination.generalIlluminationState[3]);
-			Assert.AreEqual(0x05, generalIllumination.generalIlluminationState[4]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[5]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[6]);
-			Assert.AreEqual(0x00, generalIllumination.generalIlluminationState[7]);
+			Assert.That(generalIllumination.generalIlluminationState[0], Is.EqualTo(0x05));
+			Assert.That(generalIllumination.generalIlluminationState[1], Is.EqualTo(0x05));
+			Assert.That(generalIllumination.generalIlluminationState[2], Is.EqualTo(0x05));
+			Assert.That(generalIllumination.generalIlluminationState[3], Is.EqualTo(0x05));
+			Assert.That(generalIllumination.generalIlluminationState[4], Is.EqualTo(0x05));
+			Assert.That(generalIllumination.generalIlluminationState[5], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[6], Is.EqualTo(0x00));
+			Assert.That(generalIllumination.generalIlluminationState[7], Is.EqualTo(0x00));
 		}
 	}
 }

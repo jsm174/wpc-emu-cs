@@ -23,7 +23,7 @@ namespace WPCEmu.Test.Boards.Up
 			TestContext.WriteLine("SecurityPic, reset");
 
 			securityPic.reset();
-			Assert.AreEqual(0xFF, securityPic.lastByteWrite);
+			Assert.That(securityPic.lastByteWrite, Is.EqualTo(0xFF));
 		}
 
 		[Test, Order(2)]
@@ -31,8 +31,8 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			TestContext.WriteLine("SecurityPic, invalid read after reset");
 
-			byte result = securityPic.read();
-			Assert.AreEqual(0, result);
+			var result = securityPic.read();
+			Assert.That(result, Is.EqualTo(0));
 		}
 
 		[Test, Order(3)]
@@ -43,8 +43,8 @@ namespace WPCEmu.Test.Boards.Up
 			const byte WPC_PIC_RESET = 0x00;
 			securityPic.write(WPC_PIC_RESET);
 			securityPic.write(0x7F);
-			byte result = securityPic.read();
-			Assert.AreEqual(178, result);
+			var result = securityPic.read();
+			Assert.That(result, Is.EqualTo(178));
 		}
 
 		[Test, Order(4)]
@@ -53,10 +53,10 @@ namespace WPCEmu.Test.Boards.Up
 			TestContext.WriteLine("SecurityPic, read first row");
 
 			securityPic.write(0x16);
-			byte result = securityPic.read((offset) => {
+			var result = securityPic.read((offset) => {
 				return offset;
 			});
-			Assert.AreEqual(1, result);
+			Assert.That(result, Is.EqualTo(1));
 		}
 
 		[Test, Order(5)]
@@ -65,10 +65,10 @@ namespace WPCEmu.Test.Boards.Up
 			TestContext.WriteLine("SecurityPic, read last row");
 
 			securityPic.write(0x1F);
-			byte result = securityPic.read((offset) => {
+			var result = securityPic.read((offset) => {
 				return offset;
 			});
-			Assert.AreEqual(10, result);
+			Assert.That(result, Is.EqualTo(10));
 		}
 
 		[Test, Order(6)]
@@ -82,8 +82,8 @@ namespace WPCEmu.Test.Boards.Up
 				253, 226, 18, 243,
 				28, 0, 117, 178,
 			};
-			Assert.AreEqual(expectedPicSerial.ToArray(), securityPic.originalPicSerialNumber);
-			Assert.AreEqual(0xA5, securityPic.serialNumberScrambler);
+			Assert.That(securityPic.originalPicSerialNumber, Is.EqualTo(expectedPicSerial.ToArray()));
+			Assert.That(securityPic.serialNumberScrambler, Is.EqualTo(0xA5));
 		}
 	}
 }

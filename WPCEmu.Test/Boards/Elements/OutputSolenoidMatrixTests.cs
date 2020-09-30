@@ -22,9 +22,9 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("solenoidMatrix, update all high power solenoids");
 
 			solenoidMatrix.write(0x3FE1, 0xFF);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[0]);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[7]);
-			Assert.AreEqual(0, solenoidMatrix.solenoidState[8]);
+			Assert.That(solenoidMatrix.solenoidState[0], Is.EqualTo(0xFF));
+			Assert.That(solenoidMatrix.solenoidState[7], Is.EqualTo(0xFF));
+			Assert.That(solenoidMatrix.solenoidState[8], Is.EqualTo(0));
 		}
 
 		[Test, Order(2)]
@@ -33,9 +33,9 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("solenoidMatrix, update all low power solenoids");
 
 			solenoidMatrix.write(0x3FE3, 0xFF);
-			Assert.AreEqual(0, solenoidMatrix.solenoidState[7]);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[8]);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[15]);
+			Assert.That(solenoidMatrix.solenoidState[7], Is.EqualTo(0));
+			Assert.That(solenoidMatrix.solenoidState[8], Is.EqualTo(0xFF));
+			Assert.That(solenoidMatrix.solenoidState[15], Is.EqualTo(0xFF));
 		}
 
 		[Test, Order(3)]
@@ -44,9 +44,9 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("solenoidMatrix, update all flashlight solenoids");
 
 			solenoidMatrix.write(0x3FE2, 0xFF);
-			Assert.AreEqual(0, solenoidMatrix.solenoidState[15]);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[16]);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[23]);
+			Assert.That(solenoidMatrix.solenoidState[15], Is.EqualTo(0));
+			Assert.That(solenoidMatrix.solenoidState[16], Is.EqualTo(0xFF));
+			Assert.That(solenoidMatrix.solenoidState[23], Is.EqualTo(0xFF));
 		}
 
 		[Test, Order(4)]
@@ -55,9 +55,9 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("solenoidMatrix, update all generic solenoids");
 
 			solenoidMatrix.write(0x3FE0, 0xFF);
-			Assert.AreEqual(0, solenoidMatrix.solenoidState[23]);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[24]);
-			Assert.AreEqual(0xFF, solenoidMatrix.solenoidState[31]);
+			Assert.That(solenoidMatrix.solenoidState[23], Is.EqualTo(0));
+			Assert.That(solenoidMatrix.solenoidState[24], Is.EqualTo(0xFF));
+			Assert.That(solenoidMatrix.solenoidState[31], Is.EqualTo(0xFF));
 		}
 
 		[Test, Order(5)]
@@ -83,7 +83,7 @@ namespace WPCEmu.Test.Boards.Elements
 
 			solenoidMatrix.write(0x3FE1, 0xFF);
 			solenoidMatrix.executeCycle(UPDATE_AFTER_TICKS);
-			Assert.AreEqual(0x7F, solenoidMatrix.solenoidState[0]);
+			Assert.That(solenoidMatrix.solenoidState[0], Is.EqualTo(0x7F));
 		}
 	}
 }

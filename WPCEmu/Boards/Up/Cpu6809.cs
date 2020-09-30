@@ -141,11 +141,11 @@ namespace WPCEmu.Boards.Up
 
         bool irqPending;
         bool firqPending;
-        int missedIRQ;
-        int missedFIRQ;
+        public int missedIRQ;
+        public int missedFIRQ;
 
-        int irqCount;
-        int firqCount;
+        public int irqCount;
+        public int firqCount;
         int nmiCount;
 
         public byte regA;
@@ -160,6 +160,7 @@ namespace WPCEmu.Boards.Up
 
         public struct State
         {
+            public ushort regPC;
             public ushort regS;
             public ushort regU;
             public byte regA;
@@ -2710,23 +2711,24 @@ namespace WPCEmu.Boards.Up
 
         public State getState()
         {
-            State state = new State();
-            state.regS = regS;
-            state.regU = regU;
-            state.regA = regA;
-            state.regB = regB;
-            state.regX = regX;
-            state.regY = regY;
-            state.regDP = regDP;
-            state.regCC = regCC;
-            state.missedIRQ = missedIRQ;
-            state.missedFIRQ = missedFIRQ;
-            state.irqCount = irqCount;
-            state.firqCount = firqCount;
-            state.nmiCount = nmiCount;
-            state.tickCount = tickCount;
-
-            return state;
+            return new State
+            {
+                regPC = regPC,
+                regS = regS,
+                regU = regU,
+                regA = regA,
+                regB = regB,
+                regX = regX,
+                regY = regY,
+                regDP = regDP,
+                regCC = regCC,
+                missedIRQ = missedIRQ,
+                missedFIRQ = missedFIRQ,
+                irqCount = irqCount,
+                firqCount = firqCount,
+                nmiCount = nmiCount,
+                tickCount = tickCount
+            };
         }
 
         public void setState(State state)

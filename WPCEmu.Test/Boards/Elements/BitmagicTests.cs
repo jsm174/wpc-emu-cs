@@ -11,8 +11,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("bitmagic, should get msb from 0x80");
 
-			byte result = Bitmagic.findMsbBit(0x80);
-			Assert.AreEqual(8, result);
+			var result = Bitmagic.findMsbBit(0x80);
+			Assert.That(result, Is.EqualTo(8));
 		}
 
 		[Test, Order(2)]
@@ -20,8 +20,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("bitmagic, should get msb from 0x01");
 
-			byte result = Bitmagic.findMsbBit(0x01);
-			Assert.AreEqual(1, result);
+			var result = Bitmagic.findMsbBit(0x01);
+			Assert.That(result, Is.EqualTo(1));
 		}
 
 		[Test, Order(3)]
@@ -29,8 +29,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("bitmagic, should get msb from 0x00");
 
-			byte result = Bitmagic.findMsbBit(0x00);
-			Assert.AreEqual(0, result);
+			var result = Bitmagic.findMsbBit(0x00);
+			Assert.That(result, Is.EqualTo(0));
 		}
 
 		//[Test, Order(4)]
@@ -39,7 +39,7 @@ namespace WPCEmu.Test.Boards.Elements
 		//	TestContext.WriteLine("bitmagic, should get msb from undefined");
 		//
 		//	byte result = Bitmagic.findMsbBit();
-		//	Assert.AreEqual(0, result);
+		//	Assert.That(result, Is.EqualTo(0));
 		//}
 
 		[Test, Order(5)]
@@ -47,8 +47,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("bitmagic, should set msb 0");
 
-			byte result = Bitmagic.setMsbBit(0);
-			Assert.AreEqual(0x01, result);
+			var result = Bitmagic.setMsbBit(0);
+			Assert.That(result, Is.EqualTo(0x01));
 		}
 
 		[Test, Order(6)]
@@ -56,8 +56,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("bitmagic, should set msb 3");
 
-			byte result = Bitmagic.setMsbBit(3);
-			Assert.AreEqual(0x08, result);
+			var result = Bitmagic.setMsbBit(3);
+			Assert.That(result, Is.EqualTo(0x08));
 		}
 
 		[Test, Order(7)]
@@ -65,8 +65,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("bitmagic, should set msb 7");
 
-			byte result = Bitmagic.setMsbBit(7);
-			Assert.AreEqual(0x80, result);
+			var result = Bitmagic.setMsbBit(7);
+			Assert.That(result, Is.EqualTo(0x80));
 		}
 	}
 }

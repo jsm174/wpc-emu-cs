@@ -11,8 +11,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("SoundVolumeConvert DCS, convert min volume");
 
-			byte? result = SoundVolumeConvert.getRelativeVolumeDcs(0x00, 0xFF);
-			Assert.AreEqual(0, result);
+			var result = SoundVolumeConvert.getRelativeVolumeDcs(0x00, 0xFF);
+			Assert.That(result, Is.EqualTo(0));
 		}
 
 		[Test, Order(2)]
@@ -20,8 +20,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("SoundVolumeConvert DCS, convert max volume");
 
-			byte? result = SoundVolumeConvert.getRelativeVolumeDcs(0xFF, 0x00);
-			Assert.AreEqual(31, result);
+			var result = SoundVolumeConvert.getRelativeVolumeDcs(0xFF, 0x00);
+			Assert.That(result, Is.EqualTo(31));
 		}
 
 		[Test, Order(3)]
@@ -29,8 +29,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("SoundVolumeConvert DCS, refuse invalid volume");
 
-			byte? result = SoundVolumeConvert.getRelativeVolumeDcs(0xAA, 0xAA);
-			Assert.AreEqual(null, result);
+			var result = SoundVolumeConvert.getRelativeVolumeDcs(0xAA, 0xAA);
+			Assert.That(result, Is.EqualTo(null));
 		}
 
 		[Test, Order(4)]
@@ -38,8 +38,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("SoundVolumeConvert preDCS, convert min volume");
 
-			byte? result = SoundVolumeConvert.getRelativeVolumePreDcs(0x00, 0xFF);
-			Assert.AreEqual(0, result);
+			var result = SoundVolumeConvert.getRelativeVolumePreDcs(0x00, 0xFF);
+			Assert.That(result, Is.EqualTo(0));
 		}
 
 		[Test, Order(5)]
@@ -47,8 +47,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("SoundVolumeConvert preDCS, convert max volume");
 
-			byte? result = SoundVolumeConvert.getRelativeVolumePreDcs(0x1F, 0xE0);
-			Assert.AreEqual(31, result);
+			var result = SoundVolumeConvert.getRelativeVolumePreDcs(0x1F, 0xE0);
+			Assert.That(result, Is.EqualTo(31));
 		}
 
 		[Test, Order(6)]
@@ -56,8 +56,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("SoundVolumeConvert preDCS, refuse invalid volume");
 
-			byte? result = SoundVolumeConvert.getRelativeVolumePreDcs(1, 1);
-			Assert.AreEqual(null, result);
+			var result = SoundVolumeConvert.getRelativeVolumePreDcs(1, 1);
+			Assert.That(result, Is.EqualTo(null));
 		}
 	}
 }

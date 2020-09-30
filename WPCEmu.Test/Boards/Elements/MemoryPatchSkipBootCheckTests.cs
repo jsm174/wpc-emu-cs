@@ -11,12 +11,12 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("MemoryPatchSkipBootCheck, should return a patched game id");
 
-			MemoryPatch memoryPatch = MemoryPatch.GetInstance();
+			var memoryPatch = MemoryPatch.GetInstance();
 			MemoryPatchSkipBootCheck.run(memoryPatch);
-			MemoryPatch.Patch? checkLo = memoryPatch.hasPatch(0xFFEC);
-			MemoryPatch.Patch? checkHi = memoryPatch.hasPatch(0xFFED);
-			Assert.AreEqual(0x00, checkLo.Value.value);
-			Assert.AreEqual(0xFF, checkHi.Value.value);
+			var checkLo = memoryPatch.hasPatch(0xFFEC);
+			var checkHi = memoryPatch.hasPatch(0xFFED);
+			Assert.That(checkLo?.value, Is.EqualTo(0x00));
+			Assert.That(checkHi?.value, Is.EqualTo(0xFF));
 		}
 	}
 }

@@ -18,8 +18,8 @@ namespace WPCEmu.Boards.Mapper
         const ushort MEMORY_ADDR_DMD_PAGE_LOW = 0x3800;
         const ushort MEMORY_ADDR_DMD_PAGE_HIGH = 0x3A00;
 
-        const string SUBSYSTEM_DMD_VIDEORAM = "videoram";
-        const string SUBSYSTEM_CMD = "command";
+        public const string SUBSYSTEM_DMD_VIDEORAM = "videoram";
+        public const string SUBSYSTEM_CMD = "command";
 
         static Model buildReturnModel(ushort offset, string subsystem, byte? bank)
         {

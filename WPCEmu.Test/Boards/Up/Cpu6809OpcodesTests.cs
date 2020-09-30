@@ -14,7 +14,7 @@ namespace WPCEmu.Test.Boards.Up
 			public byte value;
 		}
 
-		struct ComplexData
+		struct TestData
 		{
 			public byte offset;
 			public string register;
@@ -25,7 +25,7 @@ namespace WPCEmu.Test.Boards.Up
 			public ushort expectedReturn;
 			public ushort[] expectedMemoryRead;
 
-			public ComplexData(byte offset, string register, ushort? initialValue, byte? initialRegB, ushort expectedResult, int expectedTicks, ushort expectedReturn, ushort[] expectedMemoryRead)
+			public TestData(byte offset, string register, ushort? initialValue, byte? initialRegB, ushort expectedResult, int expectedTicks, ushort expectedReturn, ushort[] expectedMemoryRead)
 			{
 				this.offset = offset;
 				this.register = register;
@@ -62,7 +62,7 @@ namespace WPCEmu.Test.Boards.Up
 				return 0xFF;
 			}
 
-			byte value = readMemoryAddress[(readMemoryAddress.Count - 1)];
+			var value = readMemoryAddress[(readMemoryAddress.Count - 1)];
 			readMemoryAddress.RemoveAt(readMemoryAddress.Count - 1);
 			return value;
 		}
@@ -92,8 +92,8 @@ namespace WPCEmu.Test.Boards.Up
 			TestContext.WriteLine("should read RESET vector on boot");
 
 			cpu.reset();
-			Assert.AreEqual(RESET_VECTOR_OFFSET_LO, readMemoryAddressAccess[0]);
-			Assert.AreEqual(RESET_VECTOR_OFFSET_HI, readMemoryAddressAccess[1]);
+			Assert.That(readMemoryAddressAccess[0], Is.EqualTo(RESET_VECTOR_OFFSET_LO));
+			Assert.That(readMemoryAddressAccess[1], Is.EqualTo(RESET_VECTOR_OFFSET_HI));
 		}
 
 		[Test, Order(2)]
@@ -104,9 +104,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_ROLA = 0x49;
 			runRegisterATest(OP_ROLA, 0xFF);
 
-			Assert.AreEqual(0xFE, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0xFE));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhINzvC"));
 		}
 
 		[Test, Order(3)]
@@ -117,13 +117,13 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_ROLA = 0x49;
 			runRegisterATest(OP_ROLA, 0xFF, () =>
 			{
-				byte cc = cpu.regCC |= 1;
+				var cc = cpu.regCC |= 1;
 				cpu.set("flags", cc);
 			});
 
-			Assert.AreEqual(0xFF, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0xFF));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhINzvC"));
 		}
 
 		[Test, Order(4)]
@@ -134,9 +134,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0x01);
 
-			Assert.AreEqual(0x00, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInZvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x00));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInZvC"));
 		}
 
 		[Test, Order(5)]
@@ -147,9 +147,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0xFF);
 
-			Assert.AreEqual(0x7F, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x7F));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzvC"));
 		}
 
 		[Test, Order(6)]
@@ -160,13 +160,13 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_RORA = 0x46;
 			runRegisterATest(OP_RORA, 0xFF, () =>
 			{
-				byte cc = cpu.regCC |= 1;
+				var cc = cpu.regCC |= 1;
 				cpu.set("flags", cc);
 			});
 
-			Assert.AreEqual(0xFF, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0xFF));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhINzvC"));
 		}
 
 		[Test, Order(7)]
@@ -190,14 +190,14 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.regA = ADD_VALUE_1;
 			cpu.step();
 
-			Assert.AreEqual(RESET_VECTOR_OFFSET_LO, readMemoryAddressAccess[0]);
-			Assert.AreEqual(RESET_VECTOR_OFFSET_HI, readMemoryAddressAccess[1]);
-			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_LO, readMemoryAddressAccess[2]);
-			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_HI, readMemoryAddressAccess[3]);
+			Assert.That(readMemoryAddressAccess[0], Is.EqualTo(RESET_VECTOR_OFFSET_LO));
+			Assert.That(readMemoryAddressAccess[1], Is.EqualTo(RESET_VECTOR_OFFSET_HI));
+			Assert.That(readMemoryAddressAccess[2], Is.EqualTo(EXPECTED_RESET_READ_OFFSET_LO));
+			Assert.That(readMemoryAddressAccess[3], Is.EqualTo(EXPECTED_RESET_READ_OFFSET_HI));
 
-			Assert.AreEqual(254, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFHINzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(254));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFHINzvC"));
 		}
 
 		[Test, Order(8)]
@@ -208,9 +208,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_LSRA = 0x44;
 			runRegisterATest(OP_LSRA, 0xFF);
 
-			Assert.AreEqual(0x7F, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x7F));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzvC"));
 		}
 
 		[Test, Order(9)]
@@ -221,9 +221,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_ASLA = 0x48;
 			runRegisterATest(OP_ASLA, 0x81);
 
-			Assert.AreEqual(2, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzVC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(2));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzVC"));
 		}
 
 		[Test, Order(10)]
@@ -234,9 +234,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_ASLA = 0x48;
 			runRegisterATest(OP_ASLA, 0x01);
 
-			Assert.AreEqual(2, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(2));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzvc"));
 		}
 
 		[Test, Order(11)]
@@ -247,9 +247,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0xFF);
 
-			Assert.AreEqual(0xFF, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0xFF));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhINzvC"));
 		}
 
 		[Test, Order(12)]
@@ -260,9 +260,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0x7F);
 
-			Assert.AreEqual(0x3F, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x3F));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzvC"));
 		}
 
 		[Test, Order(13)]
@@ -273,9 +273,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_ASRA = 0x47;
 			runRegisterATest(OP_ASRA, 0);
 
-			Assert.AreEqual(0, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInZvc", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInZvc"));
 		}
 
 		[Test, Order(14)]
@@ -286,9 +286,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_NEG = 0x40;
 			runRegisterATest(OP_NEG, 0x01);
 
-			Assert.AreEqual(0xFF, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhINzvC", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0xFF));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhINzvC"));
 		}
 
 		[Test, Order(15)]
@@ -299,9 +299,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_NEG = 0x40;
 			runRegisterATest(OP_NEG, 0xFF);
 
-			Assert.AreEqual(0x01, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x01));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzvc"));
 		}
 
 		[Test, Order(16)]
@@ -312,9 +312,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_DEC = 0x4A;
 			runRegisterATest(OP_DEC, 0x80);
 
-			Assert.AreEqual(0x7F, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzVc", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x7F));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzVc"));
 		}
 
 		[Test, Order(17)]
@@ -325,9 +325,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_DEC = 0x4A;
 			runRegisterATest(OP_DEC, 0x00);
 
-			Assert.AreEqual(0xFF, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhINzvc", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0xFF));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhINzvc"));
 		}
 
 		[Test, Order(18)]
@@ -338,10 +338,10 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_DEC = 0x7A;
 			runExtendedMemoryTest(OP_DEC, 0x00);
 
-			Assert.AreEqual(8721, writeMemoryAddress[0].address);
-			Assert.AreEqual(0xFF, writeMemoryAddress[0].value);
-			Assert.AreEqual(7, cpu.tickCount);
-			Assert.AreEqual("eFhINzvc", cpu.flagsToString());
+			Assert.That(writeMemoryAddress[0].address, Is.EqualTo(8721));
+			Assert.That(writeMemoryAddress[0].value, Is.EqualTo(0xFF));
+			Assert.That(cpu.tickCount, Is.EqualTo(7));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhINzvc"));
 		}
 
 		[Test, Order(19)]
@@ -352,9 +352,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_INC = 0x4C;
 			runRegisterATest(OP_INC, 0x00);
 
-			Assert.AreEqual(0x01, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInzvc", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x01));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInzvc"));
 		}
 
 		[Test, Order(20)]
@@ -365,9 +365,9 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_INC = 0x4C;
 			runRegisterATest(OP_INC, 0xFF);
 
-			Assert.AreEqual(0x00, cpu.regA);
-			Assert.AreEqual(2, cpu.tickCount);
-			Assert.AreEqual("eFhInZvc", cpu.flagsToString());
+			Assert.That(cpu.regA, Is.EqualTo(0x00));
+			Assert.That(cpu.tickCount, Is.EqualTo(2));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInZvc"));
 		}
 
 		[Test, Order(21)]
@@ -378,10 +378,10 @@ namespace WPCEmu.Test.Boards.Up
 			const byte OP_INC = 0x7C;
 			runExtendedMemoryTest(OP_INC, 0xFF);
 
-			Assert.AreEqual(8721, writeMemoryAddress[0].address);
-			Assert.AreEqual(0x00, writeMemoryAddress[0].value);
-			Assert.AreEqual(7, cpu.tickCount);
-			Assert.AreEqual("eFhInZvc", cpu.flagsToString());
+			Assert.That(writeMemoryAddress[0].address, Is.EqualTo(8721));
+			Assert.That(writeMemoryAddress[0].value, Is.EqualTo(0x00));
+			Assert.That(cpu.tickCount, Is.EqualTo(7));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("eFhInZvc"));
 		}
 
 		[Test, Order(22)]
@@ -391,8 +391,8 @@ namespace WPCEmu.Test.Boards.Up
 
 			cpu.reset();
 			cpu.PUSHB(0x23);
-			Assert.AreEqual(65535, writeMemoryAddress[0].address);
-			Assert.AreEqual(0x23, writeMemoryAddress[0].value);
+			Assert.That(writeMemoryAddress[0].address, Is.EqualTo(65535));
+			Assert.That(writeMemoryAddress[0].value, Is.EqualTo(0x23));
 		}
 
 		[Test, Order(23)]
@@ -402,10 +402,10 @@ namespace WPCEmu.Test.Boards.Up
 
 			cpu.reset();
 			cpu.PUSHW(0x1234);
-			Assert.AreEqual(65535, writeMemoryAddress[0].address);
-			Assert.AreEqual(0x34, writeMemoryAddress[0].value);
-			Assert.AreEqual(65534, writeMemoryAddress[1].address);
-			Assert.AreEqual(0x12, writeMemoryAddress[1].value);
+			Assert.That(writeMemoryAddress[0].address, Is.EqualTo(65535));
+			Assert.That(writeMemoryAddress[0].value, Is.EqualTo(0x34));
+			Assert.That(writeMemoryAddress[1].address, Is.EqualTo(65534));
+			Assert.That(writeMemoryAddress[1].value, Is.EqualTo(0x12));
 		}
 
 		[Test, Order(24)]
@@ -415,8 +415,8 @@ namespace WPCEmu.Test.Boards.Up
 
 			cpu.reset();
 			cpu.PUSHBU(0x23);
-			Assert.AreEqual(65535, writeMemoryAddress[0].address);
-			Assert.AreEqual(0x23, writeMemoryAddress[0].value);
+			Assert.That(writeMemoryAddress[0].address, Is.EqualTo(65535));
+			Assert.That(writeMemoryAddress[0].value, Is.EqualTo(0x23));
 		}
 
 		[Test, Order(25)]
@@ -426,10 +426,10 @@ namespace WPCEmu.Test.Boards.Up
 
 			cpu.reset();
 			cpu.PUSHWU(0x1234);
-			Assert.AreEqual(65535, writeMemoryAddress[0].address);
-			Assert.AreEqual(0x34, writeMemoryAddress[0].value);
-			Assert.AreEqual(65534, writeMemoryAddress[1].address);
-			Assert.AreEqual(0x12, writeMemoryAddress[1].value);
+			Assert.That(writeMemoryAddress[0].address, Is.EqualTo(65535));
+			Assert.That(writeMemoryAddress[0].value, Is.EqualTo(0x34));
+			Assert.That(writeMemoryAddress[1].address, Is.EqualTo(65534));
+			Assert.That(writeMemoryAddress[1].value, Is.EqualTo(0x12));
 		}
 
 		void runRegisterATest(byte opcode, byte registerA, Action postCpuResetInitFunction = null)
@@ -446,9 +446,9 @@ namespace WPCEmu.Test.Boards.Up
 			cpu.regA = registerA;
 			cpu.step();
 
-			Assert.AreEqual(RESET_VECTOR_OFFSET_LO, readMemoryAddressAccess[0]);
-			Assert.AreEqual(RESET_VECTOR_OFFSET_HI, readMemoryAddressAccess[1]);
-			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_LO, readMemoryAddressAccess[2]);
+			Assert.That(readMemoryAddressAccess[0], Is.EqualTo(RESET_VECTOR_OFFSET_LO));
+			Assert.That(readMemoryAddressAccess[1], Is.EqualTo(RESET_VECTOR_OFFSET_HI));
+			Assert.That(readMemoryAddressAccess[2], Is.EqualTo(EXPECTED_RESET_READ_OFFSET_LO));
 		}
 
 		void runExtendedMemoryTest(byte opcode, byte memoryContent, Action postCpuResetInitFunction = null)
@@ -468,153 +468,153 @@ namespace WPCEmu.Test.Boards.Up
 
 			cpu.step();
 
-			Assert.AreEqual(RESET_VECTOR_OFFSET_LO, readMemoryAddressAccess[0]);
-			Assert.AreEqual(RESET_VECTOR_OFFSET_HI, readMemoryAddressAccess[1]);
-			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_LO, readMemoryAddressAccess[2]);
-			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_LO + 1, readMemoryAddressAccess[3]);
-			Assert.AreEqual(EXPECTED_RESET_READ_OFFSET_LO + 2, readMemoryAddressAccess[4]);
-			Assert.AreEqual(hardcodedReadOffset, readMemoryAddressAccess[5]);
+			Assert.That(readMemoryAddressAccess[0], Is.EqualTo(RESET_VECTOR_OFFSET_LO));
+			Assert.That(readMemoryAddressAccess[1], Is.EqualTo(RESET_VECTOR_OFFSET_HI));
+			Assert.That(readMemoryAddressAccess[2], Is.EqualTo(EXPECTED_RESET_READ_OFFSET_LO));
+			Assert.That(readMemoryAddressAccess[3], Is.EqualTo(EXPECTED_RESET_READ_OFFSET_LO + 1));
+			Assert.That(readMemoryAddressAccess[4], Is.EqualTo(EXPECTED_RESET_READ_OFFSET_LO + 2));
+			Assert.That(readMemoryAddressAccess[5], Is.EqualTo(hardcodedReadOffset));
 		}
 
 		[Test, Order(26)]
 		public void PostByteSimpleX_0_15()
 		{
-			for (byte offset = 0; offset < 16; offset++) {
+			for (var offset = 0; offset < 16; offset++) {
 				TestContext.WriteLine("postbyte simple X: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
-					offset
+					(byte)offset
 				};
 				cpu.set("flags", 0);
 				cpu.regX = 0;
 				cpu.regPC = 0;
-				ushort result = cpu.PostByte();
-				Assert.AreEqual(offset, result);
-				Assert.AreEqual("efhinzvc", cpu.flagsToString());
-				Assert.AreEqual(0, cpu.regX);
-				Assert.AreEqual(1, cpu.tickCount);
-				Assert.AreEqual(0, readMemoryAddressAccess[0]);
+				var result = cpu.PostByte();
+				Assert.That(result, Is.EqualTo(offset));
+				Assert.That(cpu.flagsToString(), Is.EqualTo("efhinzvc"));
+				Assert.That(cpu.regX, Is.EqualTo(0));
+				Assert.That(cpu.tickCount, Is.EqualTo(1));
+				Assert.That(readMemoryAddressAccess[0], Is.EqualTo(0));
 			}
 		}
 
 		[Test, Order(27)]
 		public void PostByteSimpleX_16_31()
 		{
-			for (byte offset = 16; offset < 32; offset++)
+			for (var offset = 16; offset < 32; offset++)
 			{
 				TestContext.WriteLine("postbyte simple X: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
-					offset
+					(byte)offset
 				};
 				cpu.set("flags", 0);
 				cpu.regX = 0;
 				cpu.regPC = 0;
-				ushort result = cpu.PostByte();
-				Assert.AreEqual(0x10000 - (32 - offset), result);
-				Assert.AreEqual("efhinzvc", cpu.flagsToString());
-				Assert.AreEqual(0, cpu.regX);
-				Assert.AreEqual(1, cpu.tickCount);
-				Assert.AreEqual(0, readMemoryAddressAccess[0]);
+				var result = cpu.PostByte();
+				Assert.That(result, Is.EqualTo(0x10000 - (32 - offset)));
+				Assert.That(cpu.flagsToString(), Is.EqualTo("efhinzvc"));
+				Assert.That(cpu.regX, Is.EqualTo(0));
+				Assert.That(cpu.tickCount, Is.EqualTo(1));
+				Assert.That(readMemoryAddressAccess[0], Is.EqualTo(0));
 			}
 		}
 
 		[Test, Order(28)]
 		public void PostByteSimpleS_0x60_0x70()
 		{
-			for (byte offset = 0x60; offset < 0x70; offset++)
+			for (var offset = 0x60; offset < 0x70; offset++)
 			{
 				TestContext.WriteLine("postbyte simple S: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
-					offset
+					(byte)offset
 				};
 				cpu.set("flags", 0);
 				cpu.regS = 0;
 				cpu.regPC = 0;
-				ushort result = cpu.PostByte();
-				Assert.AreEqual(offset - 0x60, result);
-				Assert.AreEqual("efhinzvc", cpu.flagsToString());
-				Assert.AreEqual(0, cpu.regS);
-				Assert.AreEqual(1, cpu.tickCount);
-				Assert.AreEqual(0, readMemoryAddressAccess[0]);
+				var result = cpu.PostByte();
+				Assert.That(result, Is.EqualTo(offset - 0x60));
+				Assert.That(cpu.flagsToString(), Is.EqualTo("efhinzvc"));
+				Assert.That(cpu.regS, Is.EqualTo(0));
+				Assert.That(cpu.tickCount, Is.EqualTo(1));
+				Assert.That(readMemoryAddressAccess[0], Is.EqualTo(0));
 			}
 		}
 
 		[Test, Order(29)]
 		public void PostByteSimpleS_0x70_0x80()
 		{
-			for (byte offset = 0x70; offset < 0x80; offset++)
+			for (var offset = 0x70; offset < 0x80; offset++)
 			{
 				TestContext.WriteLine("postbyte simple S: {0}", offset);
 
 				Init();
 				readMemoryAddress = new List<byte>()
 				{
-					offset
+					(byte)offset
 				};
 				cpu.set("flags", 0);
 				cpu.regS = 0;
 				cpu.regPC = 0;
-				ushort result = cpu.PostByte();
-				Assert.AreEqual(0x10000 - (32 - offset) - 0x60, result);
-				Assert.AreEqual("efhinzvc", cpu.flagsToString());
-				Assert.AreEqual(0, cpu.regS);
-				Assert.AreEqual(1, cpu.tickCount);
-				Assert.AreEqual(0, readMemoryAddressAccess[0]);
+				var result = cpu.PostByte();
+				Assert.That(result, Is.EqualTo(0x10000 - (32 - offset) - 0x60));
+				Assert.That(cpu.flagsToString(), Is.EqualTo("efhinzvc"));
+				Assert.That(cpu.regS, Is.EqualTo(0));
+				Assert.That(cpu.tickCount, Is.EqualTo(1));
+				Assert.That(readMemoryAddressAccess[0], Is.EqualTo(0));
 			}
 		}
 
 		[Test, Order(30)]
 		public void PostByteComplex()
 		{
-			List<ComplexData> list = new List<ComplexData>()
+			List<TestData> list = new List<TestData>()
 			{
-				new ComplexData(0x80, "regX", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexData(0x81, "regX", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexData(0x85, "regX", 0xFFFF, 10, 0xFFFF, 1, 9, new ushort[] { 0 }),
-				new ComplexData(0x88, "regX", null, null, 10, 1, 9 /*0*/, new ushort[] { 0, 1 }),
-				new ComplexData(0x88, "regX", 100, null, 100, 1, 99 /*0*/, new ushort[] { 0, 1 }),
-				new ComplexData(0x89, "regX", null, null, 10, 4, 9 /*0*/, new ushort[] { 0, 1, 2 }),
-				new ComplexData(0x8B, "regX", null, null, 10, 4, 10, new ushort[] { 0 }),
-				new ComplexData(0x8B, "regX", null, 5, 10, 4, 15, new ushort[] { 0 }),
-				new ComplexData(0x8C, "regX", null, null, 10, 1, 1 /*0*/, new ushort[] { 0, 1 }),
-				new ComplexData(0x8D, "regX", null, null, 10, 5, 2 /*0*/, new ushort[] { 0, 1, 2 }),
-				new ComplexData(0x8F, "regX", null, null, 10, 5, 0xFFFF /*0*/, new ushort[] { 0, 1, 2 }),
-				new ComplexData(0x90, "regX", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0x91, "regX", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0x91, "regX", 0xFFFF, null, 1, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexData(0x92, "regX", null, null, 9, 5, 0xFFFF /*0*/, new ushort[] { 0, 9, 10 }),
-				new ComplexData(0x92, "regX", 0, null, 0xFFFF, 5, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexData(0x93, "regX", null, null, 8, 6, 0xFFFF /*0*/, new ushort[] { 0, 8, 9 }),
-				new ComplexData(0x93, "regX", 0, null, 0xFFFE, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFE, 0xFFFF }),
-				new ComplexData(0x94, "regX", null, null, 10, 3, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0x94, "regX", 0xFFFF, null, 0xFFFF, 3, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
-				new ComplexData(0x95, "regX", null, 10, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 20, 21 }),
-				new ComplexData(0x95, "regX", null, 0x80, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 0xFF8A, 0xFF8B }),
-				new ComplexData(0xA0, "regY", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexData(0xA1, "regY", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexData(0xB0, "regY", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0xB1, "regY", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0xC0, "regU", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexData(0xC1, "regU", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexData(0xD0, "regU", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0xD1, "regU", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0xE0, "regS", null, null, 11, 2, 10, new ushort[] { 0 }),
-				new ComplexData(0xE1, "regS", null, null, 12, 3, 10, new ushort[] { 0 }),
-				new ComplexData(0xF0, "regS", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
-				new ComplexData(0xF1, "regS", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 })
+				new TestData(0x80, "regX", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new TestData(0x81, "regX", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new TestData(0x85, "regX", 0xFFFF, 10, 0xFFFF, 1, 9, new ushort[] { 0 }),
+				new TestData(0x88, "regX", null, null, 10, 1, 9 /*0*/, new ushort[] { 0, 1 }),
+				new TestData(0x88, "regX", 100, null, 100, 1, 99 /*0*/, new ushort[] { 0, 1 }),
+				new TestData(0x89, "regX", null, null, 10, 4, 9 /*0*/, new ushort[] { 0, 1, 2 }),
+				new TestData(0x8B, "regX", null, null, 10, 4, 10, new ushort[] { 0 }),
+				new TestData(0x8B, "regX", null, 5, 10, 4, 15, new ushort[] { 0 }),
+				new TestData(0x8C, "regX", null, null, 10, 1, 1 /*0*/, new ushort[] { 0, 1 }),
+				new TestData(0x8D, "regX", null, null, 10, 5, 2 /*0*/, new ushort[] { 0, 1, 2 }),
+				new TestData(0x8F, "regX", null, null, 10, 5, 0xFFFF /*0*/, new ushort[] { 0, 1, 2 }),
+				new TestData(0x90, "regX", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0x91, "regX", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0x91, "regX", 0xFFFF, null, 1, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new TestData(0x92, "regX", null, null, 9, 5, 0xFFFF /*0*/, new ushort[] { 0, 9, 10 }),
+				new TestData(0x92, "regX", 0, null, 0xFFFF, 5, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new TestData(0x93, "regX", null, null, 8, 6, 0xFFFF /*0*/, new ushort[] { 0, 8, 9 }),
+				new TestData(0x93, "regX", 0, null, 0xFFFE, 6, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFE, 0xFFFF }),
+				new TestData(0x94, "regX", null, null, 10, 3, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0x94, "regX", 0xFFFF, null, 0xFFFF, 3, 0xFFFF /*0*/, new ushort[] { 0, 0xFFFF, 0 }),
+				new TestData(0x95, "regX", null, 10, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 20, 21 }),
+				new TestData(0x95, "regX", null, 0x80, 10, 4, 0xFFFF /*0*/, new ushort[] { 0, 0xFF8A, 0xFF8B }),
+				new TestData(0xA0, "regY", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new TestData(0xA1, "regY", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new TestData(0xB0, "regY", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0xB1, "regY", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0xC0, "regU", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new TestData(0xC1, "regU", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new TestData(0xD0, "regU", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0xD1, "regU", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0xE0, "regS", null, null, 11, 2, 10, new ushort[] { 0 }),
+				new TestData(0xE1, "regS", null, null, 12, 3, 10, new ushort[] { 0 }),
+				new TestData(0xF0, "regS", null, null, 11, 5, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 }),
+				new TestData(0xF1, "regS", null, null, 12, 6, 0xFFFF /*0*/, new ushort[] { 0, 10, 11 })
 			};
 			
-			list.ForEach(delegate (ComplexData testData)
+			list.ForEach((testData) => 
 			{
-				ushort initialValue = (ushort)(testData.initialValue.HasValue ? testData.initialValue.Value : 10);
+				var initialValue = (ushort)(testData.initialValue.HasValue ? testData.initialValue.Value : 10);
 
 				TestContext.WriteLine("test: postbyte complex {0}: {1}", testData.register, initialValue);
 
@@ -643,8 +643,8 @@ namespace WPCEmu.Test.Boards.Up
 						break;
 				}
 				cpu.regPC = 0;
-				ushort result = cpu.PostByte();
-				Assert.AreEqual(testData.expectedReturn, result);
+				var result = cpu.PostByte();
+				Assert.That(result, Is.EqualTo(testData.expectedReturn));
 				switch (testData.register)
 				{
 					case "regX":
@@ -662,11 +662,11 @@ namespace WPCEmu.Test.Boards.Up
 					default:
 						break;
 				}
-				Assert.AreEqual(testData.expectedResult, result);
-				Assert.AreEqual(testData.expectedTicks, cpu.tickCount);
-				for (int index = 0; index < testData.expectedMemoryRead.Length; index++)
+				Assert.That(result, Is.EqualTo(testData.expectedResult));
+				Assert.That(cpu.tickCount, Is.EqualTo(testData.expectedTicks));
+				for (var index = 0; index < testData.expectedMemoryRead.Length; index++)
 				{
-					Assert.AreEqual(testData.expectedMemoryRead[index], readMemoryAddressAccess[index]);
+					Assert.That(readMemoryAddressAccess[index], Is.EqualTo(testData.expectedMemoryRead[index]));
 				}
 			});
 		}
@@ -683,13 +683,13 @@ namespace WPCEmu.Test.Boards.Up
 			};
 			cpu.set("flags", 0);
 			cpu.regPC = 0x1000;
-			ushort result = cpu.PostByte();
-			Assert.AreEqual(0x1057, result);
-			Assert.AreEqual("efhinzvc", cpu.flagsToString());
-			Assert.AreEqual(0x1002, cpu.regPC);
-			Assert.AreEqual(1, cpu.tickCount);
-			Assert.AreEqual(0x1000, readMemoryAddressAccess[0]);
-			Assert.AreEqual(0x1001, readMemoryAddressAccess[1]);
+			var result = cpu.PostByte();
+			Assert.That(result, Is.EqualTo(0x1057));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("efhinzvc"));
+			Assert.That(cpu.regPC, Is.EqualTo(0x1002));
+			Assert.That(cpu.tickCount, Is.EqualTo(1));
+			Assert.That(readMemoryAddressAccess[0], Is.EqualTo(0x1000));
+			Assert.That(readMemoryAddressAccess[1], Is.EqualTo(0x1001));
 		}
 
 		[Test, Order(32)]
@@ -704,14 +704,14 @@ namespace WPCEmu.Test.Boards.Up
 			};
 			cpu.set("flags", 0);
 			cpu.regPC = 0x1000;
-			ushort result = cpu.PostByte();
-			Assert.AreEqual(0x659C, result);
-			Assert.AreEqual("efhinzvc", cpu.flagsToString());
-			Assert.AreEqual(0x1003, cpu.regPC);
-			Assert.AreEqual(5, cpu.tickCount);
-			Assert.AreEqual(0x1000, readMemoryAddressAccess[0]);
-			Assert.AreEqual(0x1001, readMemoryAddressAccess[1]);
-			Assert.AreEqual(0x1002, readMemoryAddressAccess[2]);
+			var result = cpu.PostByte();
+			Assert.That(result, Is.EqualTo(0x659C));
+			Assert.That(cpu.flagsToString(), Is.EqualTo("efhinzvc"));
+			Assert.That(cpu.regPC, Is.EqualTo(0x1003));
+			Assert.That(cpu.tickCount, Is.EqualTo(5));
+			Assert.That(readMemoryAddressAccess[0], Is.EqualTo(0x1000));
+			Assert.That(readMemoryAddressAccess[1], Is.EqualTo(0x1001));
+			Assert.That(readMemoryAddressAccess[2], Is.EqualTo(0x1002));
 		}
 	}
 }

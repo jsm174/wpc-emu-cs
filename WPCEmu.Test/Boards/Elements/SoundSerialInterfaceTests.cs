@@ -45,7 +45,7 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("SoundSerialInterface preDCS, no control data available");
 
 			var readControl = preDcsSound.readControl();
-			Assert.AreEqual(0xFF, readControl);
+			Assert.That(readControl, Is.EqualTo(0xFF));
 		}
 
 		[Test, Order(2)]
@@ -54,7 +54,7 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("SoundSerialInterface preDCS, should read data");
 
 			var readControl = preDcsSound.readData();
-			Assert.AreEqual(0x00, readControl);
+			Assert.That(readControl, Is.EqualTo(0x00));
 		}
 
 		[Test, Order(3)]
@@ -65,8 +65,8 @@ namespace WPCEmu.Test.Boards.Elements
 			preDcsSound.writeData(PREDCS_VOLUME_COMMAND);
 			preDcsSound.writeData(0x1F);
 			preDcsSound.writeData(0xE0);
-			Assert.AreEqual("MAINVOLUME", preDcsData[0].command);
-			Assert.AreEqual(31, preDcsData[0].value);
+			Assert.That(preDcsData[0].command, Is.EqualTo("MAINVOLUME"));
+			Assert.That(preDcsData[0].value, Is.EqualTo(31));
 		}
 
 		[Test, Order(4)]
@@ -75,8 +75,8 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("SoundSerialInterface preDCS, should play sample 1");
 
 			preDcsSound.writeData(1);
-			Assert.AreEqual("PLAYSAMPLE", preDcsData[0].command);
-			Assert.AreEqual(1, preDcsData[0].id);
+			Assert.That(preDcsData[0].command, Is.EqualTo("PLAYSAMPLE"));
+			Assert.That(preDcsData[0].id, Is.EqualTo(1));
 		}
 
 		[Test, Order(5)]
@@ -85,7 +85,7 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("SoundSerialInterface preDCS, should stop all samples");
 
 			preDcsSound.writeData(0);
-			Assert.AreEqual("STOPSOUND", preDcsData[0].command);
+			Assert.That(preDcsData[0].command, Is.EqualTo("STOPSOUND"));
 		}
 		
 		[Test, Order(6)]
@@ -95,8 +95,8 @@ namespace WPCEmu.Test.Boards.Elements
 
 			preDcsSound.writeData(PREDCS_EXTENDED_COMMAND);
 			preDcsSound.writeData(1);
-			Assert.AreEqual("PLAYSAMPLE", preDcsData[0].command);
-			Assert.AreEqual(31233, preDcsData[0].id);
+			Assert.That(preDcsData[0].command, Is.EqualTo("PLAYSAMPLE"));
+			Assert.That(preDcsData[0].id, Is.EqualTo(31233));
 		}
 
 		[Test, Order(7)]
@@ -108,8 +108,8 @@ namespace WPCEmu.Test.Boards.Elements
 			dcsSound.writeData(DCS_VOLUME_GLOBAL);
 			dcsSound.writeData(0xFF);
 			dcsSound.writeData(0x00);
-			Assert.AreEqual("MAINVOLUME", dcsData[0].command);
-			Assert.AreEqual(31, dcsData[0].value);
+			Assert.That(dcsData[0].command, Is.EqualTo("MAINVOLUME"));
+			Assert.That(dcsData[0].value, Is.EqualTo(31));
 		}
 
 		[Test, Order(8)]
@@ -119,8 +119,8 @@ namespace WPCEmu.Test.Boards.Elements
 
 			dcsSound.writeData(0x88);
 			dcsSound.writeData(0x77);
-			Assert.AreEqual("PLAYSAMPLE", dcsData[0].command);
-			Assert.AreEqual(0x8877, dcsData[0].id);
+			Assert.That(dcsData[0].command, Is.EqualTo("PLAYSAMPLE"));
+			Assert.That(dcsData[0].id, Is.EqualTo(0x8877));
 		}
 
 		[Test, Order(9)]
@@ -130,7 +130,7 @@ namespace WPCEmu.Test.Boards.Elements
 
 			dcsSound.writeData(0x03);
 			dcsSound.writeData(0xD2);
-			Assert.AreEqual(0x01, dcsSound.readData());
+			Assert.That(dcsSound.readData(), Is.EqualTo(0x01));
 		}
 
 		[Test, Order(10)]
@@ -140,7 +140,7 @@ namespace WPCEmu.Test.Boards.Elements
 
 			dcsSound.writeData(0x03);
 			dcsSound.writeData(0xD3);
-			Assert.AreEqual(0x01, dcsSound.readData());
+			Assert.That(dcsSound.readData(), Is.EqualTo(0x01));
 		}
 
 		[Test, Order(11)]
@@ -150,7 +150,7 @@ namespace WPCEmu.Test.Boards.Elements
 
 			dcsSound.writeData(0x03);
 			dcsSound.writeData(0xE7);
-			Assert.AreEqual(0x10, dcsSound.readData());
+			Assert.That(dcsSound.readData(), Is.EqualTo(0x10));
 		}
 	}
 }

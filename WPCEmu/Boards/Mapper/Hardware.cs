@@ -23,10 +23,10 @@ namespace WPCEmu.Boards.Mapper
         //TODO: enable me only for alphanumeric displays -> instance of
         readonly static ushort[] MEMORY_ALPHANUMERIC_DISPLAY = { 0x3FEB, 0x3FEC, 0x3FED, 0x3FEE, 0x3FEF };
 
-        const string SUBSYSTEM_WPCIO = "wpcio";
-        const string SUBSYSTEM_SOUND = "sound";
-        const string SUBSYSTEM_EXTERNAL_IO = "externalIo";
-        const string SUBSYSTEM_DISPLAY = "display";
+        public const string SUBSYSTEM_WPCIO = "wpcio";
+        public const string SUBSYSTEM_SOUND = "sound";
+        public const string SUBSYSTEM_EXTERNAL_IO = "externalIo";
+        public const string SUBSYSTEM_DISPLAY = "display";
 
         static Model buildReturnModel(ushort offset, string subsystem)
         {

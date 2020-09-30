@@ -70,20 +70,6 @@ namespace WPCEmu.Boards
 
         Dictionary<ushort, string> REVERSEOP = new Dictionary<ushort, string>();
 
-        public struct RomObject
-        {
-            public bool hasSecurityPic;
-            public bool wpc95;
-        }
-
-        public struct InitObject
-        {
-            public Action interruptCallback;
-            public ushort romSizeMBit;
-            public byte[] ram;
-            public RomObject? romObject;
-        }
-
         public struct State
         {
             public byte diagnosticLed;
@@ -132,7 +118,7 @@ namespace WPCEmu.Boards
 
         readonly long MIDNIGHT_MADNESS_TIME = new DateTimeOffset(DateTime.Parse("December 17, 1995 23:59:45")).ToUnixTimeMilliseconds();
 
-        Action interruptCallback;
+        WpcCpuBoard.InterruptCallback interruptCallback;
         byte pageMask;
         public byte[] ram;
         bool hardwareHasSecurityPic;
@@ -149,7 +135,7 @@ namespace WPCEmu.Boards
         int irqCountGI;
         public byte zeroCrossFlag = 0;
         int ticksZeroCross = 0;
-        ushort? memoryProtectionMask = null;
+        public ushort? memoryProtectionMask = null;
         long midnightMadnessMode;
         bool midnightModeEnabled;
         public bool blankSignalHigh;
@@ -157,12 +143,12 @@ namespace WPCEmu.Boards
         int watchdogExpiredCounter;
         byte dipSwitchSetting;
 
-        public static CpuBoardAsic GetInstance(InitObject initObject)
+        public static CpuBoardAsic GetInstance(WpcCpuBoard.InitObject initObject)
         {
             return new CpuBoardAsic(initObject);
         }
 
-        public CpuBoardAsic(InitObject initObject)
+        public CpuBoardAsic(WpcCpuBoard.InitObject initObject)
         {
             foreach (var fieldInfo in typeof(OP).GetFields())
             {
@@ -211,7 +197,7 @@ namespace WPCEmu.Boards
             dipSwitchSetting = DipSwitchCountry.USA;
         }
 
-        void reset()
+        public void reset()
         {
             Debug.Print("RESET_ASIC");
             periodicIRQTimerEnabled = true;
@@ -311,13 +297,13 @@ namespace WPCEmu.Boards
             zeroCrossFlag = 0x01;
         }
 
-        void setCabinetInput(byte value)
+        public void setCabinetInput(byte value)
         {
             Debug.Print("setCabinetInput {0}", value);
             inputSwitchMatrix.setCabinetKey((byte)(value & 0xFF));
         }
 
-        void setSwitchInput(byte switchNr, bool? optionalValue = null)
+        public void setSwitchInput(byte switchNr, bool? optionalValue = null)
         {
             Debug.Print("setSwitchInput {0} {1}", switchNr, optionalValue);
             inputSwitchMatrix.setInputKey((byte)(switchNr & 0xFF), optionalValue);
@@ -328,30 +314,30 @@ namespace WPCEmu.Boards
             inputSwitchMatrix.setFliptronicsInput(value, optionalValue);
         }
 
-        void firqSourceDmd(bool fromDmd)
+        public void firqSourceDmd(bool fromDmd)
         {
             Debug.Print("firqSourceDmd {0}", fromDmd);
             _firqSourceDmd = fromDmd == true;
         }
 
-        void toggleMidnightMadnessMode()
+        public void toggleMidnightMadnessMode()
         {
             midnightMadnessMode = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
             midnightModeEnabled = !midnightModeEnabled;
         }
 
-        void setDipSwitchByte(byte dipSwitch)
+        public void setDipSwitchByte(byte dipSwitch)
         {
             Debug.Print("setDipSwitchByte {0}", dipSwitch);
             dipSwitchSetting = dipSwitch;
         }
 
-        byte getDipSwitchByte()
+        public byte getDipSwitchByte()
         {
             return dipSwitchSetting;
         }
 
-        void executeCycle(int ticksExecuted)
+        public void executeCycle(int ticksExecuted)
         {
             ticksZeroCross += ticksExecuted;
             if (ticksZeroCross >= Timing.CALL_ZEROCLEAR_AFTER_TICKS)
@@ -373,7 +359,7 @@ namespace WPCEmu.Boards
             outputSolenoidMatrix.executeCycle(ticksExecuted);
         }
 
-        bool isMemoryProtectionEnabled()
+        public bool isMemoryProtectionEnabled()
         {
             return ram[OP.WPC_RAM_LOCK] == WPC_PROTECTED_MEMORY_UNLOCK_VALUE;
         }

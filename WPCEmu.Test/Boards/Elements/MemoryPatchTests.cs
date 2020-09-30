@@ -12,9 +12,9 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("memoryPatch, should not return a value");
 
-			MemoryPatch memoryPatch = MemoryPatch.GetInstance();
-			MemoryPatch.Patch? result = memoryPatch.hasPatch(0);
-			Assert.AreEqual(null, result);
+			var memoryPatch = MemoryPatch.GetInstance();
+			var result = memoryPatch.hasPatch(0);
+			Assert.That(result, Is.EqualTo(null));
 		}
 
 		[Test, Order(2)]
@@ -22,10 +22,10 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("memoryPatch, should return a patched value");
 
-			MemoryPatch memoryPatch = MemoryPatch.GetInstance();
+			var memoryPatch = MemoryPatch.GetInstance();
 			memoryPatch.addPatch(0x50, 20);
-			MemoryPatch.Patch? result = memoryPatch.hasPatch(0x50);
-			Assert.AreEqual(20, result.Value.value);
+			var result = memoryPatch.hasPatch(0x50);
+			Assert.That(result?.value, Is.EqualTo(20));
 		}
 
 		[Test, Order(3)]
@@ -33,11 +33,11 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("memoryPatch, should remove a patched value");
 
-			MemoryPatch memoryPatch = MemoryPatch.GetInstance();
+			var memoryPatch = MemoryPatch.GetInstance();
 			memoryPatch.addPatch(0x50, 20);
 			memoryPatch.removePatch(0x50);
-			MemoryPatch.Patch? result = memoryPatch.hasPatch(0x50);
-			Assert.AreEqual(null, result);
+			var result = memoryPatch.hasPatch(0x50);
+			Assert.That(result, Is.EqualTo(null));
 		}
 
 		[Test, Order(4)]
@@ -45,10 +45,10 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("memoryPatch, should add a volatile patch");
 
-			MemoryPatch memoryPatch = MemoryPatch.GetInstance();
+			var memoryPatch = MemoryPatch.GetInstance();
 			memoryPatch.addPatch(0x50, 20, true);
-			MemoryPatch.Patch? result = memoryPatch.hasPatch(0x50);
-			Assert.AreEqual(20, result.Value.value);
+			var result = memoryPatch.hasPatch(0x50);
+			Assert.That(result?.value, Is.EqualTo(20));
 		}
 
 		[Test, Order(5)]
@@ -56,18 +56,18 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("memoryPatch, should cleanup volatile patches");
 
-			MemoryPatch memoryPatch = MemoryPatch.GetInstance();
+			var memoryPatch = MemoryPatch.GetInstance();
 			memoryPatch.addPatch(0x50, 20, true);
 			memoryPatch.addPatch(0x70, 21, true);
 			memoryPatch.addPatch(0x90, 23);
 
 			memoryPatch.removeVolatileEntries();
-			MemoryPatch.Patch? result1 = memoryPatch.hasPatch(0x50);
-			MemoryPatch.Patch? result2 = memoryPatch.hasPatch(0x70);
-			MemoryPatch.Patch? result3 = memoryPatch.hasPatch(0x90);
-			Assert.AreEqual(null, result1);
-			Assert.AreEqual(null, result2);
-			Assert.AreEqual(23, result3.Value.value);
+			var result1 = memoryPatch.hasPatch(0x50);
+			var result2 = memoryPatch.hasPatch(0x70);
+			var result3 = memoryPatch.hasPatch(0x90);
+			Assert.That(result1, Is.EqualTo(null));
+			Assert.That(result2, Is.EqualTo(null));
+			Assert.That(result3?.value, Is.EqualTo(23));
 		}
 
 		[Test, Order(6)]
@@ -75,15 +75,15 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("memoryPatch, should applyPatchesToExposedMemory");
 
-			byte[] ram = Enumerable.Repeat((byte)0x00, 20).ToArray();
-			MemoryPatch memoryPatch = MemoryPatch.GetInstance();
+			var ram = Enumerable.Repeat((byte)0x00, 20).ToArray();
+			var memoryPatch = MemoryPatch.GetInstance();
 			memoryPatch.addPatch(10, 20, true);
 			memoryPatch.addPatch(11, 21, true);
 
-			byte[] result = memoryPatch.applyPatchesToExposedMemory(ram);
-			Assert.AreEqual(0, result[0]);
-			Assert.AreEqual(20, result[10]);
-			Assert.AreEqual(21, result[11]);
+			var result = memoryPatch.applyPatchesToExposedMemory(ram);
+			Assert.That(result[0], Is.EqualTo(0));
+			Assert.That(result[10], Is.EqualTo(20));
+			Assert.That(result[11], Is.EqualTo(21));
 		}
 	}
 }

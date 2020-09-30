@@ -22,7 +22,7 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("outputAlphaDisplay, setSegmentColumn");
 
 			outputAlphaDisplay.setSegmentColumn(0xFF);
-			Assert.AreEqual(0xF, outputAlphaDisplay.segmentColumn);
+			Assert.That(outputAlphaDisplay.segmentColumn, Is.EqualTo(0xF));
 		}
 
 		[Test, Order(2)]
@@ -31,8 +31,8 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("outputAlphaDisplay, getState");
 
 			var result = outputAlphaDisplay.getState();
-			Assert.AreEqual(0, result.scanline);
-			Assert.AreEqual(Enumerable.Repeat((byte)0, 0x200 * 8).ToArray(), result.dmdShaddedBuffer);
+			Assert.That(result.scanline, Is.EqualTo(0));
+			Assert.That(result.dmdShaddedBuffer, Is.EqualTo(Enumerable.Repeat((byte)0, 0x200 * 8).ToArray()));
 		}
 
 		[Test, Order(3)]
@@ -41,7 +41,7 @@ namespace WPCEmu.Test.Boards.Elements
 			TestContext.WriteLine("outputAlphaDisplay, empty setState");
 		
 			var result = outputAlphaDisplay.setState();
-			Assert.AreEqual(false, result);
+			Assert.That(result, Is.EqualTo(false));
 		}
 
 		[Test, Order(4)]
@@ -54,7 +54,7 @@ namespace WPCEmu.Test.Boards.Elements
 				scanline = 5
 			});
 			var result = outputAlphaDisplay.getState();
-			Assert.AreEqual(5, result.scanline);
+			Assert.That(result.scanline, Is.EqualTo(5));
 		}
 
 		[Test, Order(5)]
@@ -64,8 +64,8 @@ namespace WPCEmu.Test.Boards.Elements
 
 			outputAlphaDisplay.setRow1(false, 0xFFFF);
 			var result = outputAlphaDisplay.displayData;
-			Assert.AreEqual(0x00FF, result[0]);
-			Assert.AreEqual(0x0000, result[1]);
+			Assert.That(result[0], Is.EqualTo(0x00FF));
+			Assert.That(result[1], Is.EqualTo(0x0000));
 		}
 
 		[Test, Order(6)]
@@ -75,8 +75,8 @@ namespace WPCEmu.Test.Boards.Elements
 
 			outputAlphaDisplay.setRow1(true, 0xFFFF);
 			var result = outputAlphaDisplay.displayData;
-			Assert.AreEqual(0xFF00, result[0]);
-			Assert.AreEqual(0x0000, result[1]);
+			Assert.That(result[0], Is.EqualTo(0xFF00));
+			Assert.That(result[1], Is.EqualTo(0x0000));
 		}
 
 		[Test, Order(7)]
@@ -87,7 +87,7 @@ namespace WPCEmu.Test.Boards.Elements
 			outputAlphaDisplay.setSegmentColumn(1);
 			outputAlphaDisplay.setRow2(false, 0xFFFF);
 			var result = outputAlphaDisplay.displayData;
-			Assert.AreEqual(0x00FF, result[17]);
+			Assert.That(result[17], Is.EqualTo(0x00FF));
 		}
 
 		[Test, Order(8)]
@@ -98,7 +98,7 @@ namespace WPCEmu.Test.Boards.Elements
 			outputAlphaDisplay.setSegmentColumn(2);
 			outputAlphaDisplay.setRow2(true, 0xFFFF);
 			var result = outputAlphaDisplay.displayData;
-			Assert.AreEqual(0xFF00, result[18]);
+			Assert.That(result[18], Is.EqualTo(0xFF00));
 		}
 
 		[Test, Order(9)]
@@ -118,7 +118,7 @@ namespace WPCEmu.Test.Boards.Elements
 
 			var result = outputAlphaDisplay.getState();
 			var dmdHash = string.Join("", new SHA1Managed().ComputeHash(result.dmdShaddedBuffer).Select(x => x.ToString("x2")).ToArray());
-			Assert.AreEqual("d3706dc84ddfc27e5fa0ba57a8f469fac4472bda", dmdHash);
+			Assert.That(dmdHash, Is.EqualTo("d3706dc84ddfc27e5fa0ba57a8f469fac4472bda"));
 		}
 	}
 }

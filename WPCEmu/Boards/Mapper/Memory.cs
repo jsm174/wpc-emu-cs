@@ -17,10 +17,10 @@ namespace WPCEmu.Boards.Mapper
         const ushort MEMORY_ADDR_BANKSWITCHED_ROM = 0x8000;
         const uint MEMORY_ADDR_SYSTEMROM = 0x10000;
 
-        const string SUBSYSTEM_RAM = "ram";
-        const string SUBSYSTEM_HARDWARE = "hardware";
-        const string SUBSYSTEM_BANKSWITCHED = "bank";
-        const string SUBSYSTEM_SYSTEMROM = "system";
+        public const string SUBSYSTEM_RAM = "ram";
+        public const string SUBSYSTEM_HARDWARE = "hardware";
+        public const string SUBSYSTEM_BANKSWITCHED = "bank";
+        public const string SUBSYSTEM_SYSTEMROM = "system";
 
         public static Model getAddress(int? offset)
         {

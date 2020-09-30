@@ -13,9 +13,9 @@ namespace WPCEmu.Test.Boards
 		{
 			byte[] ram = new byte[0x4000];
 
-			wpc = CpuBoardAsic.GetInstance(new CpuBoardAsic.InitObject
+			wpc = CpuBoardAsic.GetInstance(new WpcCpuBoard.InitObject
 			{
-				interruptCallback = () => { },
+				interruptCallback = new WpcCpuBoard.InterruptCallback(),
 				ram = ram
 			});
 		}
@@ -26,7 +26,7 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should set zerocross flag");
 
 			wpc.setZeroCrossFlag();
-			Assert.AreEqual(1, wpc.zeroCrossFlag);
+			Assert.That(wpc.zeroCrossFlag, Is.EqualTo(1));
 		}
 
 		[Test, Order(2)]
@@ -35,9 +35,9 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should clear zerocross flag when read");
 
 			wpc.setZeroCrossFlag();
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR);
-			Assert.AreEqual(0x80, result);
-			Assert.AreEqual(0, wpc.zeroCrossFlag);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR);
+			Assert.That(result, Is.EqualTo(0x80));
+			Assert.That(wpc.zeroCrossFlag, Is.EqualTo(0));
 		}
 
 		[Test, Order(3)]
@@ -47,9 +47,9 @@ namespace WPCEmu.Test.Boards
 
 			wpc.write(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR, 0x7F);
 			wpc.setZeroCrossFlag();
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR);
-			Assert.AreEqual(0xFF, result);
-			Assert.AreEqual(0, wpc.zeroCrossFlag);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR);
+			Assert.That(result, Is.EqualTo(0xFF));
+			Assert.That(wpc.zeroCrossFlag, Is.EqualTo(0));
 		}
 
 		[Test, Order(4)]
@@ -58,9 +58,9 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should respect old zerocross flag state when read,xxx");
 
 			wpc.write(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR, 0x10);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR);
-			Assert.AreEqual(0x10, result);
-			Assert.AreEqual(0, wpc.zeroCrossFlag);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR);
+			Assert.That(result, Is.EqualTo(0x10));
+			Assert.That(wpc.zeroCrossFlag, Is.EqualTo(0));
 		}
 
 		[Test, Order(5)]
@@ -70,8 +70,8 @@ namespace WPCEmu.Test.Boards
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRL, 0x08);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0xFF);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
-			Assert.AreEqual(0x27, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
+			Assert.That(result, Is.EqualTo(0x27));
 		}
 
 		[Test, Order(6)]
@@ -81,8 +81,8 @@ namespace WPCEmu.Test.Boards
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRL, 0x00);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0x80);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
-			Assert.AreEqual(0x10, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
+			Assert.That(result, Is.EqualTo(0x10));
 		}
 
 		[Test, Order(7)]
@@ -92,8 +92,8 @@ namespace WPCEmu.Test.Boards
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRL, 0x00);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0x40);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
-			Assert.AreEqual(0x08, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
+			Assert.That(result, Is.EqualTo(0x08));
 		}
 
 		[Test, Order(8)]
@@ -103,8 +103,8 @@ namespace WPCEmu.Test.Boards
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRL, 0x08);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0x1);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
-			Assert.AreEqual(0x08, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRL);
+			Assert.That(result, Is.EqualTo(0x08));
 		}
 
 		[Test, Order(9)]
@@ -115,8 +115,8 @@ namespace WPCEmu.Test.Boards
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRH, 0xA8);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRL, 0x08);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0xFF);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRH);
-			Assert.AreEqual(0xA8, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRH);
+			Assert.That(result, Is.EqualTo(0xA8));
 		}
 
 		[Test, Order(10)]
@@ -127,8 +127,8 @@ namespace WPCEmu.Test.Boards
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRH, 0xFF);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTADDRL, 0xFF);
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0xFF);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRH);
-			Assert.AreEqual(0x0, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTADDRH);
+			Assert.That(result, Is.EqualTo(0x0));
 		}
 
 		[Test, Order(11)]
@@ -137,8 +137,8 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should WPC_SHIFTBIT 0x00 (set bit 0)");
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0x00);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
-			Assert.AreEqual(0x01, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
+			Assert.That(result, Is.EqualTo(0x01));
 		}
 
 		[Test, Order(12)]
@@ -147,8 +147,8 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should WPC_SHIFTBIT 0x01 (set bit 1)");
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0x01);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
-			Assert.AreEqual(0x02, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
+			Assert.That(result, Is.EqualTo(0x02));
 		}
 
 		[Test, Order(13)]
@@ -157,8 +157,8 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should WPC_SHIFTBIT 0x04 (set bit 5)");
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0x04);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
-			Assert.AreEqual(0x10, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
+			Assert.That(result, Is.EqualTo(0x10));
 		}
 
 		[Test, Order(14)]
@@ -167,8 +167,8 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should WPC_SHIFTBIT 0x07 (set bit 7)");
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0xFF);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
-			Assert.AreEqual(0x80, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
+			Assert.That(result, Is.EqualTo(0x80));
 		}
 
 		[Test, Order(15)]
@@ -177,8 +177,8 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should WPC_SHIFTBIT2 0x07 (set bit 7)");
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT2, 0xFF);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT2);
-			Assert.AreEqual(0x80, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT2);
+			Assert.That(result, Is.EqualTo(0x80));
 		}
 
 		[Test, Order(16)]
@@ -187,8 +187,8 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should WPC_SHIFTBIT 0xFF (set bit 7)");
 
 			wpc.write(CpuBoardAsic.OP.WPC_SHIFTBIT, 0xFF);
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
-			Assert.AreEqual(0x80, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_SHIFTBIT);
+			Assert.That(result, Is.EqualTo(0x80));
 		}
 
 		[Test, Order(17)]
@@ -198,8 +198,8 @@ namespace WPCEmu.Test.Boards
 
 			wpc.write(CpuBoardAsic.OP.WPC_LAMP_ROW_OUTPUT, 0x4);
 			wpc.write(CpuBoardAsic.OP.WPC_LAMP_COL_STROBE, 0x4);
-			byte[] result = wpc.getState().lampState;
-			Assert.AreEqual(0xFF, result[18]);
+			var result = wpc.getState().lampState;
+			Assert.That(result[18], Is.EqualTo(0xFF));
 		}
 
 		//[Test, Order(18)]
@@ -210,9 +210,9 @@ namespace WPCEmu.Test.Boards
 		//	byte hours = wpc.read(CpuBoardAsic.OP.WPC_CLK_HOURS_DAYS);
 		//	//I don't know why, but travis is always a hour behind
 		//	bool is3or4Hour = hours == 4 || hours == 3;
-		//	Assert.AreEqual(true, is3or4Hour);
-		//	Assert.AreEqual(255, wpc.ram[0x1807]);
-		//	Assert.AreEqual(62, wpc.ram[0x1808]);
+		//	Assert.That(is3or4Hour, Is.EqualTo(true));
+		//	Assert.That(wpc.ram[0x1807], Is.EqualTo(255));
+		//	Assert.That(wpc.ram[0x1808], Is.EqualTo(62));
 		//}
 
 		[Test, Order(19)]
@@ -221,17 +221,17 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, write and read fliptronics");
 
 			wpc.setFliptronicsInput("F4");
-			byte result = wpc.read(CpuBoardAsic.OP.WPC_FLIPTRONICS_FLIPPER_PORT_A);
-			Assert.AreEqual(247, result);
+			var result = wpc.read(CpuBoardAsic.OP.WPC_FLIPTRONICS_FLIPPER_PORT_A);
+			Assert.That(result, Is.EqualTo(247));
 		}
 
 		[Test, Order(20)]
 		public void IgnoreEmptyState()
 		{
 			TestContext.WriteLine("wpc, ignore empty setState");
-		
-			bool? result = wpc.setState();
-			Assert.AreEqual(false, result);
+
+			var result = wpc.setState();
+			Assert.That(result, Is.EqualTo(false));
 		}
 
 		[Test, Order(21)]
@@ -243,7 +243,7 @@ namespace WPCEmu.Test.Boards
 			CpuBoardAsic.State state = wpc.getState();
 			wpc.romBank = 2;
 			wpc.setState(state);
-			Assert.AreEqual(11, wpc.romBank);
+			Assert.That(wpc.romBank, Is.EqualTo(11));
 		}
 
 		[Test, Order(22)]
@@ -252,7 +252,7 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should reset blanking");
 
 			wpc.write(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR, 0x02);
-			Assert.AreEqual(false, wpc.blankSignalHigh);
+			Assert.That(wpc.blankSignalHigh, Is.EqualTo(false));
 		}
 
 		[Test, Order(23)]
@@ -261,7 +261,7 @@ namespace WPCEmu.Test.Boards
 			TestContext.WriteLine("wpc, should NOT reset blanking");
 
 			wpc.write(CpuBoardAsic.OP.WPC_ZEROCROSS_IRQ_CLEAR, 0x04);
-			Assert.AreEqual(true, wpc.blankSignalHigh);
+			Assert.That(wpc.blankSignalHigh, Is.EqualTo(true));
 		}
 	}
 }

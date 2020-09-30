@@ -11,15 +11,15 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3000");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 0,
 				subsystem = "videoram",
 				bank = 2
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3000);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3000);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(2)]
@@ -27,15 +27,15 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3200");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 0,
 				subsystem = "videoram",
 				bank = 3
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3200);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3200);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(3)]
@@ -43,15 +43,15 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3400");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 0,
 				subsystem = "videoram",
 				bank = 4
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3400);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3400);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(4)]
@@ -59,15 +59,15 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3600");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 0,
 				subsystem = "videoram",
 				bank = 5
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3600);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3600);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(5)]
@@ -75,15 +75,15 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3800");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 0,
 				subsystem = "videoram",
 				bank = 0
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3800);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3800);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(6)]
@@ -91,15 +91,15 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 0,
 				subsystem = "videoram",
 				bank = 1
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3A00);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3A00);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(7)]
@@ -107,15 +107,15 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00, should calculate offset correct");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 1,
 				subsystem = "videoram",
 				bank = 1
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3A01);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3A01);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(8)]
@@ -123,14 +123,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00, should calculate offset correct");
 
-			Dmd.Model expectedResult = new Dmd.Model
+			var expectedResult = new Dmd.Model
 			{
 				offset = 0x3FB9,
 				subsystem = "command"
 			};
 
-			Dmd.Model result = Dmd.getAddress(0x3FB9);
-			Assert.AreEqual(expectedResult, result);
+			var result = Dmd.getAddress(0x3FB9);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(9)]

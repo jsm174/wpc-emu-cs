@@ -12,14 +12,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 16322");
 
-			Memory.Model expectedResult = new Memory.Model
+			var expectedResult = new Memory.Model
 			{
 				offset = 16322,
 				subsystem = "hardware"
 			};
 
-            Memory.Model result = Memory.getAddress(16322);
-			Assert.AreEqual(expectedResult, result);
+            var result = Memory.getAddress(16322);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(2)]
@@ -27,14 +27,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 49090 - this crashes the emu");
 
-            Memory.Model expectedResult = new Memory.Model
+            var expectedResult = new Memory.Model
 			{
 				offset = 16322,
 				subsystem = "system"
 			};
 
-            Memory.Model result = Memory.getAddress(49090);
-			Assert.AreEqual(expectedResult, result);
+            var result = Memory.getAddress(49090);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(3)]
@@ -50,14 +50,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, -1");
 
-            Memory.Model expectedResult = new Memory.Model
+            var expectedResult = new Memory.Model
 			{
 				offset = 32767,
 				subsystem = "system"
 			};
 
-            Memory.Model result = Memory.getAddress(-1);
-			Assert.AreEqual(expectedResult, result);
+            var result = Memory.getAddress(-1);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(5)]
@@ -65,14 +65,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x0");
 
-            Memory.Model expectedResult = new Memory.Model
+            var expectedResult = new Memory.Model
 			{
 				offset = 0,
 				subsystem = "ram"
 			};
 
-            Memory.Model result = Memory.getAddress(0x0);
-			Assert.AreEqual(expectedResult, result);
+			var result = Memory.getAddress(0x0);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(6)]
@@ -80,14 +80,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x2000");
 
-            Memory.Model expectedResult = new Memory.Model
+			var expectedResult = new Memory.Model
 			{
 				offset = 0x2000,
 				subsystem = "ram"
 			};
 
-            Memory.Model result = Memory.getAddress(0x2000);
-			Assert.AreEqual(expectedResult, result);
+			var result = Memory.getAddress(0x2000);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(7)]
@@ -95,14 +95,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x2900");
 
-            Memory.Model expectedResult = new Memory.Model
+			var expectedResult = new Memory.Model
 			{
 				offset = 0x2900,
 				subsystem = "ram"
 			};
 
-            Memory.Model result = Memory.getAddress(0x2900);
-			Assert.AreEqual(expectedResult, result);
+			var result = Memory.getAddress(0x2900);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(8)]
@@ -110,14 +110,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x4000");
 
-            Memory.Model expectedResult = new Memory.Model
+			var expectedResult = new Memory.Model
 			{
 				offset = 0,
 				subsystem = "bank"
 			};
 
-            Memory.Model result = Memory.getAddress(0x4000);
-			Assert.AreEqual(expectedResult, result);
+			var result = Memory.getAddress(0x4000);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(8)]
@@ -125,14 +125,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x8000");
 
-            Memory.Model expectedResult = new Memory.Model
+			var expectedResult = new Memory.Model
 			{
 				offset = 0,
 				subsystem = "system"
 			};
 
-            Memory.Model result = Memory.getAddress(0x8000);
-			Assert.AreEqual(expectedResult, result);
+			var result = Memory.getAddress(0x8000);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(9)]
@@ -147,7 +147,7 @@ namespace WPCEmu.Test.Boards.Mapper
 			};
 
             Memory.Model result = Memory.getAddress(0x10000);
-			Assert.AreEqual(expectedResult, result);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(10)]
@@ -155,14 +155,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x3C00");
 
-            Memory.Model expectedResult = new Memory.Model
+			var expectedResult = new Memory.Model
 			{
 				offset = 0x3C00,
 				subsystem = "ram"
 			};
 
-            Memory.Model result = Memory.getAddress(0x3C00);
-			Assert.AreEqual(expectedResult, result);
+			var result = Memory.getAddress(0x3C00);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
 		[Test, Order(11)]
@@ -170,14 +170,14 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x3FAF");
 
-            Memory.Model expectedResult = new Memory.Model
+			var expectedResult = new Memory.Model
 			{
 				offset = 0x3FAF,
 				subsystem = "ram"
 			};
 
-            Memory.Model result = Memory.getAddress(0x3FAF);
-			Assert.AreEqual(expectedResult, result);
+			var result = Memory.getAddress(0x3FAF);
+			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 	}
 }

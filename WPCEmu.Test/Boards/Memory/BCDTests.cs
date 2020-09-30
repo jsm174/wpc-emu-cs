@@ -12,8 +12,8 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toBCD, encode 12345 to BCD");
 
-			byte[] result = BCD.toBCD(12345);
-			Assert.AreEqual(result, new byte[] { 0x01, 0x23, 0x45 });
+			var result = BCD.toBCD(12345);
+			Assert.That(result, Is.EqualTo(new byte[] { 0x01, 0x23, 0x45 }));
 		}
 
 		[Test, Order(2)]
@@ -21,8 +21,8 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toBCD, encode 1000020 to BCD");
 
-			byte[] result = BCD.toBCD(1000020);
-			Assert.AreEqual(new byte[] { 0x01, 0x00, 0x00, 0x20 }, result);
+			var result = BCD.toBCD(1000020);
+			Assert.That(result, Is.EqualTo(new byte[] { 0x01, 0x00, 0x00, 0x20 }));
 		}
 
 		[Test, Order(3)]
@@ -30,8 +30,8 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toNumber, 0x123456)");
 
-			long result = BCD.toNumber(new byte[] { 0x12, 0x34, 0x56 });
-			Assert.AreEqual(123456, result);
+			var result = BCD.toNumber(new byte[] { 0x12, 0x34, 0x56 });
+			Assert.That(result, Is.EqualTo(123456));
 		}
 
 		[Test, Order(4)]
@@ -39,8 +39,8 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toNumber, 0x1234)");
 
-			long result = BCD.toNumber(new byte[] { 0x12, 0x34 });
-			Assert.AreEqual(1234, result);
+			var result = BCD.toNumber(new byte[] { 0x12, 0x34 });
+			Assert.That(result, Is.EqualTo(1234));
 		}
 
 		[Test, Order(5)]
@@ -48,8 +48,8 @@ namespace WPCEmu.Test.Boards.Memory
 		{
 			TestContext.WriteLine("BCD: toNumber, empty");
 
-			long result = BCD.toNumber(new byte[] { });
-			Assert.AreEqual(0, result);
+			var result = BCD.toNumber(new byte[] { });
+			Assert.That(result, Is.EqualTo(0));
 		}
 	}
 }

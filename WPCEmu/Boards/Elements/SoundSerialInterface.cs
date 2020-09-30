@@ -61,7 +61,7 @@ namespace WPCEmu.Boards.Elements
 
         bool isPreDcsSoundBoard;
         Action<SoundBoardCallbackData> soundBoardCallback;
-        byte volume;
+        public byte volume;
         int lastUnknownControlWrite;
         Queue<byte> writeQueue;
         Queue<byte> readQueue;
@@ -132,7 +132,7 @@ namespace WPCEmu.Boards.Elements
             return READ_DATA_IS_AVAILABLE;
         }
 
-        bool writeControl(byte value)
+        public bool writeControl(byte value)
         {
             Debug.Print("CONTROL_WRITE {0}", value);
             if (value == 0x00)

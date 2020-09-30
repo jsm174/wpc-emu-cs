@@ -74,7 +74,7 @@ namespace WPCEmu.Boards.Elements
         byte activePage;
         byte? nextActivePage;
         int videoOutputPointer;
-        bool requestFIRQ;
+        public bool requestFIRQ;
         int ticksUpdateDmd;
 
         public static OutputDmdDisplay GetInstance(ushort dmdPageSize)
@@ -168,21 +168,21 @@ namespace WPCEmu.Boards.Elements
             nextActivePage = (byte) (value & 0xF);
         }
 
-        byte _getVideoRamOffset(byte bank, byte offset)
+        ushort _getVideoRamOffset(byte bank, ushort offset)
         {
             byte selectedPage = dmdPageMapping[bank];
-            return (byte) (selectedPage * dmdPageSize + offset);
+            return (ushort) (selectedPage * dmdPageSize + offset);
         }
 
-        public void writeVideoRam(byte bank, byte offset, byte value)
+        public void writeVideoRam(byte bank, ushort offset, byte value)
         {
-            byte videoRamOffset = _getVideoRamOffset(bank, offset);
+            ushort videoRamOffset = _getVideoRamOffset(bank, offset);
             videoRam[videoRamOffset] = value;
         }
 
-        public byte readVideoRam(byte bank, byte offset)
+        public byte readVideoRam(byte bank, ushort offset)
         {
-            byte videoRamOffset = _getVideoRamOffset(bank, offset);
+            ushort videoRamOffset = _getVideoRamOffset(bank, offset);
             return videoRam[videoRamOffset];
         }
 

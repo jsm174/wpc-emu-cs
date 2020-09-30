@@ -21,7 +21,7 @@ namespace WPCEmu.Test.Boards
 		{
 			byte[] ram = new byte[0x4000];
 
-			displayBoard = DisplayBoard.GetInstance(new WpcCpuBoard.InitObject
+			displayBoard = DisplayBoard.getInstance(new WpcCpuBoard.InitObject
 			{
 				interruptCallback = new WpcCpuBoard.InterruptCallback(),
 				ram = ram

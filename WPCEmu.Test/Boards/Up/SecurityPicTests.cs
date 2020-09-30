@@ -14,7 +14,7 @@ namespace WPCEmu.Test.Boards.Up
 		[SetUp]
 		public void Init()
 		{
-			securityPic = SecurityPic.GetInstance(MACHINE_SERIAL);
+			securityPic = SecurityPic.getInstance(MACHINE_SERIAL);
 		}
 
 		[Test, Order(1)]

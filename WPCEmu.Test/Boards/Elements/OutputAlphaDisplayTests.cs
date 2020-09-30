@@ -13,7 +13,7 @@ namespace WPCEmu.Test.Boards.Elements
 		[SetUp]
 		public void Init()
 		{
-			outputAlphaDisplay = OutputAlphaDisplay.GetInstance(0x200);
+			outputAlphaDisplay = OutputAlphaDisplay.getInstance(0x200);
 		}
 
 		[Test, Order(1)]

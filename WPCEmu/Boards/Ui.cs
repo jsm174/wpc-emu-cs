@@ -17,24 +17,10 @@ namespace WPCEmu.Boards
 
         readonly string[] SUPPORTED_ENCODINGS = new string[] { ENCODING_STRING, ENCODING_UINT8, ENCODING_BCD };
 
-        public struct MemoryPosition
-        {
-            public ushort? offset;
-            public string description;
-            public string type;
-            public int? length;
-            public object value;
-        }
-
-        public struct MemoryPositionInitObject
-        {
-            public MemoryPosition[] knownValues;
-        }
-
         public struct State
         {
             public byte[] ram;
-            public MemoryPosition[] memoryPosition;
+            public MemoryHandler.MemoryPositionData[] memoryPosition;
             public SoundBoard.State sound;
             public CpuBoardAsic.State wpc;
             public OutputDmdDisplay.State dmd;
@@ -49,16 +35,16 @@ namespace WPCEmu.Boards
             public byte[] inputState;
         };
 
-        public MemoryPosition[] memoryPosition;
+        public MemoryHandler.MemoryPositionData[] memoryPosition;
         OldState oldState;
         byte[][] videoRam;
 
-        public static UiState GetInstance(MemoryPositionInitObject? memoryPosition = null)
+        public static UiState getInstance(MemoryHandler.MemoryPosition? memoryPosition = null)
         {
             return new UiState(memoryPosition);
         }
 
-        public UiState(MemoryPositionInitObject? memoryPosition = null)
+        public UiState(MemoryHandler.MemoryPosition? memoryPosition = null)
         {
             this.memoryPosition = null;
 
@@ -100,7 +86,7 @@ namespace WPCEmu.Boards
             return changedFrames;
         }
 
-        MemoryPosition[] parseMemoryPosition(byte[] ram)
+        MemoryHandler.MemoryPositionData[] parseMemoryPosition(byte[] ram)
         {
             if (memoryPosition == null)
             {
@@ -155,7 +141,7 @@ namespace WPCEmu.Boards
             }).ToArray();
         }
 
-        public State getChangedAsicState(WpcCpuBoard.Asic state, bool includeExpensiveData = true)
+        public WpcCpuBoard.Asic getChangedAsicState(WpcCpuBoard.Asic state, bool includeExpensiveData = true)
         {
             var display = (OutputDmdDisplay.State)state.display;
 
@@ -182,10 +168,10 @@ namespace WPCEmu.Boards
             }
 
             bool videoRamChanged = includeExpensiveData == false ? false : getVideoRamDiff(((OutputDmdDisplay.State)state.display).videoRam);
-            MemoryPosition[] memoryPosition = parseMemoryPosition(state.ram);
+            MemoryHandler.MemoryPositionData[] memoryPosition = parseMemoryPosition(state.ram);
             byte[] ram = includeExpensiveData == false ? null : state.ram;
 
-            return new State
+            return new WpcCpuBoard.Asic
             {
                 ram = ram,
                 memoryPosition = memoryPosition,

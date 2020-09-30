@@ -28,7 +28,7 @@ namespace WPCEmu.Boards.Up
         public byte lastByteWrite;
         byte writesUntilUnlockNeeded;
 
-        public static SecurityPic GetInstance(int machineNumber = MEDIEVAL_MADNESS_GAME_ID)
+        public static SecurityPic getInstance(int machineNumber = MEDIEVAL_MADNESS_GAME_ID)
         {
             return new SecurityPic(machineNumber);
         }

@@ -40,7 +40,7 @@ namespace WPCEmu.Test.Boards.Up
 			readMemoryAddress = new List<ushort>();
 			writeMemoryAddress = new List<AddressValueData>();
 		
-			cpu = Cpu6809.GetInstance(WriteMemoryMock, ReadMemoryMock);
+			cpu = Cpu6809.getInstance(WriteMemoryMock, ReadMemoryMock);
 			cpu.reset();
 		}
 

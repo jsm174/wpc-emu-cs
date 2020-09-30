@@ -74,7 +74,7 @@ namespace WPCEmu.Boards.Up
         const ushort vecSWI2 = 0xFFF4;
         const ushort vecSWI3 = 0xFFF2;
 
-        readonly byte[] cycles = {
+        static readonly byte[] cycles = {
           6, 0, 0, 6, 6, 0, 6, 6, 6, 6, 6, 0, 6, 6, 3, 6, /* 00-0F */
           1, 1, 2, 2, 0, 0, 5, 9, 0, 2, 3, 0, 3, 2, 8, 7, /* 10-1F */
           3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, /* 20-2F */
@@ -94,7 +94,7 @@ namespace WPCEmu.Boards.Up
         };
 
         /* Instruction timing for the two-byte opcodes */
-        readonly byte[] cycles2 = {
+        static readonly byte[] cycles2 = {
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 00-0F */
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 10-1F */
           0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, /* 20-2F */
@@ -114,7 +114,7 @@ namespace WPCEmu.Boards.Up
         };
 
         /* Negative and zero flags for quicker flag settings */
-        readonly byte[] flagsNZ = {
+        static readonly byte[] flagsNZ = {
           4, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 00-0F */
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 10-1F */
           0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, /* 20-2F */
@@ -177,7 +177,7 @@ namespace WPCEmu.Boards.Up
             public int tickCount;
         }
 
-        public static Cpu6809 GetInstance(Action<ushort, byte> memoryWriteFunction, Func<ushort, byte> memoryReadFunction)
+        public static Cpu6809 getInstance(Action<ushort, byte> memoryWriteFunction, Func<ushort, byte> memoryReadFunction)
         {
             return new Cpu6809(memoryWriteFunction, memoryReadFunction);
         }

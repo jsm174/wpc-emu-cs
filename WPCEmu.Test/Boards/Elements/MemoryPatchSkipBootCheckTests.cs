@@ -11,7 +11,7 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("MemoryPatchSkipBootCheck, should return a patched game id");
 
-			var memoryPatch = MemoryPatch.GetInstance();
+			var memoryPatch = MemoryPatch.getInstance();
 			MemoryPatchSkipBootCheck.run(memoryPatch);
 			var checkLo = memoryPatch.hasPatch(0xFFEC);
 			var checkHi = memoryPatch.hasPatch(0xFFED);

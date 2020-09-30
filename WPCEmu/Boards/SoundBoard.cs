@@ -46,7 +46,7 @@ namespace WPCEmu.Boards
          * @return {SoundBoard} instance
          */
 
-        public static SoundBoard GetInstance(WpcCpuBoard.InitObject initObject)
+        public static SoundBoard getInstance(WpcCpuBoard.InitObject initObject)
         {
             return new SoundBoard(initObject);
         }
@@ -54,7 +54,7 @@ namespace WPCEmu.Boards
         public SoundBoard(WpcCpuBoard.InitObject initObject)
         {
             bool isPreDcsSoundBoard = initObject.romObject?.preDcsSoundboard == true;
-            soundSerialInterface = SoundSerialInterface.GetInstance(isPreDcsSoundBoard);
+            soundSerialInterface = SoundSerialInterface.getInstance(isPreDcsSoundBoard);
             readDataBytes = 0;
             writeDataBytes = 0;
             readControlBytes = 0;

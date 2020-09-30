@@ -20,7 +20,7 @@ namespace WPCEmu.Boards.Elements
         public byte[] switchState;
         public byte activeColumn;
 
-        public static InputSwitchMatrix GetInstance()
+        public static InputSwitchMatrix getInstance()
         {
             return new InputSwitchMatrix();
         }

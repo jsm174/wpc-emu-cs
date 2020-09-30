@@ -13,7 +13,7 @@ namespace WPCEmu.Test.Boards.Elements
 		[SetUp]
 		public void Init()
 		{
-			solenoidMatrix = OutputSolenoidMatrix.GetInstance(UPDATE_AFTER_TICKS);
+			solenoidMatrix = OutputSolenoidMatrix.getInstance(UPDATE_AFTER_TICKS);
 		}
 
 		[Test, Order(1)]

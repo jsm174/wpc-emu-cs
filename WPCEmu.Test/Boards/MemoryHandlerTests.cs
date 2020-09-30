@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using WPCEmu.Boards;
+using WPCEmu.Boards.Memory;
 
 namespace WPCEmu.Test.Boards
 {
@@ -12,10 +13,10 @@ namespace WPCEmu.Test.Boards
 		[SetUp]
 		public void Init()
 		{
-			var config = new MemoryHandler.Config
+			var config = new MemoryHandler.MemoryPosition
 			{
-				checksum = new MemoryHandler.ChecksumPosition[] {
-					new MemoryHandler.ChecksumPosition {
+				checksum = new Checksum.ChecksumData[] {
+					new Checksum.ChecksumData {
 						dataStartOffset = 0x1D29,
 						dataEndOffset = 0x1D48,
 						checksumOffset = 0x1D49,
@@ -25,7 +26,7 @@ namespace WPCEmu.Test.Boards
 				}
 			};
 
-			memoryHandler = MemoryHandler.GetInstance(config, Enumerable.Repeat((byte)0, 8192).ToArray());
+			memoryHandler = MemoryHandler.getInstance(config, Enumerable.Repeat((byte)0, 8192).ToArray());
 		}
 
 		[Test, Order(1)]

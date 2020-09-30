@@ -77,7 +77,7 @@ namespace WPCEmu.Boards.Elements
         public bool requestFIRQ;
         int ticksUpdateDmd;
 
-        public static OutputDmdDisplay GetInstance(ushort dmdPageSize)
+        public static OutputDmdDisplay getInstance(ushort dmdPageSize)
         {
             return new OutputDmdDisplay(dmdPageSize);
         }

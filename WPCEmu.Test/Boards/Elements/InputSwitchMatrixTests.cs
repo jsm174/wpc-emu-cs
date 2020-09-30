@@ -11,7 +11,7 @@ namespace WPCEmu.Test.Boards.Elements
 		[SetUp]
 		public void Init()
 		{
-			inputSwitchMatrix = InputSwitchMatrix.GetInstance();
+			inputSwitchMatrix = InputSwitchMatrix.getInstance();
 		}
 
 		[Test, Order(1)]

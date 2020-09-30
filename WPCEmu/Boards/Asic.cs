@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Diagnostics;
+using System.Collections.Generic;
 using WPCEmu.Boards.Elements;
 using WPCEmu.Boards.Static;
 using WPCEmu.Boards.Up;
-using System.Collections.Generic;
 
 /**
  * All read/write requests from the CPU are first seen by the ASIC, which can
@@ -143,7 +143,7 @@ namespace WPCEmu.Boards
         int watchdogExpiredCounter;
         byte dipSwitchSetting;
 
-        public static CpuBoardAsic GetInstance(WpcCpuBoard.InitObject initObject)
+        public static CpuBoardAsic getInstance(WpcCpuBoard.InitObject initObject)
         {
             return new CpuBoardAsic(initObject);
         }
@@ -173,13 +173,13 @@ namespace WPCEmu.Boards
             ram = initObject.ram;
             hardwareHasSecurityPic = initObject.romObject != null && initObject.romObject?.hasSecurityPic == true;
 
-            inputSwitchMatrix = InputSwitchMatrix.GetInstance();
-            outputLampMatrix = OutputLampMatrix.GetInstance(Timing.CALL_UPDATELAMP_AFTER_TICKS);
-            outputSolenoidMatrix = OutputSolenoidMatrix.GetInstance(Timing.CALL_UPDATESOLENOID_AFTER_TICKS);
+            inputSwitchMatrix = InputSwitchMatrix.getInstance();
+            outputLampMatrix = OutputLampMatrix.getInstance(Timing.CALL_UPDATELAMP_AFTER_TICKS);
+            outputSolenoidMatrix = OutputSolenoidMatrix.getInstance(Timing.CALL_UPDATESOLENOID_AFTER_TICKS);
 
             bool isWpc95 = initObject.romObject != null && initObject.romObject?.wpc95 == true;
-            outputGeneralIllumination = OutputGeneralIllumination.GetInstance(isWpc95);
-            securityPic = SecurityPic.GetInstance();
+            outputGeneralIllumination = OutputGeneralIllumination.getInstance(isWpc95);
+            securityPic = SecurityPic.getInstance();
             periodicIRQTimerEnabled = true;
             romBank = 0;
             diagnosticLedToggleCount = 0;

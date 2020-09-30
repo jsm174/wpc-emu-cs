@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using WPCEmu.Boards.Mapper;
 
 namespace WPCEmu.Test.Boards.Mapper
@@ -138,7 +139,8 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should throw when using invalid address, -1");
 
-			Assert.Throws<System.Exception>(() => Dmd.getAddress(-1) /*{ message: 'INVALID_DMD_ADDRESSRANGE_-1' }*/);
+			var result = Assert.Throws<Exception>(() => Dmd.getAddress(-1));
+			Assert.That(result.Message, Is.EqualTo("INVALID_DMD_ADDRESSRANGE_-1"));
 		}
 	}
 }

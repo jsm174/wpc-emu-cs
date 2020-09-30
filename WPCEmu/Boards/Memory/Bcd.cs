@@ -31,7 +31,7 @@ namespace WPCEmu.Boards.Memory
          */
         public static byte[] toBCD(long number)
         {
-            byte[] bcd = Enumerable.Repeat((byte)0x00, 32).ToArray();
+            var bcd = Enumerable.Repeat((byte)0x00, 32).ToArray();
 
             int size = 0;
             while (number != 0)

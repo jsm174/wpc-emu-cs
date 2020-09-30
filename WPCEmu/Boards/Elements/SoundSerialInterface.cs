@@ -66,7 +66,7 @@ namespace WPCEmu.Boards.Elements
         Queue<byte> writeQueue;
         Queue<byte> readQueue;
 
-        public static SoundSerialInterface GetInstance(bool isPreDcsSoundBoard)
+        public static SoundSerialInterface getInstance(bool isPreDcsSoundBoard)
         {
             return new SoundSerialInterface(isPreDcsSoundBoard);
         }

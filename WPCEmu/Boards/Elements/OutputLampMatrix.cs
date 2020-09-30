@@ -14,7 +14,7 @@ namespace WPCEmu.Boards.Elements
         public byte activeColumn;
         int ticks;
 
-        public static OutputLampMatrix GetInstance(int updateLampTicks)
+        public static OutputLampMatrix getInstance(int updateLampTicks)
         {
             return new OutputLampMatrix(updateLampTicks);
         }

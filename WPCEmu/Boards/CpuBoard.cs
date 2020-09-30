@@ -4,6 +4,7 @@ using System.Diagnostics;
 using WPCEmu.Boards.Elements;
 using WPCEmu.Boards.Static;
 using WPCEmu.Boards.Up;
+using WPCEmu.Rom;
 using memoryMapper = WPCEmu.Boards.Mapper.Memory;
 using hardwareMapper = WPCEmu.Boards.Mapper.Hardware;
 
@@ -13,21 +14,6 @@ namespace WPCEmu.Boards
     {
         const ushort ROM_BANK_SIZE = 16 * 1024;
         const byte SERIALIZED_STATE_VERSION = 5;
-
-        public struct RomObject
-        {
-            public ushort romSizeMBit;
-            public bool hasSecurityPic;
-            public bool wpc95;
-            public byte[] systemRom;
-            public string fileName;
-            public byte[] gameRom;
-            public ushort? gameIdMemoryLocation;
-            public bool skipWpcRomCheck;
-            public MemoryHandler.Config? memoryPosition;
-            public bool hasAlphanumericDisplay;
-            public bool preDcsSoundboard;
-        }
 
         public struct InterruptCallback
         {
@@ -40,7 +26,7 @@ namespace WPCEmu.Boards
         {
             public InterruptCallback interruptCallback;
             public ushort romSizeMBit;
-            public RomObject? romObject;
+            public RomParser.RomObject? romObject;
             public byte[] ram;
             public bool hasAlphanumericDisplay;
         }
@@ -51,6 +37,8 @@ namespace WPCEmu.Boards
             public CpuBoardAsic.State wpc;
             public object display;
             public SoundBoard.State sound;
+            public MemoryHandler.MemoryPositionData[] memoryPosition;
+            public OutputDmdDisplay.State dmd;
         }
 
         public struct State
@@ -62,6 +50,8 @@ namespace WPCEmu.Boards
             public int memoryWrites;
             public int ticksIrq;
             public byte version;
+            public int opsMs;
+            public long runtime;
         };
 
         public byte[] ram;
@@ -80,19 +70,19 @@ namespace WPCEmu.Boards
         int protectedMemoryWriteAttempts;
         int memoryWrites;
 
-        public static WpcCpuBoard GetInstance(RomObject romObject)
+        public static WpcCpuBoard getInstance(RomParser.RomObject romObject)
         {
             return new WpcCpuBoard(romObject);
         }
 
-        public WpcCpuBoard(RomObject romObject)
+        public WpcCpuBoard(RomParser.RomObject romObject)
         {
             ram = Enumerable.Repeat((byte)0, memoryMapper.MEMORY_ADDR_HARDWARE).ToArray();
             romSizeMBit = romObject.romSizeMBit;
             systemRom = romObject.systemRom;
             romFileName = romObject.fileName;
             gameRom = romObject.gameRom;
-            memoryPatch = MemoryPatch.GetInstance();
+            memoryPatch = MemoryPatch.getInstance();
             if (romObject.gameIdMemoryLocation != null)
             {
                 MemoryPatchGameId.run(memoryPatch, (ushort)romObject.gameIdMemoryLocation);
@@ -102,9 +92,9 @@ namespace WPCEmu.Boards
                 Debug.Print("skipWpcRomCheck TRUE");
                 MemoryPatchSkipBootCheck.run(memoryPatch);
             }
-            memoryWriteHandler = MemoryHandler.GetInstance(romObject.memoryPosition, ram);
+            memoryWriteHandler = MemoryHandler.getInstance(romObject.memoryPosition, ram);
 
-            cpu = Cpu6809.GetInstance(_write8, _read8);
+            cpu = Cpu6809.getInstance(_write8, _read8);
 
             InterruptCallback interruptCallback = new InterruptCallback
             {
@@ -126,10 +116,10 @@ namespace WPCEmu.Boards
                 hasAlphanumericDisplay = romObject.hasAlphanumericDisplay
             };
 
-            asic = CpuBoardAsic.GetInstance(initObject);
-            soundBoard = SoundBoard.GetInstance(initObject);
-            displayBoard = DisplayBoard.GetInstance(initObject);
-            externalIo = ExternalIo.GetInstance();
+            asic = CpuBoardAsic.getInstance(initObject);
+            soundBoard = SoundBoard.getInstance(initObject);
+            displayBoard = DisplayBoard.getInstance(initObject);
+            externalIo = ExternalIo.getInstance();
 
             ticksIrq = 0;
             protectedMemoryWriteAttempts = 0;
@@ -215,17 +205,17 @@ namespace WPCEmu.Boards
             asic.toggleMidnightMadnessMode();
         }
 
-        void setDipSwitchByte(byte dipSwitch)
+        public void setDipSwitchByte(byte dipSwitch)
         {
             asic.setDipSwitchByte(dipSwitch);
         }
 
-        byte getDipSwitchByte()
+        public byte getDipSwitchByte()
         {
             return asic.getDipSwitchByte();
         }
 
-        void registerSoundBoardCallback(Action<SoundSerialInterface.SoundBoardCallbackData> callbackFunction)
+        public void registerSoundBoardCallback(Action<SoundSerialInterface.SoundBoardCallbackData> callbackFunction)
         {
             soundBoard.registerSoundBoardCallback(callbackFunction);
         }
@@ -237,7 +227,7 @@ namespace WPCEmu.Boards
             Debug.Print("PC", cpu.getState().regPC);
         }
 
-        int executeCycle(int ticksToRun, int tickSteps)
+        public int executeCycle(int ticksToRun, int tickSteps)
         {
             int ticksExecuted = 0;
             while (ticksExecuted < ticksToRun)
@@ -349,7 +339,7 @@ namespace WPCEmu.Boards
 
                 default:
                     Debug.Print("CPU_WRITE8_FAIL {0} {1} {2}", /*JSON.stringify(*/address/*)*/, offset, value);
-                    //throw new Error('INVALID_WRITE_SUBSYSTEM_0x' + offset.toString(16));
+                    //throw new Exception("INVALID_WRITE_SUBSYSTEM_0x" + offset/*.toString(16)*/);
                     break;
             }
         }

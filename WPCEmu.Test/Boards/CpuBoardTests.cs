@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using WPCEmu.Boards;
+using WPCEmu.Rom;
 
 namespace WPCEmu.Test.Boards
 {
@@ -16,7 +17,7 @@ namespace WPCEmu.Test.Boards
 		public void Init()
 		{
 			var gamerom = Enumerable.Repeat((byte)0xFF, 0x18000).ToArray();
-			var initObject = new WpcCpuBoard.RomObject
+			var initObject = new RomParser.RomObject
 			{
 				romSizeMBit = 1,
 				systemRom = Enumerable.Repeat((byte)0xFF, 2 * PAGESIZE).ToArray(),
@@ -24,7 +25,7 @@ namespace WPCEmu.Test.Boards
 				gameRom = gamerom
 			};
 
-			cpuBoard = WpcCpuBoard.GetInstance(initObject);
+			cpuBoard = WpcCpuBoard.getInstance(initObject);
 		}
 
 		[Test, Order(1)]

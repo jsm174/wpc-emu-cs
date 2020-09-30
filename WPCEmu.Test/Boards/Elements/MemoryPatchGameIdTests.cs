@@ -11,7 +11,7 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			TestContext.WriteLine("MemoryPatchGameId, should return a patched game id");
 
-			var memoryPatch = MemoryPatch.GetInstance();
+			var memoryPatch = MemoryPatch.getInstance();
 			MemoryPatchGameId.run(memoryPatch, 0x50);
 			var gameIdLo = memoryPatch.hasPatch(0x50);
 			var gameIdHi = memoryPatch.hasPatch(0x51);

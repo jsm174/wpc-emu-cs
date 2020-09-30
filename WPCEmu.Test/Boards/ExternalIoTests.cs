@@ -11,7 +11,7 @@ namespace WPCEmu.Test.Boards
 		[SetUp]
 		public void Init()
 		{
-			ioBoard = ExternalIo.GetInstance();
+			ioBoard = ExternalIo.getInstance();
 		}
 
 		[Test, Order(1)]

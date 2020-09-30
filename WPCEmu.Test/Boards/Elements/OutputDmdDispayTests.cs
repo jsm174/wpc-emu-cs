@@ -13,7 +13,7 @@ namespace WPCEmu.Test.Boards.Elements
 		[SetUp]
 		public void Init()
 		{
-			outputDmdDisplay = OutputDmdDisplay.GetInstance(0x200);
+			outputDmdDisplay = OutputDmdDisplay.getInstance(0x200);
 		}
 
 		[Test, Order(1)]

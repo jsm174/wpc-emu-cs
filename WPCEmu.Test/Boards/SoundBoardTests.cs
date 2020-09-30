@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
+using WPCEmu.Rom;
 using WPCEmu.Boards;
 using WPCEmu.Boards.Elements;
 
@@ -25,14 +26,14 @@ namespace WPCEmu.Test.Boards
 				{
 					firqFromDmd = () => { }
 				},
-				romObject = new WpcCpuBoard.RomObject
+				romObject = new RomParser.RomObject
 				{
 					preDcsSoundboard = true
 				}
 			};
 			playbackArray = new List<SoundSerialInterface.SoundBoardCallbackData>();
 
-			instancePreDcs = SoundBoard.GetInstance(initObjectPreDcs);
+			instancePreDcs = SoundBoard.getInstance(initObjectPreDcs);
 			instancePreDcs.reset();
 			instancePreDcs.registerSoundBoardCallback((msg) =>
 			{
@@ -46,13 +47,13 @@ namespace WPCEmu.Test.Boards
 				{
 					firqFromDmd = () => { }
 				},
-				romObject = new WpcCpuBoard.RomObject
+				romObject = new RomParser.RomObject
 				{
 					preDcsSoundboard = false
 				}
 			};
 
-			instanceDcs = SoundBoard.GetInstance(initObjectDcs);
+			instanceDcs = SoundBoard.getInstance(initObjectDcs);
 			instanceDcs.reset();
 			instanceDcs.registerSoundBoardCallback((msg) =>
 			{

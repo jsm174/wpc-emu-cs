@@ -16,7 +16,7 @@ namespace WPCEmu.Boards.Elements
 
         Dictionary<ushort, Patch> patch;
 
-        public static MemoryPatch GetInstance()
+        public static MemoryPatch getInstance()
         {
             return new MemoryPatch();
         }

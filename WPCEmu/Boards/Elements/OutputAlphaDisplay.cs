@@ -71,7 +71,7 @@ namespace WPCEmu.Boards.Elements
         public ushort[] displayData;
         ushort[] displayDataLatched;
 
-        public static OutputAlphaDisplay GetInstance(ushort dmdPageSize)
+        public static OutputAlphaDisplay getInstance(ushort dmdPageSize)
         {
             return new OutputAlphaDisplay(dmdPageSize);
         }

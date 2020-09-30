@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 using WPCEmu.Boards.Mapper;
 
 namespace WPCEmu.Test.Boards.Mapper
@@ -26,7 +27,8 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0");
 
-			Assert.Throws<System.Exception>(() => Hardware.getAddress(0) /*{ message: 'HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x0' }*/);
+			var result = Assert.Throws<Exception>(() => Hardware.getAddress(0));
+			Assert.That(result.Message, Is.EqualTo("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x0"));
 		}
 
 		[Test, Order(3)]
@@ -34,7 +36,8 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, -1");
 
-			Assert.Throws<System.Exception>(() => Hardware.getAddress(-1) /*{ message: 'HW_GET_ADDRESS_INVALID_MEMORY_REGION_0xffff' }*/);
+			var result = Assert.Throws<Exception>(() => Hardware.getAddress(-1));
+			Assert.That(result.Message, Is.EqualTo("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0xFFFF"));
 		}
 
 		[Test, Order(4)]
@@ -102,15 +105,17 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should fail to get address, 0x4000");
 
-			Assert.Throws<System.Exception>(() => Hardware.getAddress(0xFFFF) /*{ message: 'HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x4000' }*/);
+			var result = Assert.Throws<Exception>(() => Hardware.getAddress(0x4000));
+			Assert.That(result.Message, Is.EqualTo("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x4000"));
 		}
 
 		[Test, Order(9)]
 		public void ShouldFail_InvalidOffset()
 		{
 			TestContext.WriteLine("HardwareMapper, should fail to get invalid offset");
-		
-			Assert.Throws<System.Exception>(() => Hardware.getAddress(null) /*{ message: 'HW_GET_ADDRESS_UNDEFINED' }*/);
+
+			var result = Assert.Throws<Exception>(() => Hardware.getAddress(null));
+			Assert.That(result.Message, Is.EqualTo("HW_GET_ADDRESS_UNDEFINED"));
 		}
 
 		[Test, Order(10)]
@@ -118,7 +123,8 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should fail to get address, 0x4000");
 
-			Assert.Throws<System.Exception>(() => Hardware.getAddress(0xFFFF) /*{ message: 'HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x2000' }*/);
+			var result = Assert.Throws<Exception>(() => Hardware.getAddress(0x2000));
+			Assert.That(result.Message, Is.EqualTo("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x2000"));
 		}
 
 		[Test, Order(11)]

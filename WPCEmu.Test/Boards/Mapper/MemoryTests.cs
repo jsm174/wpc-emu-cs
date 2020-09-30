@@ -1,4 +1,5 @@
-﻿using NUnit.Framework;
+﻿using System;
+using NUnit.Framework;
 
 namespace WPCEmu.Test.Boards.Mapper
 {
@@ -42,7 +43,8 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should fail when using invalid offset");
 
-            Assert.Throws<System.Exception>(() => Memory.getAddress(null) /*{ message: 'MEMORY_GET_ADDRESS_UNDEFINED' }*/);
+			var result = Assert.Throws<Exception>(() => Memory.getAddress(null));
+			Assert.That(result.Message, Is.EqualTo("MEMORY_GET_ADDRESS_UNDEFINED"));
 		}
 
 		[Test, Order(4)]

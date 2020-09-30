@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
+﻿using System.Linq;
 using NUnit.Framework;
 using WPCEmu.Boards;
 using WPCEmu.Boards.Elements;
@@ -10,7 +8,7 @@ namespace WPCEmu.Test.Boards
 	[TestFixture]
 	public class UiTests
 	{
-		UiState.MemoryPositionInitObject memoryPosition;
+		MemoryHandler.MemoryPosition memoryPosition;
 		WpcCpuBoard.Asic dummyState;
 		WpcCpuBoard.Asic dummyStateString;
 
@@ -19,20 +17,20 @@ namespace WPCEmu.Test.Boards
 		[SetUp]
 		public void Init()
 		{
-			memoryPosition = new UiState.MemoryPositionInitObject
+			memoryPosition = new MemoryHandler.MemoryPosition
 			{
-				knownValues = new UiState.MemoryPosition[]
+				knownValues = new MemoryHandler.MemoryPositionData[]
 				{
-					new UiState.MemoryPosition { offset = 0, description = "valid1", type = "string" },
-					new UiState.MemoryPosition { offset = 1, description = "valid2", type = "uint8" },
-					new UiState.MemoryPosition { offset = 2, description = "valid3", type = "bcd" },
-					new UiState.MemoryPosition { offset = 3, description = "valid4", type = "uint8", length = 4 },
-					new UiState.MemoryPosition { offset = 0x3AD, description = "invalid1", type = "foo" },
-					new UiState.MemoryPosition { description = "invalid2", type = "string" },
+					new MemoryHandler.MemoryPositionData { offset = 0, description = "valid1", type = "string" },
+					new MemoryHandler.MemoryPositionData { offset = 1, description = "valid2", type = "uint8" },
+					new MemoryHandler.MemoryPositionData { offset = 2, description = "valid3", type = "bcd" },
+					new MemoryHandler.MemoryPositionData { offset = 3, description = "valid4", type = "uint8", length = 4 },
+					new MemoryHandler.MemoryPositionData { offset = 0x3AD, description = "invalid1", type = "foo" },
+					new MemoryHandler.MemoryPositionData { description = "invalid2", type = "string" },
 				}
 			};
 
-			ui = UiState.GetInstance(memoryPosition);
+			ui = UiState.getInstance(memoryPosition);
 
 			dummyState = new WpcCpuBoard.Asic
 			{

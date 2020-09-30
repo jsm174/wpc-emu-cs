@@ -12,8 +12,8 @@ namespace WPCEmu.Test.Boards.Elements
 		[SetUp]
 		public void Init()
 		{
-			preWpc95 = OutputGeneralIllumination.GetInstance(false);
-			wpc95 = OutputGeneralIllumination.GetInstance(true);
+			preWpc95 = OutputGeneralIllumination.getInstance(false);
+			wpc95 = OutputGeneralIllumination.getInstance(true);
 		}
 
 		[Test, Order(1)]

@@ -17,7 +17,7 @@ namespace WPCEmu.Boards.Elements
         public byte[] generalIlluminationState;
         bool isWpc95;
 
-        public static OutputGeneralIllumination GetInstance(bool isWpc95)
+        public static OutputGeneralIllumination getInstance(bool isWpc95)
         {
             return new OutputGeneralIllumination(isWpc95);
         }

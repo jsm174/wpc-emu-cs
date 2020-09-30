@@ -24,7 +24,7 @@ namespace WPCEmu.Boards
 
         byte[] ram;
 
-        public static ExternalIo GetInstance()
+        public static ExternalIo getInstance()
         {
             return new ExternalIo();
         }

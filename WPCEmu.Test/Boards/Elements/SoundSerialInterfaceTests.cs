@@ -25,8 +25,8 @@ namespace WPCEmu.Test.Boards.Elements
 		{
 			preDcsData = new List<SoundSerialInterface.SoundBoardCallbackData>();
 			dcsData = new List<SoundSerialInterface.SoundBoardCallbackData>();
-			preDcsSound = SoundSerialInterface.GetInstance(PREDCS_SOUND);
-			dcsSound = SoundSerialInterface.GetInstance(DCS_SOUND);
+			preDcsSound = SoundSerialInterface.getInstance(PREDCS_SOUND);
+			dcsSound = SoundSerialInterface.getInstance(DCS_SOUND);
 
 			preDcsSound.reset();
 			dcsSound.reset();

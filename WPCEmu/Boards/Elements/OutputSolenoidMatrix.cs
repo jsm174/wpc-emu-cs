@@ -45,7 +45,7 @@ namespace WPCEmu.Boards.Elements
         public byte[] solenoidState;
         int ticks;
 
-        public static OutputSolenoidMatrix GetInstance(int updateAfterTicks)
+        public static OutputSolenoidMatrix getInstance(int updateAfterTicks)
         {
             return new OutputSolenoidMatrix(updateAfterTicks);
         }

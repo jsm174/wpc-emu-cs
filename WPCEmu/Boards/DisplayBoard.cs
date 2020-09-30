@@ -60,7 +60,7 @@ namespace WPCEmu.Boards
         OutputDmdDisplay outputDmdDisplay;
         OutputAlphaDisplay outputAlphaDisplay;
 
-        public static DisplayBoard GetInstance(WpcCpuBoard.InitObject initObject)
+        public static DisplayBoard getInstance(WpcCpuBoard.InitObject initObject)
         {
             return new DisplayBoard(initObject);
         }
@@ -84,8 +84,8 @@ namespace WPCEmu.Boards
             ram = initObject.ram;
             hasAlphanumericDisplay = initObject.hasAlphanumericDisplay;
 
-            outputDmdDisplay = OutputDmdDisplay.GetInstance(DMD_PAGE_SIZE);
-            outputAlphaDisplay = OutputAlphaDisplay.GetInstance(DMD_PAGE_SIZE);
+            outputDmdDisplay = OutputDmdDisplay.getInstance(DMD_PAGE_SIZE);
+            outputAlphaDisplay = OutputAlphaDisplay.getInstance(DMD_PAGE_SIZE);
         }
 
         public void reset()

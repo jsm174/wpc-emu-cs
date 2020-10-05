@@ -12,7 +12,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3FC2");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FC2,
 				subsystem = "externalIo"
@@ -45,7 +45,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3200 (DMD PAGE)");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3200,
 				subsystem = "display"
@@ -60,7 +60,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3BFF (DMD PAGE)");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3BFF,
 				subsystem = "display"
@@ -75,7 +75,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3800 (DMD PAGE 1)");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3800,
 				subsystem = "display"
@@ -90,7 +90,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3A00 (DMD PAGE 2)");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3A00,
 				subsystem = "display"
@@ -132,7 +132,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3c00");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3C00,
 				subsystem = "display"
@@ -147,7 +147,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3E66 - WPC_SERIAL_CONTROL_PORT **FIXME**");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3E66,
 				subsystem = "display"
@@ -162,7 +162,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FC0");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FC0,
 				subsystem = "externalIo"
@@ -177,7 +177,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FD6");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FD6,
 				subsystem = "externalIo"
@@ -192,7 +192,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FDC - WPCS_DATA");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FDC,
 				subsystem = "sound"
@@ -207,7 +207,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FDD - WPCS_CONTROL_STATUS");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FDD,
 				subsystem = "sound"
@@ -222,7 +222,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FDE");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FDE,
 				subsystem = "sound"
@@ -237,7 +237,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get address, 0x3FE0");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FE0,
 				subsystem = "wpcio"
@@ -252,7 +252,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("HardwareMapper, should get exception for fliptronics address");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = Hardware.MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A,
 				subsystem = "wpcio"
@@ -267,7 +267,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get display address, 0x3FEB");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FEB,
 				subsystem = "display"
@@ -282,7 +282,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("should get display address, 0x3FEF");
 
-			var expectedResult = new Hardware.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FEF,
 				subsystem = "display"

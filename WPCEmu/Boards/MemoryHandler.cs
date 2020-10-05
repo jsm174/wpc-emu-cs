@@ -6,21 +6,6 @@ namespace WPCEmu.Boards
 {
     public class MemoryHandler
     {
-        public struct MemoryPositionData
-        {
-            public ushort? offset;
-            public string description;
-            public string type;
-            public int? length;
-            public object value;
-        }
-
-        public struct MemoryPosition
-        {
-            public MemoryPositionData[] knownValues;
-            public Checksum.ChecksumData[] checksum;
-        }
-
         /*
          * write to RAM of the WPC-EMU and optionally update checksum of certain parts
          *
@@ -34,7 +19,7 @@ namespace WPCEmu.Boards
          */
 
         public byte[] ram;
-        public Checksum.ChecksumData[] checksumPositions;
+        public ChecksumData[] checksumPositions;
 
         public static MemoryHandler getInstance(MemoryPosition? config, byte[] ram)
         {
@@ -89,7 +74,7 @@ namespace WPCEmu.Boards
                     return;
                 }
 
-                var needToUpdateChecksum = (Checksum.ChecksumData)_needToUpdateChecksum;
+                var needToUpdateChecksum = (ChecksumData)_needToUpdateChecksum;
                 byte[] ramRangeToChecksum = ram.Skip((ushort)needToUpdateChecksum.dataStartOffset).Take((ushort)needToUpdateChecksum.dataEndOffset - (ushort)needToUpdateChecksum.dataStartOffset + 1).ToArray();
                 ushort checksum = Checksum.checksum16(ramRangeToChecksum);
                 ram[(ushort)needToUpdateChecksum.checksumOffset] = (byte)((checksum >> 8) & 0xFF);
@@ -97,7 +82,7 @@ namespace WPCEmu.Boards
             }
         }
 
-        Checksum.ChecksumData? _needsChecksumUpdate(ushort offset)
+        ChecksumData? _needsChecksumUpdate(ushort offset)
         {
             foreach (var checksumPosition in checksumPositions)
             {

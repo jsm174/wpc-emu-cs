@@ -12,7 +12,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3000");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "videoram",
@@ -28,7 +28,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3200");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "videoram",
@@ -44,7 +44,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3400");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "videoram",
@@ -60,7 +60,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3600");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "videoram",
@@ -76,7 +76,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3800");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "videoram",
@@ -92,7 +92,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "videoram",
@@ -108,7 +108,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00, should calculate offset correct");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 1,
 				subsystem = "videoram",
@@ -124,7 +124,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("DmdMapper, should get address, 0x3A00, should calculate offset correct");
 
-			var expectedResult = new Dmd.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FB9,
 				subsystem = "command"

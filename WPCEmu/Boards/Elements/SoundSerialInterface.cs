@@ -6,14 +6,6 @@ namespace WPCEmu.Boards.Elements
 {
     public class SoundSerialInterface
     {
-        public struct SoundBoardCallbackData
-        {
-            public string command;
-            public ushort id;
-            public byte channel;
-            public byte value;
-        };
-
         const byte SAMPLE_ID_STOP = 0x00;
 
         const byte DCS_VOLUME_COMMAND = 0x55;

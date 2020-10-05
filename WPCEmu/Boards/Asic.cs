@@ -68,8 +68,6 @@ namespace WPCEmu.Boards
             public const ushort WPC_ZEROCROSS_IRQ_CLEAR = 0x3FFF;
         }
 
-        Dictionary<ushort, string> REVERSEOP = new Dictionary<ushort, string>();
-
         public struct State
         {
             public byte diagnosticLed;
@@ -96,6 +94,8 @@ namespace WPCEmu.Boards
             public byte wpcSecureScrambler;
         };
 
+        Dictionary<ushort, string> REVERSEOP = new Dictionary<ushort, string>();
+
         readonly byte[] PAGESIZE_MAP = new byte[] { 0x00, 0x07, 0x0F, 0x00, 0x1F, 0x00, 0x00, 0x00, 0x3F };
         const byte WPC_PROTECTED_MEMORY_UNLOCK_VALUE = 0xB4;
 
@@ -118,7 +118,7 @@ namespace WPCEmu.Boards
 
         readonly long MIDNIGHT_MADNESS_TIME = new DateTimeOffset(DateTime.Parse("December 17, 1995 23:59:45")).ToUnixTimeMilliseconds();
 
-        WpcCpuBoard.InterruptCallback interruptCallback;
+        InterruptCallbackData interruptCallback;
         byte pageMask;
         public byte[] ram;
         bool hardwareHasSecurityPic;
@@ -137,7 +137,7 @@ namespace WPCEmu.Boards
         int ticksZeroCross = 0;
         public ushort? memoryProtectionMask = null;
         long midnightMadnessMode;
-        bool midnightModeEnabled;
+        public bool midnightModeEnabled;
         public bool blankSignalHigh;
         int watchdogTicks;
         int watchdogExpiredCounter;
@@ -409,7 +409,7 @@ namespace WPCEmu.Boards
                 case OP.WPC_RAM_LOCKSIZE:
                     if (isMemoryProtectionEnabled())
                     {
-                        memoryProtectionMask = (byte)MemoryProtection.getMemoryProtectionMask(value);
+                        memoryProtectionMask = MemoryProtection.getMemoryProtectionMask(value);
                         Debug.Print("UPDATED_MEMORY_PROTECTION_MASK {0}", memoryProtectionMask);
                     }
                     else
@@ -513,8 +513,8 @@ namespace WPCEmu.Boards
                     }
 
                 default:
-                    Debug.Print("W_NOT_IMPLEMENTED {0} {1}", offset, value /*'0x' + offset.toString(16)*/);
-                    Debug.Print("ASIC_WRITE_NOT_IMPLEMENTED {0} {1}", offset, value /*'0x' + offset.toString(16)*/);
+                    Debug.Print("W_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), value);
+                    Debug.Print("ASIC_WRITE_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), value);
                     break;
             }
         }
@@ -594,7 +594,7 @@ namespace WPCEmu.Boards
                         checksum += ram[NVRAM_CLOCK_YEAR_HI] = (byte) (temp.Year >> 8);
                         checksum += ram[NVRAM_CLOCK_YEAR_LO] = (byte) (temp.Year & 0xFF);
                         //month (1-12),
-                        checksum += ram[NVRAM_CLOCK_MONTH] = (byte) (temp.Month + 1);
+                        checksum += ram[NVRAM_CLOCK_MONTH] = (byte) temp.Month;
                         //day of month (1-31)
                         checksum += ram[NVRAM_CLOCK_DAY_OF_MONTH] = (byte) temp.Day;
                         //day of the week (0-6, 0=Sunday)
@@ -639,8 +639,8 @@ namespace WPCEmu.Boards
                     return (byte) (_firqSourceDmd == true ? 0x00 : WPC_FIRQ_CLEAR_BIT);
 
                 default:
-                    Debug.Print("R_NOT_IMPLEMENTED {0} {1}", offset, ram[offset] /*'0x' + offset.toString(16)*/);
-                    Debug.Print("ASIC_READ_NOT_IMPLEMENTED {0} {1}", offset, ram[offset] /*'0x' + offset.toString(16)*/);
+                    Debug.Print("R_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), ram[offset]);
+                    Debug.Print("ASIC_READ_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), ram[offset]);
                     break;
             }
 

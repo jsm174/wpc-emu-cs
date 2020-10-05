@@ -111,7 +111,7 @@ namespace WPCEmu.Boards.Elements
                     _updateSolenoidsPacked(OFFSET_SOLENOID_GENERIC, (byte)value);
                     break;
                 default:
-                    throw new Exception("SOLENOID_MATRIX_INVALID_OFFSET_" + sourceAddress/*.toString(16)*/);
+                    throw new Exception("SOLENOID_MATRIX_INVALID_OFFSET_0x" + sourceAddress.ToString("X4"));
             }
         }
     }

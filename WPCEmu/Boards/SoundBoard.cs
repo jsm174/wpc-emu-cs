@@ -13,15 +13,6 @@ namespace WPCEmu.Boards
 {
     public class SoundBoard
     {
-        public static class OP
-        {
-            public const ushort WPC_LATCH_READ = 0x3000;
-            public const ushort WPC_LATCH_WRITE = 0x3C00;
-
-            public const ushort WPC_SOUND_CONTROL_STATUS = 0x3FDD;
-            public const ushort WPC_SOUND_DATA = 0x3FDC;
-        }
-
         public struct State
         {
             public byte volume;
@@ -30,6 +21,15 @@ namespace WPCEmu.Boards
             public int readControlBytes;
             public int writeControlBytes;
         };
+
+        public static class OP
+        {
+            public const ushort WPC_LATCH_READ = 0x3000;
+            public const ushort WPC_LATCH_WRITE = 0x3C00;
+
+            public const ushort WPC_SOUND_CONTROL_STATUS = 0x3FDD;
+            public const ushort WPC_SOUND_DATA = 0x3FDC;
+        }
 
         SoundSerialInterface soundSerialInterface;
         int readDataBytes;
@@ -100,7 +100,7 @@ namespace WPCEmu.Boards
             return null;
         }
 
-        public bool? registerSoundBoardCallback(Action<SoundSerialInterface.SoundBoardCallbackData> callbackFunction = null)
+        public bool? registerSoundBoardCallback(Action<SoundBoardCallbackData> callbackFunction = null)
         {
             if (callbackFunction == null)
             {
@@ -140,8 +140,8 @@ namespace WPCEmu.Boards
                     break;
 
                 default:
-                    Debug.Print("wpcemu:boards:sound-board W_NOT_IMPLEMENTED {0} {1}", /*'0x' +*/offset/*.toString(16)*/, value);
-                    Debug.Print("SND_W_NOT_IMPLEMENTED {0} {1}", /*'0x' + */offset/*.toString(16)*/, value);
+                    Debug.Print("wpcemu:boards:sound-board W_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), value);
+                    Debug.Print("SND_W_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), value);
                     break;
             }
         }
@@ -167,8 +167,8 @@ namespace WPCEmu.Boards
                     }
 
                 default:
-                    Debug.Print("wpcemu:boards:sound-board R_NOT_IMPLEMENTED {0}", /*'0x' + */offset/*.toString(16)*/);
-                    Debug.Print("SND_R_NOT_IMPLEMENTED {0}", /*'0x' + */offset/*.toString(16)*/);
+                    Debug.Print("wpcemu:boards:sound-board R_NOT_IMPLEMENTED {0}", "0x" + offset.ToString("X4"));
+                    Debug.Print("SND_R_NOT_IMPLEMENTED {0}", "0x" + offset.ToString("X4"));
                     return 0;
             }
         }

@@ -7,14 +7,7 @@ namespace WPCEmu.Boards.Elements
     {
         const ushort MEMORY_LIMIT = 0x4000;
 
-        public struct Patch
-        {
-            public ushort offset;
-            public byte value;
-            public bool isVolatile;
-        }
-
-        Dictionary<ushort, Patch> patch;
+        Dictionary<ushort, MemoryPatchData> patch;
 
         public static MemoryPatch getInstance()
         {
@@ -23,12 +16,12 @@ namespace WPCEmu.Boards.Elements
 
         public MemoryPatch()
         {
-            patch = new Dictionary<ushort, Patch>();
+            patch = new Dictionary<ushort, MemoryPatchData>();
         }
 
         public void addPatch(ushort memoryOffset, byte value, bool isVolatile = false)
         {
-            patch.Add(memoryOffset, new Patch
+            patch.Add(memoryOffset, new MemoryPatchData
             {
                 offset = memoryOffset,
                 value = value,
@@ -54,7 +47,7 @@ namespace WPCEmu.Boards.Elements
         }
 
         // memoryOffset is the unmapped memory address (0x0000 - 0xFFFF)
-        public Patch? hasPatch(ushort memoryOffset)
+        public MemoryPatchData? hasPatch(ushort memoryOffset)
         {
             if (patch.ContainsKey(memoryOffset))
             {

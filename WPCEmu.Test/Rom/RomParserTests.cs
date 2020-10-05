@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Linq;
 using NUnit.Framework;
-using WPCEmu.Boards;
 using WPCEmu.Rom;
 
 namespace WPCEmu.Test.Rom
@@ -14,7 +13,7 @@ namespace WPCEmu.Test.Rom
 		{
 			TestContext.WriteLine("romParser should reject empty rom");
 
-			var result = Assert.Throws<Exception>(() => RomParser.parse());
+			var result = Assert.Throws<Exception>(() => RomHelper.parse());
 			Assert.That(result.Message, Is.EqualTo("INVALID_ROM_DATA"));
 		}
 
@@ -23,11 +22,11 @@ namespace WPCEmu.Test.Rom
 		{
 			TestContext.WriteLine("romParser should reject invalid data");
 
-			var romData = new RomParser.Roms {
+			var romData = new RomBinary {
 				u06 = new byte[7]
             };
 
-			var result = Assert.Throws<Exception>(() => RomParser.parse(romData));
+			var result = Assert.Throws<Exception>(() => RomHelper.parse(romData));
 			Assert.That(result.Message, Is.EqualTo("INVALID_ROM_SIZE"));
 		}
 
@@ -37,7 +36,7 @@ namespace WPCEmu.Test.Rom
 			TestContext.WriteLine("romParser should parse game rom");
 
 			var romData = buildRomData();
-			var result = RomParser.parse(romData);
+			var result = RomHelper.parse(romData);
 			Assert.That(result.gameRom[0x000000], Is.EqualTo(11));
 			Assert.That(result.fileName, Is.EqualTo("Unknown"));
 			Assert.That(result.romSizeMBit, Is.EqualTo(2));
@@ -52,11 +51,11 @@ namespace WPCEmu.Test.Rom
 			TestContext.WriteLine("romParser should parse wpc95 board");
 
 			var romData = buildRomData();
-			var metaData = new RomParser.RomMetaData
+			var metaData = new RomMetaData
 			{
 				features = new string[] { "wpc95", "securityPic" }
 			};
-			var result = RomParser.parse(romData, metaData);
+			var result = RomHelper.parse(romData, metaData);
 			Assert.That(result.preDcsSoundboard, Is.EqualTo(false));
 			Assert.That(result.hasSecurityPic, Is.EqualTo(true));
 		}
@@ -67,11 +66,11 @@ namespace WPCEmu.Test.Rom
 			TestContext.WriteLine("romParser should parse wpcDmd board");
 
 			var romData = buildRomData();
-			var metaData = new RomParser.RomMetaData
+			var metaData = new RomMetaData
 			{
 				features = new string[] { "wpcDmd" }
 			};
-			var result = RomParser.parse(romData, metaData);
+			var result = RomHelper.parse(romData, metaData);
 			Assert.That(result.preDcsSoundboard, Is.EqualTo(true));
 			Assert.That(result.hasSecurityPic, Is.EqualTo(false));
 		}
@@ -82,11 +81,11 @@ namespace WPCEmu.Test.Rom
 			TestContext.WriteLine("romParser should parse wpcFliptronics board");
 
 			var romData = buildRomData();
-			var metaData = new RomParser.RomMetaData
+			var metaData = new RomMetaData
 			{
 				features = new string[] { "wpcFliptronics" }
 			};
-			var result = RomParser.parse(romData, metaData);
+			var result = RomHelper.parse(romData, metaData);
 			Assert.That(result.preDcsSoundboard, Is.EqualTo(true));
 			Assert.That(result.hasSecurityPic, Is.EqualTo(false));
 			Assert.That(result.hasAlphanumericDisplay, Is.EqualTo(false));
@@ -98,11 +97,11 @@ namespace WPCEmu.Test.Rom
 			TestContext.WriteLine("romParser should parse wpcAlphanumeric board");
 
 			var romData = buildRomData();
-			var metaData = new RomParser.RomMetaData
+			var metaData = new RomMetaData
 			{
 				features = new string[] { "wpcAlphanumeric" }
 			};
-			var result = RomParser.parse(romData, metaData);
+			var result = RomHelper.parse(romData, metaData);
 			Assert.That(result.hasAlphanumericDisplay, Is.EqualTo(true));
 		}
 
@@ -112,11 +111,11 @@ namespace WPCEmu.Test.Rom
 			TestContext.WriteLine("romParser should parse wpcAlphanumeric board");
 
 			var romData = buildRomData();
-			var metaData = new RomParser.RomMetaData
+			var metaData = new RomMetaData
 			{
-				memoryPosition = new MemoryHandler.MemoryPositionData[]
+				memoryPosition = new MemoryPositionData[]
 				{
-					new MemoryHandler.MemoryPositionData
+					new MemoryPositionData
 					{
 						offset = 0x326,
 						description = "current text",
@@ -124,16 +123,16 @@ namespace WPCEmu.Test.Rom
 					}
 				}
 			};
-			var result = RomParser.parse(romData, metaData);
+			var result = RomHelper.parse(romData, metaData);
 			Assert.That(result.memoryPosition[0].offset, Is.EqualTo(0x326));
 			Assert.That(result.memoryPosition[0].description, Is.EqualTo("current text"));
 			Assert.That(result.memoryPosition[0].type, Is.EqualTo("string"));
 		}
 
-		private RomParser.Roms buildRomData()
+		private RomBinary buildRomData()
         {
 			byte[] u06 = Enumerable.Repeat((byte)11, 256 * 1024).ToArray();
-			return new RomParser.Roms
+			return new RomBinary
 			{
 				u06 = u06
 			};

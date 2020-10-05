@@ -52,7 +52,7 @@ namespace WPCEmu.Boards
                     break;
 
                 default:
-                    Debug.Print("IO W_NOT_IMPLEMENTED {0} {1}", /*'0x' + */offset/*.toString(16)*/, value);
+                    Debug.Print("IO W_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), value);
                     break;
             }
         }
@@ -76,7 +76,7 @@ namespace WPCEmu.Boards
                     break;
 
                 default:
-                    Debug.Print("IO R_NOT_IMPLEMENTED {0}", /*'0x' + */offset/*.toString(16)*/);
+                    Debug.Print("IO R_NOT_IMPLEMENTED {0}", "0x" + offset.ToString("X4"));
                     break;
             }
             return ram[_offset];

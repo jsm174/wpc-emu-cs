@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using NUnit.Framework;
-using WPCEmu.Rom;
 using WPCEmu.Boards;
 using WPCEmu.Boards.Elements;
 
@@ -15,23 +14,23 @@ namespace WPCEmu.Test.Boards
 
 		SoundBoard instancePreDcs;
 		SoundBoard instanceDcs;
-		List<SoundSerialInterface.SoundBoardCallbackData> playbackArray;
+		List<SoundBoardCallbackData> playbackArray;
 
 		[SetUp]
 		public void Init()
 		{
 			var initObjectPreDcs = new WpcCpuBoard.InitObject
 			{
-				interruptCallback = new WpcCpuBoard.InterruptCallback
+				interruptCallback = new InterruptCallbackData
 				{
 					firqFromDmd = () => { }
 				},
-				romObject = new RomParser.RomObject
+				romObject = new RomObject
 				{
 					preDcsSoundboard = true
 				}
 			};
-			playbackArray = new List<SoundSerialInterface.SoundBoardCallbackData>();
+			playbackArray = new List<SoundBoardCallbackData>();
 
 			instancePreDcs = SoundBoard.getInstance(initObjectPreDcs);
 			instancePreDcs.reset();
@@ -43,11 +42,11 @@ namespace WPCEmu.Test.Boards
 
 			var initObjectDcs = new WpcCpuBoard.InitObject
 			{
-				interruptCallback = new WpcCpuBoard.InterruptCallback
+				interruptCallback = new InterruptCallbackData
 				{
 					firqFromDmd = () => { }
 				},
-				romObject = new RomParser.RomObject
+				romObject = new RomObject
 				{
 					preDcsSoundboard = false
 				}

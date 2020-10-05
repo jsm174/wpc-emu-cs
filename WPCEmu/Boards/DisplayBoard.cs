@@ -9,6 +9,15 @@ namespace WPCEmu.Boards
     {
         public static class OP
         {
+            public struct State
+            {
+                public byte volume;
+                public int readDataBytes;
+                public int writeDataBytes;
+                public int readControlBytes;
+                public int writeControlBytes;
+            };
+
             //TODO move me away here
             public const ushort FREEWPC_DEBUG_CONTROL_PORT = 0x3D61;
             public const ushort WPC_SERIAL_CONTROL_PORT = 0x3E66;
@@ -45,16 +54,7 @@ namespace WPCEmu.Boards
 
         Dictionary<ushort, string> REVERSEOP = new Dictionary<ushort, string>();
 
-        public struct State
-        {
-            public byte volume;
-            public int readDataBytes;
-            public int writeDataBytes;
-            public int readControlBytes;
-            public int writeControlBytes;
-        };
-
-        WpcCpuBoard.InterruptCallback interruptCallback;
+        InterruptCallbackData interruptCallback;
         public byte[] ram;
         bool hasAlphanumericDisplay;
         OutputDmdDisplay outputDmdDisplay;
@@ -204,8 +204,8 @@ namespace WPCEmu.Boards
                     break;
 
                 default:
-                    Debug.Print("W_NOT_IMPLEMENTED {0} {1}", /*'0x' + */offset/*.toString(16)*/, value);
-                    Debug.Print("DMD W_NOT_IMPLEMENTED {0} {1}", /*'0x' + */offset/*.toString(16)*/, value);
+                    Debug.Print("W_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), value);
+                    Debug.Print("DMD W_NOT_IMPLEMENTED {0} {1}", "0x" + offset.ToString("X4"), value);
                     break;
             }
         }
@@ -243,8 +243,8 @@ namespace WPCEmu.Boards
                     return this.ram[offset];
 
                 default:
-                    Debug.Print("R_NOT_IMPLEMENTED", /*'0x' + */offset/*.toString(16)*/);
-                    Debug.Print("DMD R_NOT_IMPLEMENTED", /*'0x' + */offset/*.toString(16)*/);
+                    Debug.Print("R_NOT_IMPLEMENTED {0}", "0x" + offset.ToString("X4"));
+                    Debug.Print("DMD R_NOT_IMPLEMENTED {0}", "0x" + offset.ToString("X4"));
                     return 0x0;
             }
         }

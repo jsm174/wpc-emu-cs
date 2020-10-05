@@ -57,6 +57,25 @@ namespace WPCEmu.Boards.Up
 {
     public class Cpu6809
     {
+        public struct State
+        {
+            public ushort regPC;
+            public ushort regS;
+            public ushort regU;
+            public byte regA;
+            public byte regB;
+            public ushort regX;
+            public ushort regY;
+            public byte regDP;
+            public byte regCC;
+            public int missedIRQ;
+            public int missedFIRQ;
+            public int irqCount;
+            public int firqCount;
+            public int nmiCount;
+            public int tickCount;
+        }
+
         const byte F_CARRY = 1;
         const byte F_OVERFLOW = 2;
         const byte F_ZERO = 4;
@@ -134,7 +153,7 @@ namespace WPCEmu.Boards.Up
         };
 
         Action<ushort, byte> memoryWriteFunction;
-        Func<ushort, byte> memoryReadFunction;
+        public Func<ushort, byte> memoryReadFunction;
         public Func<byte> fetch;
 
         public int tickCount;
@@ -157,25 +176,6 @@ namespace WPCEmu.Boards.Up
         public byte regCC;
         public ushort regPC;
         public byte regDP;
-
-        public struct State
-        {
-            public ushort regPC;
-            public ushort regS;
-            public ushort regU;
-            public byte regA;
-            public byte regB;
-            public ushort regX;
-            public ushort regY;
-            public byte regDP;
-            public byte regCC;
-            public int missedIRQ;
-            public int missedFIRQ;
-            public int irqCount;
-            public int firqCount;
-            public int nmiCount;
-            public int tickCount;
-        }
 
         public static Cpu6809 getInstance(Action<ushort, byte> memoryWriteFunction, Func<ushort, byte> memoryReadFunction)
         {
@@ -219,7 +219,7 @@ namespace WPCEmu.Boards.Up
         }
 
         // set overflow flag
-        public void setV16(ulong a, ulong b, ulong r)
+        public void setV16(uint a, uint b, uint r)
         {
             regCC |= (byte) (((a ^ b ^ r ^ (r >> 1)) & 0x8000) >> 14);
         }
@@ -568,19 +568,19 @@ namespace WPCEmu.Boards.Up
             setPostByteRegister(ucPostByte, ucTemp);
         }
 
-        public byte signed5bit(byte x)
+        public sbyte signed5bit(byte x)
         {
-            return (byte) ((x > 0xF) ? x - 0x20 : x);
+            return (sbyte) ((x > 0xF) ? x - 0x20 : x);
         }
 
-        public byte signed(byte x)
+        public sbyte signed(byte x)
         {
-            return (byte) (x > 0x7F ? x - 0x100 : x);
+            return (sbyte) (x > 0x7F ? x - 0x100 : x);
         }
 
-        public ushort signed16(ushort x)
+        public short signed16(ushort x)
         {
-            return (ushort) ((x > 0x7FFF) ? x - 0x10000 : x);
+            return (short) ((x > 0x7FFF) ? x - 0x10000 : x);
         }
 
         byte FetchFunction()
@@ -674,20 +674,20 @@ namespace WPCEmu.Boards.Up
                         EA = registerField;
                         break;
                     case 0x05: // EA = R + REGB OFFSET
-                        EA = (ushort) (registerField + (sbyte) signed(regB));
+                        EA = (ushort) (registerField + signed(regB));
                         tickCount += 1;
                         break;
                     case 0x06: // EA = R + REGA OFFSET
-                        EA = (ushort) (registerField + (sbyte) signed(regA));
+                        EA = (ushort) (registerField + signed(regA));
                         tickCount += 1;
                         break;
                     // case 0x07 is ILLEGAL
                     case 0x08: // EA = R + 7bit OFFSET
-                        EA = (ushort) (registerField + (sbyte) signed(fetch()));
+                        EA = (ushort) (registerField + signed(fetch()));
                         tickCount += 1;
                         break;
                     case 0x09: // EA = R + 15bit OFFSET
-                        EA = (ushort) (registerField + (short) signed16(fetch16()));
+                        EA = (ushort) (registerField + signed16(fetch16()));
                         tickCount += 4;
                         break;
                     // case 0x0A is ILLEGAL
@@ -698,7 +698,7 @@ namespace WPCEmu.Boards.Up
                     case 0x0C:
                         { // EA = PC + 7bit OFFSET
                           // NOTE: fetch increases regPC - so order is important!
-                            sbyte tmpByte = (sbyte) signed(fetch());
+                            var tmpByte = signed(fetch());
                             EA = (ushort) (regPC + tmpByte);
                             tickCount += 1;
                             break;
@@ -706,7 +706,7 @@ namespace WPCEmu.Boards.Up
                     case 0x0D:
                         { // EA = PC + 15bit OFFSET
                           // NOTE: fetch increases regPC - so order is important!
-                            short word = (short) signed16(fetch16());
+                            var word = signed16(fetch16());
                             EA = (ushort) (regPC + word);
                             tickCount += 5;
                             break;
@@ -740,7 +740,7 @@ namespace WPCEmu.Boards.Up
             else
             {
                 // Just a 5 bit signed offset + register, NO INDIRECT ADDRESS MODE
-                sbyte sByte = (sbyte) signed5bit((byte) (postByte & 0x1F));
+                var sByte = signed5bit((byte) (postByte & 0x1F));
                 EA = (ushort) (registerField + sByte);
                 tickCount += 1;
             }
@@ -829,7 +829,7 @@ namespace WPCEmu.Boards.Up
 
         ushort oSUB16(ushort b, ushort v)
         {
-            ushort temp = (ushort)(b - v);
+            uint temp = (uint)(b - v);
             regCC = (byte) (regCC & ~(F_CARRY | F_ZERO | F_OVERFLOW | F_NEGATIVE));
             if ((temp & 0x8000) != 0)
             {
@@ -845,7 +845,7 @@ namespace WPCEmu.Boards.Up
             {
                 regCC |= F_ZERO;
             }
-            return temp;
+            return (ushort) temp;
         }
 
         byte oADD(byte b, byte v)
@@ -868,7 +868,7 @@ namespace WPCEmu.Boards.Up
 
         ushort oADD16(ushort b, ushort v)
         {
-            ulong temp = (ulong) (b + v);
+            uint temp = (uint) (b + v);
             regCC = (byte) (regCC & ~(F_CARRY | F_ZERO | F_OVERFLOW | F_NEGATIVE));
             if ((temp & 0x8000) != 0)
             {
@@ -934,7 +934,7 @@ namespace WPCEmu.Boards.Up
 
         public void oCMP16(ushort b, ushort v)
         {
-            ulong temp = (ulong) (b - v);
+            uint temp = (uint) (b - v);
             regCC = (byte) (regCC & ~(F_CARRY | F_ZERO | F_OVERFLOW | F_NEGATIVE));
             if ((temp & 0xFFFF) == 0)
             {
@@ -1124,11 +1124,13 @@ namespace WPCEmu.Boards.Up
             }
 
             ushort addr = 0;
+            short saddr = 0;
             byte pb = 0;
+            ushort rw = 0;
 
             byte opcode = fetch();
             tickCount += cycles[opcode];
-            //debug('OP 0x' + opcode.toString(16));
+            //Debug.Print("OP {0}", "0x" + opcode.ToString("X2"));
             switch (opcode)
             {
                 case 0x00: //NEG DP
@@ -1280,114 +1282,114 @@ namespace WPCEmu.Boards.Up
                     break;
 
                 case 0x20: //BRA
-                    addr = signed(fetch());
-                    regPC += addr;
+                    saddr = signed(fetch());
+                    regPC = (ushort) (regPC + saddr);
                     break;
                 case 0x21: //BRN
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     break;
                 case 0x22: //BHI
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & (F_CARRY | F_ZERO)) == 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x23: //BLS
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & (F_CARRY | F_ZERO)) != 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x24: //BCC
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_CARRY) == 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x25: //BCS
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_CARRY) != 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x26: //BNE
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_ZERO) == 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x27: //BEQ
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_ZERO) != 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x28: //BVC
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_OVERFLOW) == 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x29: //BVS
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_OVERFLOW) != 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x2a: //BPL
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_NEGATIVE) == 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x2b: //BMI
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if ((regCC & F_NEGATIVE) != 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x2c: //BGE
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if (((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) == 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x2d: //BLT
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if (((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0)
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x2e: //BGT
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if (
                         (((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) == 0) ||
                         ((regCC & F_ZERO) != 0)
                     )
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
                 case 0x2f: //BLE
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     if (
                        (((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0) ||
                        ((regCC & F_ZERO) != 0)
                     )
                     {
-                        regPC += addr;
+                        regPC = (ushort)(regPC + saddr);
                     }
                     break;
 
@@ -1774,9 +1776,9 @@ namespace WPCEmu.Boards.Up
                     break;
 
                 case 0x8d: //JSR imm
-                    addr = signed(fetch());
+                    saddr = signed(fetch());
                     PUSHW(regPC);
-                    regPC += addr;
+                    regPC = (ushort)(regPC + saddr);
                     break;
                 case 0x8e: //LDX imm
                     regX = fetch16();
@@ -2110,9 +2112,9 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0xdc: //LDD direct
                     addr = dpadd();
-                    pb = (byte)ReadWord(addr);
-                    setD(pb);
-                    flagsNZ16(pb);
+                    rw = ReadWord(addr);
+                    setD(rw);
+                    flagsNZ16(rw);
                     regCC = (byte) (regCC & ~F_OVERFLOW);
                     break;
 
@@ -2188,9 +2190,9 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0xec: //LDD indexed
                     addr = PostByte();
-                    pb = (byte) ReadWord(addr);
-                    setD(pb);
-                    flagsNZ16(pb);
+                    rw = ReadWord(addr);
+                    setD(rw);
+                    flagsNZ16(rw);
                     regCC = (byte) (regCC & ~F_OVERFLOW);
                     break;
 
@@ -2267,9 +2269,9 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0xfc: //LDD extended
                     addr = fetch16();
-                    pb = (byte)ReadWord(addr);
-                    setD(pb);
-                    flagsNZ16(pb);
+                    rw = ReadWord(addr);
+                    setD(rw);
+                    flagsNZ16(rw);
                     regCC = (byte) (regCC & ~F_OVERFLOW);
                     break;
 
@@ -2298,117 +2300,117 @@ namespace WPCEmu.Boards.Up
                     switch (opcode)
                     {
                         case 0x21: //BRN
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             break;
                         case 0x22: //BHI
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (!((regCC & (F_CARRY | F_ZERO)) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x23: //BLS
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if ((regCC & (F_CARRY | F_ZERO)) != 0)
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x24: //BCC
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (!((regCC & F_CARRY) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x25: //BCS
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if ((regCC & F_CARRY) != 0)
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x26: //BNE
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (!((regCC & F_ZERO) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x27: //LBEQ
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if ((regCC & F_ZERO) != 0)
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x28: //BVC
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (!((regCC & F_OVERFLOW) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x29: //BVS
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if ((regCC & F_OVERFLOW) != 0)
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x2A: //BPL
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (!((regCC & F_NEGATIVE) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x2B: //BMI
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if ((regCC & F_NEGATIVE) != 0)
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x2C: //BGE
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (!(((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x2D: //BLT
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0)
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x2E: //BGT
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if (!((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0) || (regCC & F_ZERO) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;
                         case 0x2F: //BLE
-                            addr = signed16(fetch16());
+                            saddr = signed16(fetch16());
                             if ((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0) || ((regCC & F_ZERO) != 0))
                             {
-                                regPC += addr;
+                                regPC = (ushort)(regPC + saddr);
                                 tickCount++;
                             }
                             break;

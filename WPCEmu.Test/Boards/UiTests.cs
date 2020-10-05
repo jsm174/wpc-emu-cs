@@ -8,7 +8,7 @@ namespace WPCEmu.Test.Boards
 	[TestFixture]
 	public class UiTests
 	{
-		MemoryHandler.MemoryPosition memoryPosition;
+		MemoryPosition memoryPosition;
 		WpcCpuBoard.Asic dummyState;
 		WpcCpuBoard.Asic dummyStateString;
 
@@ -17,16 +17,16 @@ namespace WPCEmu.Test.Boards
 		[SetUp]
 		public void Init()
 		{
-			memoryPosition = new MemoryHandler.MemoryPosition
+			memoryPosition = new MemoryPosition
 			{
-				knownValues = new MemoryHandler.MemoryPositionData[]
+				knownValues = new MemoryPositionData[]
 				{
-					new MemoryHandler.MemoryPositionData { offset = 0, description = "valid1", type = "string" },
-					new MemoryHandler.MemoryPositionData { offset = 1, description = "valid2", type = "uint8" },
-					new MemoryHandler.MemoryPositionData { offset = 2, description = "valid3", type = "bcd" },
-					new MemoryHandler.MemoryPositionData { offset = 3, description = "valid4", type = "uint8", length = 4 },
-					new MemoryHandler.MemoryPositionData { offset = 0x3AD, description = "invalid1", type = "foo" },
-					new MemoryHandler.MemoryPositionData { description = "invalid2", type = "string" },
+					new MemoryPositionData { offset = 0, description = "valid1", type = "string" },
+					new MemoryPositionData { offset = 1, description = "valid2", type = "uint8" },
+					new MemoryPositionData { offset = 2, description = "valid3", type = "bcd" },
+					new MemoryPositionData { offset = 3, description = "valid4", type = "uint8", length = 4 },
+					new MemoryPositionData { offset = 0x3AD, description = "invalid1", type = "foo" },
+					new MemoryPositionData { description = "invalid2", type = "string" },
 				}
 			};
 

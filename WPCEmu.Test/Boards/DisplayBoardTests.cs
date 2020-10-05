@@ -23,7 +23,7 @@ namespace WPCEmu.Test.Boards
 
 			displayBoard = DisplayBoard.getInstance(new WpcCpuBoard.InitObject
 			{
-				interruptCallback = new WpcCpuBoard.InterruptCallback(),
+				interruptCallback = new InterruptCallbackData(),
 				ram = ram
 			});
 		}

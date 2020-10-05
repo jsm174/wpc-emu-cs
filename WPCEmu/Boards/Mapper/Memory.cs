@@ -4,12 +4,6 @@ namespace WPCEmu.Boards.Mapper
 {
     public static class Memory
     {
-        public struct Model
-        {
-            public ushort offset;
-            public string subsystem;
-        }
-
         const ushort MEMORY_ADDR_RAM = 0x3000;
         const ushort MEMORY_ADDR_RAM2_START = 0x3C00;
         const ushort MEMORY_ADDR_RAM2_END = 0x3FAF;
@@ -22,7 +16,7 @@ namespace WPCEmu.Boards.Mapper
         public const string SUBSYSTEM_BANKSWITCHED = "bank";
         public const string SUBSYSTEM_SYSTEMROM = "system";
 
-        public static Model getAddress(int? offset)
+        public static MapperModel getAddress(int? offset)
         {
             if (offset == null) 
             {
@@ -34,7 +28,7 @@ namespace WPCEmu.Boards.Mapper
 
             if (offset < MEMORY_ADDR_RAM || isRam2Region)
             {
-                return new Model
+                return new MapperModel
                 {
                     offset = (ushort) offset,
                     subsystem = SUBSYSTEM_RAM
@@ -42,7 +36,7 @@ namespace WPCEmu.Boards.Mapper
             }
             if (offset < MEMORY_ADDR_HARDWARE)
             {
-                return new Model
+                return new MapperModel
                 {
                     offset = (ushort) offset,
                     subsystem = SUBSYSTEM_HARDWARE
@@ -50,7 +44,7 @@ namespace WPCEmu.Boards.Mapper
             }
             if (offset < MEMORY_ADDR_BANKSWITCHED_ROM)
             {
-                return new Model
+                return new MapperModel
                 {
                     offset = (ushort) (offset - 0x4000),
                     subsystem = SUBSYSTEM_BANKSWITCHED
@@ -58,7 +52,7 @@ namespace WPCEmu.Boards.Mapper
             }
             if (offset < MEMORY_ADDR_SYSTEMROM)
             {
-                return new Model
+                return new MapperModel
                 {
                     offset = (ushort)(offset - 0x8000),
                     subsystem = SUBSYSTEM_SYSTEMROM

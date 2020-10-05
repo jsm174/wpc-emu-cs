@@ -2,7 +2,7 @@
 using System.Diagnostics;
 using WPCEmu.Rom;
 using WPCEmu.Boards;
-using WPCEmu.Boards.Elements;
+using System.Reflection;
 
 namespace WPCEmu
 {
@@ -11,16 +11,16 @@ namespace WPCEmu
         const int TICKS_PER_MILLISECOND = 2000;
         long startTime;
 
-        WpcCpuBoard cpuBoard;
+        public WpcCpuBoard cpuBoard;
         UiState uiFacade;
 
-        public Emulator(RomParser.RomObject romObject)
+        public Emulator(RomObject romObject)
         {
             cpuBoard = WpcCpuBoard.getInstance(romObject);
             uiFacade = UiState.getInstance(null);
         }
 
-        void start()
+        public void start()
         {
             Debug.Print("Start WPC Emulator");
             startTime = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
@@ -40,7 +40,7 @@ namespace WPCEmu
             return uiState;
         }
 
-        WpcCpuBoard.State getState()
+        public WpcCpuBoard.State getState()
         {
             return cpuBoard.getState();
         }
@@ -50,13 +50,13 @@ namespace WPCEmu
             return cpuBoard.setState(stateObject);
         }
 
-        void registerAudioConsumer(Action<SoundSerialInterface.SoundBoardCallbackData>  playbackIdCallback)
+        void registerAudioConsumer(Action<SoundBoardCallbackData> playbackIdCallback)
         {
             cpuBoard.registerSoundBoardCallback(playbackIdCallback);
         }
 
         // MAIN LOOP
-        int executeCycle(int ticksToRun = 500, int tickSteps = 4)
+        public int executeCycle(int ticksToRun = 500, int tickSteps = 4)
         {
             return cpuBoard.executeCycle(ticksToRun, tickSteps);
         }
@@ -72,7 +72,7 @@ namespace WPCEmu
             cpuBoard.setCabinetInput(value);
         }
 
-        void setSwitchInput(byte switchNr, bool? optionalValue = null)
+        public void setSwitchInput(byte switchNr, bool? optionalValue = null)
         {
             cpuBoard.setSwitchInput(switchNr, optionalValue);
         }
@@ -82,56 +82,79 @@ namespace WPCEmu
             cpuBoard.setFliptronicsInput(value, optionalValue);
         }
 
-        void toggleMidnightMadnessMode()
+        public void toggleMidnightMadnessMode()
         {
             cpuBoard.toggleMidnightMadnessMode();
         }
 
-        void setDipSwitchByte(byte dipSwitch)
+        public void setDipSwitchByte(byte dipSwitch)
         {
             cpuBoard.setDipSwitchByte(dipSwitch);
         }
 
-        byte getDipSwitchByte()
+        public byte getDipSwitchByte()
         {
             return cpuBoard.getDipSwitchByte();
         }
 
-        void reset()
+        public void reset()
         {
             Debug.Print("RESET!");
             startTime = new DateTimeOffset(DateTime.Now).ToUnixTimeMilliseconds();
             cpuBoard.reset();
         }
 
-        string version()
+        public string version()
         {
-            return "0.0";
+            return Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        }
+
+        /**
+        * Initialize the WPC-EMU
+        * @function
+        * @param {Object} romObject, rom data (sound and main game). NOTE: DCS sound roms are not implemented yet
+        * @param {Object} metaData, meta data about the current game
+        * @return {promise} promise contains a new Emulator instance.
+        * @example
+        *
+        * const romObject = {
+        *   u06: Uint8Array(524288),
+        * };
+        * const metaData = {
+        *   features: ['securityPic'], // needed for WPC-S games
+        *   fileName: 'harr_lx2.rom',
+        *   skipWpcRomCheck: true,     // speedup bootup for WPC games
+        *   memoryPosition: [          // information about the game ram state (optional)
+        *    { offset: 0x3B2, description: 'current player', type: 'uint8' }
+        *   ]
+        * };
+        * wpcEmu.initVMwithRom(romObject, metaData)
+        *   .then((emu) => {
+        *     ...
+        *   }
+        */
+
+        public static Emulator initVMwithRom(RomBinary romObject, RomMetaData? metaData = null)
+        {
+            Debug.Print("initVMwithRom {0} {1}", romObject, metaData);
+
+            RomData romData = RomHelper.parse(romObject, metaData);
+
+            var _romObject = new RomObject
+            {
+                romSizeMBit = romData.romSizeMBit,
+                systemRom = romData.systemRom,
+                fileName = romData.fileName,
+                gameRom = romData.gameRom,
+                gameIdMemoryLocation = romData.gameIdMemoryLocation,
+                wpc95 = romData.wpc95,
+                hasSecurityPic = romData.hasSecurityPic,
+                skipWpcRomCheck = romData.skipWpcRomCheck,
+                hasAlphanumericDisplay = romData.hasAlphanumericDisplay,
+                preDcsSoundboard = romData.preDcsSoundboard
+            };
+
+            return new Emulator(_romObject);
         }
     }
 }
-
-/**
-* Initialize the WPC-EMU
-* @function
-* @param {Object} romObject, rom data (sound and main game). NOTE: DCS sound roms are not implemented yet
-* @param {Object} metaData, meta data about the current game
-* @return {promise} promise contains a new Emulator instance.
-* @example
-*
-* const romObject = {
-*   u06: Uint8Array(524288),
-* };
-* const metaData = {
-*   features: ['securityPic'], // needed for WPC-S games
-*   fileName: 'harr_lx2.rom',
-*   skipWpcRomCheck: true,     // speedup bootup for WPC games
-*   memoryPosition: [          // information about the game ram state (optional)
-*    { offset: 0x3B2, description: 'current player', type: 'uint8' }
-*   ]
-* };
-* wpcEmu.initVMwithRom(romObject, metaData)
-*   .then((emu) => {
-*     ...
-*   }
-*/

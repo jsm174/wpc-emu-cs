@@ -4,7 +4,6 @@ using System.Diagnostics;
 using WPCEmu.Boards.Elements;
 using WPCEmu.Boards.Static;
 using WPCEmu.Boards.Up;
-using WPCEmu.Rom;
 using memoryMapper = WPCEmu.Boards.Mapper.Memory;
 using hardwareMapper = WPCEmu.Boards.Mapper.Hardware;
 
@@ -12,21 +11,11 @@ namespace WPCEmu.Boards
 {
     public class WpcCpuBoard
     {
-        const ushort ROM_BANK_SIZE = 16 * 1024;
-        const byte SERIALIZED_STATE_VERSION = 5;
-
-        public struct InterruptCallback
-        {
-            public Action irq;
-            public Action firqFromDmd;
-            public Action reset;
-        }
-
         public struct InitObject
         {
-            public InterruptCallback interruptCallback;
+            public InterruptCallbackData interruptCallback;
             public ushort romSizeMBit;
-            public RomParser.RomObject? romObject;
+            public RomObject? romObject;
             public byte[] ram;
             public bool hasAlphanumericDisplay;
         }
@@ -37,7 +26,7 @@ namespace WPCEmu.Boards
             public CpuBoardAsic.State wpc;
             public object display;
             public SoundBoard.State sound;
-            public MemoryHandler.MemoryPositionData[] memoryPosition;
+            public MemoryPositionData[] memoryPosition;
             public OutputDmdDisplay.State dmd;
         }
 
@@ -54,6 +43,9 @@ namespace WPCEmu.Boards
             public long runtime;
         };
 
+        const ushort ROM_BANK_SIZE = 16 * 1024;
+        const byte SERIALIZED_STATE_VERSION = 5;
+
         public byte[] ram;
         ushort romSizeMBit;
         byte[] systemRom;
@@ -61,7 +53,7 @@ namespace WPCEmu.Boards
         public byte[] gameRom;
         MemoryPatch memoryPatch;
         MemoryHandler memoryWriteHandler;
-        Cpu6809 cpu;
+        public Cpu6809 cpu;
         public CpuBoardAsic asic;
         SoundBoard soundBoard;
         DisplayBoard displayBoard;
@@ -70,12 +62,12 @@ namespace WPCEmu.Boards
         int protectedMemoryWriteAttempts;
         int memoryWrites;
 
-        public static WpcCpuBoard getInstance(RomParser.RomObject romObject)
+        public static WpcCpuBoard getInstance(RomObject romObject)
         {
             return new WpcCpuBoard(romObject);
         }
 
-        public WpcCpuBoard(RomParser.RomObject romObject)
+        public WpcCpuBoard(RomObject romObject)
         {
             ram = Enumerable.Repeat((byte)0, memoryMapper.MEMORY_ADDR_HARDWARE).ToArray();
             romSizeMBit = romObject.romSizeMBit;
@@ -96,7 +88,7 @@ namespace WPCEmu.Boards
 
             cpu = Cpu6809.getInstance(_write8, _read8);
 
-            InterruptCallback interruptCallback = new InterruptCallback
+            InterruptCallbackData interruptCallback = new InterruptCallbackData
             {
                 irq = cpu.irq,
                 firqFromDmd = () =>
@@ -215,7 +207,7 @@ namespace WPCEmu.Boards
             return asic.getDipSwitchByte();
         }
 
-        public void registerSoundBoardCallback(Action<SoundSerialInterface.SoundBoardCallbackData> callbackFunction)
+        public void registerSoundBoardCallback(Action<SoundBoardCallbackData> callbackFunction)
         {
             soundBoard.registerSoundBoardCallback(callbackFunction);
         }
@@ -269,12 +261,12 @@ namespace WPCEmu.Boards
             var _memoryPatch = memoryPatch.hasPatch(offset);
             if (_memoryPatch != null)
             {
-                var memoryPatch = (MemoryPatch.Patch)_memoryPatch;
+                var memoryPatch = (MemoryPatchData)_memoryPatch;
                 return memoryPatch.value;
             }
 
             var address = memoryMapper.getAddress(offset);
-            //debug('read from adr %o', { address, offset: offset.toString(16) });
+            //Debug.Print("read from adr {0}, offset: {1}", address, "0x" + offset.ToString("X4");
             switch (address.subsystem)
             {
 
@@ -309,7 +301,7 @@ namespace WPCEmu.Boards
 
             value &= 0xFF;
             var address = memoryMapper.getAddress(offset);
-            //debug('write to adr %o', { address, offset: offset.toString(16), value });
+            //Debug.Print("write to adr {0} offset: {1} {2}", address, "0x" + offset.ToString("X4"), value);
             switch (address.subsystem)
             {
 
@@ -322,7 +314,7 @@ namespace WPCEmu.Boards
                     }
                     else
                     {
-                        Debug.Print("DID_NOT_WRITE_MEMORY_PROTECTED {0} {1}", offset/*.toString(16)*/, value);
+                        Debug.Print("DID_NOT_WRITE_MEMORY_PROTECTED {0} {1}", "0x" + offset.ToString("X4"), value);
                         protectedMemoryWriteAttempts++;
                     }
                     break;
@@ -332,14 +324,14 @@ namespace WPCEmu.Boards
                     break;
 
                 case memoryMapper.SUBSYSTEM_SYSTEMROM:
-                    Debug.Print("SYSTEMROM_WRITE offset: {0}, value: {1}", offset/*.toString(16)*/, value);
-                    //Debug.Print("SYSTEMROM_WRITE offset: {0}, value: {1}", offset/*.toString(16)*/, value);
+                    Debug.Print("SYSTEMROM_WRITE offset: {0}, value: {1}", "0x" + offset.ToString("X4"), value);
+                    //Debug.Print("SYSTEMROM_WRITE offset: {0}, value: {1}", "0x" + offset.ToString("X4"), value);
                     systemRom[address.offset] = value;
                     break;
 
                 default:
                     Debug.Print("CPU_WRITE8_FAIL {0} {1} {2}", /*JSON.stringify(*/address/*)*/, offset, value);
-                    //throw new Exception("INVALID_WRITE_SUBSYSTEM_0x" + offset/*.toString(16)*/);
+                    //throw new Exception("INVALID_WRITE_SUBSYSTEM_0x" + offset.ToString("X4"));
                     break;
             }
         }

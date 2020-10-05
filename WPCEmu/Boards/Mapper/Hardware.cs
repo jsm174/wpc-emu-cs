@@ -5,12 +5,6 @@ namespace WPCEmu.Boards.Mapper
 {
     public static class Hardware
     {
-        public struct Model
-        {
-            public ushort offset;
-            public string subsystem;
-        }
-
         const ushort MEMORY_ADDR_EXPANSION_START = 0x3000;
         const ushort MEMORY_ADDR_DMD = 0x3FC0;
         const ushort MEMORY_ADDR_EXTERNAL_IO = 0x3FDC;
@@ -28,16 +22,16 @@ namespace WPCEmu.Boards.Mapper
         public const string SUBSYSTEM_EXTERNAL_IO = "externalIo";
         public const string SUBSYSTEM_DISPLAY = "display";
 
-        static Model buildReturnModel(ushort offset, string subsystem)
+        static MapperModel buildReturnModel(ushort offset, string subsystem)
         {
-            return new Model
+            return new MapperModel
             {
                 offset = offset,
                 subsystem = subsystem
             };
         }
 
-        public static Model getAddress(int? offset)
+        public static MapperModel getAddress(int? offset)
         {
             if (offset == null) 
             {

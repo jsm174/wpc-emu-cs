@@ -15,16 +15,16 @@ namespace WPCEmu.Test.Boards.Elements
 		const byte DCS_VOLUME_COMMAND = 0x55;
 		const byte DCS_VOLUME_GLOBAL = 0xAA;
 
-		List<SoundSerialInterface.SoundBoardCallbackData> preDcsData;
-		List<SoundSerialInterface.SoundBoardCallbackData> dcsData;
+		List<SoundBoardCallbackData> preDcsData;
+		List<SoundBoardCallbackData> dcsData;
 		SoundSerialInterface preDcsSound;
 		SoundSerialInterface dcsSound;
 
 		[SetUp]
 		public void Init()
 		{
-			preDcsData = new List<SoundSerialInterface.SoundBoardCallbackData>();
-			dcsData = new List<SoundSerialInterface.SoundBoardCallbackData>();
+			preDcsData = new List<SoundBoardCallbackData>();
+			dcsData = new List<SoundBoardCallbackData>();
 			preDcsSound = SoundSerialInterface.getInstance(PREDCS_SOUND);
 			dcsSound = SoundSerialInterface.getInstance(DCS_SOUND);
 

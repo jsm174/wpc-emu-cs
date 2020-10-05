@@ -15,7 +15,7 @@ namespace WPCEmu.Test.Boards
 
 			wpc = CpuBoardAsic.getInstance(new WpcCpuBoard.InitObject
 			{
-				interruptCallback = new WpcCpuBoard.InterruptCallback(),
+				interruptCallback = new InterruptCallbackData(),
 				ram = ram
 			});
 		}

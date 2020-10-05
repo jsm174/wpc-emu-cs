@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using WPCEmu.Boards;
-using WPCEmu.Rom;
 
 namespace WPCEmu.Test.Boards
 {
@@ -17,7 +16,7 @@ namespace WPCEmu.Test.Boards
 		public void Init()
 		{
 			var gamerom = Enumerable.Repeat((byte)0xFF, 0x18000).ToArray();
-			var initObject = new RomParser.RomObject
+			var initObject = new RomObject
 			{
 				romSizeMBit = 1,
 				systemRom = Enumerable.Repeat((byte)0xFF, 2 * PAGESIZE).ToArray(),

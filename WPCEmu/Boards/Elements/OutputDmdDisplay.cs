@@ -189,8 +189,8 @@ namespace WPCEmu.Boards.Elements
         void _copyScanline()
         {
             // copy a scanline from the activePage to the output video buffer
-            byte sourceAddress = (byte) (activePage * dmdPageSize + scanline * DMD_SCANLINE_SIZE_IN_BYTES);
-            byte destinationAddress = (byte) (videoOutputPointer * dmdPageSize + scanline * DMD_SCANLINE_SIZE_IN_BYTES);
+            var sourceAddress = (ushort) (activePage * dmdPageSize + scanline * DMD_SCANLINE_SIZE_IN_BYTES);
+            var destinationAddress = (ushort) (videoOutputPointer * dmdPageSize + scanline * DMD_SCANLINE_SIZE_IN_BYTES);
 
             for (var i = 0; i < DMD_SCANLINE_SIZE_IN_BYTES; i++)
             {
@@ -205,7 +205,6 @@ namespace WPCEmu.Boards.Elements
             {
                 // flip output buffer, needed to calculate shading
                 videoOutputPointer = (videoOutputPointer + 1) % DMD_SHADING_FRAMES;
-
                 shadedVideoBufferLatched = shadedVideoBuffer.Take(shadedVideoBuffer.Length).ToArray();
 
                 if (nextActivePage != null)
@@ -227,16 +226,16 @@ namespace WPCEmu.Boards.Elements
             // output is 8 times larger (1 pixel uses 1 byte)
             byte[] videoBufferShaded = Enumerable.Repeat((byte)0x00, 8 * dmdPageSize).ToArray();
 
-            byte outputOffset = 0;
-            byte inputOffset = 0;
-            for (byte scanline = 0; scanline < DMD_WINDOW_HEIGHT; scanline++)
+            var outputOffset = 0;
+            var inputOffset = 0;
+            for (var scanline = 0; scanline < DMD_WINDOW_HEIGHT; scanline++)
             {
-                for (byte eightPixelsOffset = 0; eightPixelsOffset < DMD_WINDOW_WIDTH_IN_BYTES; eightPixelsOffset++)
+                for (var eightPixelsOffset = 0; eightPixelsOffset < DMD_WINDOW_WIDTH_IN_BYTES; eightPixelsOffset++)
                 {
-                    for (byte i = 0; i < 8; i++)
+                    for (var i = 0; i < 8; i++)
                     {
-                        byte bitMask = Bitmagic.setMsbBit(i);
-                        byte intensity = (byte) (((shadedVideoBufferLatched[OFFSET_BUFFER0 + inputOffset] & bitMask) > 0 ? 1 : 0) +
+                        var bitMask = Bitmagic.setMsbBit((byte)i);
+                        var intensity = (byte) (((shadedVideoBufferLatched[OFFSET_BUFFER0 + inputOffset] & bitMask) > 0 ? 1 : 0) +
                                                  ((shadedVideoBufferLatched[OFFSET_BUFFER1 + inputOffset] & bitMask) > 0 ? 1 : 0) +
                                                  ((shadedVideoBufferLatched[OFFSET_BUFFER2 + inputOffset] & bitMask) > 0 ? 1 : 0));
                         videoBufferShaded[outputOffset++] = intensity;

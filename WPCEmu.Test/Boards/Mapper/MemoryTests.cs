@@ -13,7 +13,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 16322");
 
-			var expectedResult = new Memory.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 16322,
 				subsystem = "hardware"
@@ -28,7 +28,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 49090 - this crashes the emu");
 
-            var expectedResult = new Memory.Model
+            var expectedResult = new MapperModel
 			{
 				offset = 16322,
 				subsystem = "system"
@@ -52,7 +52,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, -1");
 
-            var expectedResult = new Memory.Model
+            var expectedResult = new MapperModel
 			{
 				offset = 32767,
 				subsystem = "system"
@@ -67,7 +67,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x0");
 
-            var expectedResult = new Memory.Model
+            var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "ram"
@@ -82,7 +82,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x2000");
 
-			var expectedResult = new Memory.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x2000,
 				subsystem = "ram"
@@ -97,7 +97,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x2900");
 
-			var expectedResult = new Memory.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x2900,
 				subsystem = "ram"
@@ -112,7 +112,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x4000");
 
-			var expectedResult = new Memory.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "bank"
@@ -127,7 +127,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x8000");
 
-			var expectedResult = new Memory.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "system"
@@ -142,13 +142,13 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x10000");
 
-            Memory.Model expectedResult = new Memory.Model
+            MapperModel expectedResult = new MapperModel
 			{
 				offset = 0,
 				subsystem = "ram"
 			};
 
-            Memory.Model result = Memory.getAddress(0x10000);
+            MapperModel result = Memory.getAddress(0x10000);
 			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
@@ -157,7 +157,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x3C00");
 
-			var expectedResult = new Memory.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3C00,
 				subsystem = "ram"
@@ -172,7 +172,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		{
 			TestContext.WriteLine("MemoryMapper, should get address, 0x3FAF");
 
-			var expectedResult = new Memory.Model
+			var expectedResult = new MapperModel
 			{
 				offset = 0x3FAF,
 				subsystem = "ram"

@@ -4,13 +4,6 @@ namespace WPCEmu.Boards.Mapper
 {
     public static class Dmd
     {
-        public struct Model
-        {
-            public ushort offset;
-            public string subsystem;
-            public byte? bank;
-        }
-
         const ushort MEMORY_ADDR_DMD_PAGE3000 = 0x3000;
         const ushort MEMORY_ADDR_DMD_PAGE3200 = 0x3200;
         const ushort MEMORY_ADDR_DMD_PAGE3400 = 0x3400;
@@ -21,9 +14,9 @@ namespace WPCEmu.Boards.Mapper
         public const string SUBSYSTEM_DMD_VIDEORAM = "videoram";
         public const string SUBSYSTEM_CMD = "command";
 
-        static Model buildReturnModel(ushort offset, string subsystem, byte? bank)
+        static MapperModel buildReturnModel(ushort offset, string subsystem, byte? bank)
         {
-            return new Model
+            return new MapperModel
             {
                 offset = offset,
                 subsystem = subsystem,
@@ -31,7 +24,7 @@ namespace WPCEmu.Boards.Mapper
             };
         }
 
-        public static Model getAddress(int? offset)
+        public static MapperModel getAddress(int? offset)
         {
             if (offset == null) 
             {

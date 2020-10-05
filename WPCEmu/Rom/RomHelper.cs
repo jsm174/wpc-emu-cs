@@ -1,11 +1,10 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Linq;
-using WPCEmu.Boards;
 
 namespace WPCEmu.Rom
 {
-    public static class RomParser
+    public static class RomHelper
     {
         const uint WPC_ROM_SIZE_1MBIT = 128 * 1024;
         static readonly byte[] WPC_VALID_ROM_SIZES_IN_MBIT = { 1, 2, 4, 8 };
@@ -13,49 +12,6 @@ namespace WPCEmu.Rom
         const ushort SYSTEM_ROM_CHECKSUM_CORRECTION_OFFSET = 0x7FEC;
 
         static readonly string[] PRE_DCS_SOUNDBOARD = { "wpcDmd", "wpcFliptronics" };
-
-        public struct Roms
-        {
-            public byte[] u06;
-        }
-
-        public struct RomMetaData
-        {
-            public string fileName;
-            public bool skipWpcRomCheck;
-            public string[] features;
-            public MemoryHandler.MemoryPositionData[] memoryPosition;
-        }
-
-        public struct RomData
-        {
-            public ushort romSizeMBit;
-            public byte[] systemRom;
-            public byte[] gameRom;
-            public ushort? gameIdMemoryLocation;
-            public string fileName;
-            public bool skipWpcRomCheck;
-            public bool hasSecurityPic;
-            public bool wpc95;
-            public bool hasAlphanumericDisplay;
-            public bool preDcsSoundboard;
-            public MemoryHandler.MemoryPositionData[] memoryPosition;
-        }
-
-        public struct RomObject
-        {
-            public ushort romSizeMBit;
-            public bool hasSecurityPic;
-            public bool wpc95;
-            public byte[] systemRom;
-            public string fileName;
-            public byte[] gameRom;
-            public ushort? gameIdMemoryLocation;
-            public bool skipWpcRomCheck;
-            public bool hasAlphanumericDisplay;
-            public bool preDcsSoundboard;
-            public MemoryHandler.MemoryPosition memoryPosition;
-        }
 
         static byte[] getCpuBoardSystemRom(byte[] u06Rom)
         {
@@ -71,14 +27,14 @@ namespace WPCEmu.Rom
             return u06Rom.Take(u06Rom.Length - SYSTEM_ROM_SIZE_BYTES).ToArray();
         }
 
-        public static RomData parse(Roms? _uInt8Roms = null, RomMetaData? _metaData = null)
+        public static RomData parse(RomBinary? _uInt8Roms = null, RomMetaData? _metaData = null)
         {
             if (_uInt8Roms == null)
             {
                 throw new Exception("INVALID_ROM_DATA");
             }
 
-            var uInt8Roms = (Roms)_uInt8Roms;
+            var uInt8Roms = (RomBinary)_uInt8Roms;
 
             Debug.Print("LOAD_GAME_ROM");
             var u06 = uInt8Roms.u06;

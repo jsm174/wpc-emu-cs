@@ -96,8 +96,11 @@
             new FliptronicsMapping { id = "F4", name = "L FLIPPER BUTTON" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
+            //size must be 200x400, lamp positions according to image
             image = "playfield-tz.jpg",
         };
 

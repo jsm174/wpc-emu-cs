@@ -83,9 +83,11 @@
             new FliptronicsMapping { id = "F4", name = "L FLIPPER BUTTON" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
-            //size must be 200x400, lamp positions according to imag
+            //size must be 200x400, lamp positions according to image
             image = "playfield-dh.jpg"
         };
 
@@ -110,9 +112,9 @@
             closedSwitches = new string[]
             {
                 "22",
-                //OPTO SWITCHES: 31, 32, 33, 34, 35, 38, 41, 42, 43, 44, 45, 46, 47,
+                //OPTO SWITCHES: "31", "32", "33", "34", "35", "38", "41", "42", "43", "44", "45", "46", "47",
                 "31", "38", "41", "42", "43", "44", "45", "46", "47",
-                "F2", "F4",
+                "F2", "F4"
             },
             initialAction = new InitialAction[]
             {
@@ -156,7 +158,7 @@
                 new MemoryPositionData { offset = 0x1CEC, name = "HISCORE_2_NAME", type = "string" },
                 new MemoryPositionData { offset = 0x1CF0, name = "HISCORE_2_SCORE", type = "bcd", length = 5 },
                 new MemoryPositionData { offset = 0x1D09, name = "HISCORE_CHAMP_NAME", description = "Grand Champion", type = "string" },
-                new MemoryPositionData { offset = 0x1D0D, name = "HISCORE_CHAMP_SCORE", description = "Grand Champion", type = "bcd", length = 5 },
+                new MemoryPositionData { offset = 0x1D0D, name = "HISCORE_CHAMP_SCORE", description = "Grand Champion", type = "bcd", length = 5 }
             }
         };
 

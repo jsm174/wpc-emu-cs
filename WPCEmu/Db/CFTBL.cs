@@ -77,6 +77,8 @@
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
             //size must be 200x400, lamp positions according to image
@@ -103,7 +105,7 @@
             {
                 "56", "57", "58",
                 "22",
-                "F2", "F4",
+                "F2", "F4"
             },
             initialAction = new InitialAction[]
             {

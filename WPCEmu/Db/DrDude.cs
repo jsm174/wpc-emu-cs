@@ -80,14 +80,16 @@
 
             new SwitchMapping { id = "81", name = "RIGHT FLIPPER" },
             new SwitchMapping { id = "82", name = "LEFT FLIPPER" },
-            new SwitchMapping { id = "83", name = "RIGHT LOOP" },
+            new SwitchMapping { id = "83", name = "RIGHT LOOP" }
         };
 
         public FliptronicsMapping[] fliptronicsMappings => null;
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
-            //size must be 200x400, lamp positions according to imag
+            //size must be 200x400, lamp positions according to image
             image = "playfield-dd.jpg"
         };
 

@@ -91,10 +91,12 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
             //size must be 200x400, lamp positions according to image
-            image = "playfield-bsd.jpg",
+            image = "playfield-bsd.jpg"
         };
 
         public bool skipWpcRomCheck => true;
@@ -167,7 +169,7 @@ namespace WPCEmu.Db
                 new MemoryPositionData { offset = 0x1D2F, name = "HISCORE_4_NAME", type = "string" },
                 new MemoryPositionData { offset = 0x1D32, name = "HISCORE_4_SCORE", type = "bcd", length = 5 },
                 new MemoryPositionData { offset = 0x1D39, name = "HISCORE_CHAMP_NAME", description = "Greatest Vampire Hunter", type = "string" },
-                new MemoryPositionData { offset = 0x1D3C, name = "HISCORE_CHAMP_SCORE", description = "Greatest Vampire Hunter", type = "bcd", length = 5 },
+                new MemoryPositionData { offset = 0x1D3C, name = "HISCORE_CHAMP_SCORE", description = "Greatest Vampire Hunter", type = "bcd", length = 5 }
             }
         };
 

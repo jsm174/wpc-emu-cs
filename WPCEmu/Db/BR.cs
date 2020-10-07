@@ -85,10 +85,12 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
             //size must be 200x400, lamp positions according to image
-            image = "playfield-br.jpg",
+            image = "playfield-br.jpg"
         };
 
         public bool skipWpcRomCheck => true;
@@ -127,9 +129,6 @@ namespace WPCEmu.Db
 
         public MemoryPosition? memoryPosition => new MemoryPosition
         {
-            checksum = new ChecksumData[]
-            {
-            },
             knownValues = new MemoryPositionData[]
             {
                 new MemoryPositionData { offset = 0x80, name = "GAME_RUNNING", description = "0: not running, 1: running", type = "uint8" },
@@ -163,7 +162,7 @@ namespace WPCEmu.Db
                 new MemoryPositionData { offset = 0x1C85, name = "HISCORE_4_NAME", type = "string" },
                 new MemoryPositionData { offset = 0x1C88, name = "HISCORE_4_SCORE", type = "bcd", length = 5 },
                 new MemoryPositionData { offset = 0x1C8F, name = "HISCORE_CHAMP_NAME", description = "Grand Champion", type = "string" },
-                new MemoryPositionData { offset = 0x1C92, name = "HISCORE_CHAMP_SCORE", description = "Grand Champion", type = "bcd", length = 5 },
+                new MemoryPositionData { offset = 0x1C92, name = "HISCORE_CHAMP_SCORE", description = "Grand Champion", type = "bcd", length = 5 }
             }
         };
 

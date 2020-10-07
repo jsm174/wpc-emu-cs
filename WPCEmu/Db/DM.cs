@@ -84,7 +84,7 @@
             new SwitchMapping { id = "85", name = "CLAW \"ACMAG\"" },
             new SwitchMapping { id = "86", name = "UL FLIPPER GATE" },
             new SwitchMapping { id = "87", name = "CAR CR STANDUP" },
-            new SwitchMapping { id = "88", name = "LOWER REBOUND" },
+            new SwitchMapping { id = "88", name = "LOWER REBOUND" }
         };
 
         public FliptronicsMapping[] fliptronicsMappings => new FliptronicsMapping[]
@@ -99,9 +99,11 @@
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
-            //size must be 200x400, lamp positions according to imag
+            //size must be 200x400, lamp positions according to image
             image = "playfield-dm.jpg"
         };
 
@@ -125,7 +127,7 @@
             closedSwitches = new string[]
             {
                 "22",
-                //OPTO SWITCHES: 25, 26, 31, 32, 33, 34, 35, 36, 67, 71, 72, 73, 74, 76
+                //OPTO SWITCHES: "25", "26", "31", "32", "33", "34", "35", "36", "67", "71", "72", "73", "74", "76"
                 "25", "26", "36", "67", "71", "72", "73", "74", "76",
                 "F2", "F4", "F6", "F8"
             },
@@ -143,7 +145,7 @@
                     delayMs = 3000,
                     source = "writeMemory",
                     offset = 0x1B9E,
-                    value = 0x01,
+                    value = 0x01
                 }
             }
         };
@@ -209,9 +211,6 @@
             }
         };
 
-        public string[] testErrors => new string[]
-        {
-
-        };
+        public string[] testErrors => null;
     }
 }

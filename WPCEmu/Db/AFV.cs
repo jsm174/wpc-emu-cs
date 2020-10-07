@@ -51,10 +51,12 @@ namespace WPCEmu.Db
 
             new SwitchMapping { id = "51", name = "GOBBLE RIGHT" },
             new SwitchMapping { id = "52", name = "GOBBLE CENTER" },
-            new SwitchMapping { id = "53", name = "GOBBLE LEFT" },
+            new SwitchMapping { id = "53", name = "GOBBLE LEFT" }
         };
 
         public FliptronicsMapping[] fliptronicsMappings => null;
+
+        public SolenoidMapping[] solenoidMapping => null;
 
         public Playfield? playfield => null;
        
@@ -77,9 +79,9 @@ namespace WPCEmu.Db
         {
             closedSwitches = new string[]
             {
-                //OPTO SWITCHES: 31, 32, 33, 34, 35, 36, 37, 38, 41, 42, 43, 44, 45, 46, 47, 48
+                //OPTO SWITCHES: "31", "32", "33", "34", "35", "36", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48"
                 "22",
-                "31", "32", "33", "34", "35", "36", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48",
+                "31", "32", "33", "34", "35", "36", "37", "38", "41", "42", "43", "44", "45", "46", "47", "48"
             }
         };
 

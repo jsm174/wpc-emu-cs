@@ -76,7 +76,7 @@
             new SwitchMapping { id = "72", name = "RIGHT SAUCER" },
             new SwitchMapping { id = "74", name = "BIG BALL REBOUND" },
             new SwitchMapping { id = "75", name = "VOLT RIGHT" },
-            new SwitchMapping { id = "76", name = "VOLT LEFT" },
+            new SwitchMapping { id = "76", name = "VOLT LEFT" }
         };
 
         public FliptronicsMapping[] fliptronicsMappings => new FliptronicsMapping[]
@@ -91,9 +91,11 @@
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
-            //size must be 200x400, lamp positions according to imag
+            //size must be 200x400, lamp positions according to image
             image = "playfield-cv.jpg"
         };
 
@@ -102,7 +104,7 @@
         public string[] features => new string[]
         {
             "securityPic",
-            "wpc95",
+            "wpc95"
         };
 
         public string[] cabinetColors => new string[]
@@ -119,7 +121,7 @@
             closedSwitches = new string[]
             {
                 "22",
-                //OPTO SWITCHES: 31, 32, 33, 34, 35, 36,
+                //OPTO SWITCHES: "31", "32", "33", "34", "35", "36",
                 "31",
                 "F2", "F4", "F6", "F8"
             },
@@ -135,13 +137,13 @@
                 {
                     delayMs = 10000,
                     source = "switchInput",
-                    value = 22,
+                    value = 22
                 },
                 new InitialAction
                 {
                     delayMs = 2000,
                     source = "switchInput",
-                    value = 22,
+                    value = 22
                 }
             }
         };
@@ -194,7 +196,7 @@
             "CHECK SWITCH 42 RINGMASTER UP",
             "CHECK SWITCH 43 RINGMASTER MID",
             "CHECK SWITCH 44 RINGMASTER DOWN",
-            "RINGMASTER ERROR NO MOTION",
+            "RINGMASTER ERROR NO MOTION"
         };
     }
 }

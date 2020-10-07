@@ -96,9 +96,11 @@
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
-            //size must be 200x400, lamp positions according to imag
+            //size must be 200x400, lamp positions according to image
             image = "playfield-corv.jpg"
         };
 
@@ -123,7 +125,7 @@
             closedSwitches = new string[]
             {
                 "22",
-                //OPTO SWITCHES: 31, 32, 33, 34, 35, 36, 37, 41, 42, 43, 51, 52, 55, 56, 71, 72
+                //OPTO SWITCHES: "31", "32", "33", "34", "35", "36", "37", "41", "42", "43", "51", "52", "55", "56", "71", "72"
                 "35", "36", "37", "41", "42", "43", "51", "52", "55", "56", "71", "72",
                 "F2", "F4", "F6", "F8"
             },

@@ -107,6 +107,8 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F8", name = "LEFT RAMP MADE" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
             //size must be 200x400, lamp positions according to image
@@ -133,7 +135,7 @@ namespace WPCEmu.Db
             closedSwitches = new string[]
             {
                 "22", 
-                //OPTO SWITCHES: 81, 82, 83, 84, 85, 86,
+                //OPTO SWITCHES: "81", "82", "83", "84", "85", "86",
                 "41", "42", "43", "44", "45", "47", "71", "72", "73",
                 "F2", "F4", "F6", "F8"
             },

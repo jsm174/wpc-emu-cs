@@ -92,9 +92,11 @@
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
-            //size must be 200x400, lamp positions according to imag
+            //size must be 200x400, lamp positions according to image
             image = "playfield-congo.jpg"
         };
 
@@ -103,7 +105,7 @@
         public string[] features => new string[]
         {
             "securityPic",
-            "wpc95",
+            "wpc95"
         };
 
         public string[] cabinetColors => new string[]
@@ -119,9 +121,9 @@
             closedSwitches = new string[]
             {
                 "22",
-                //OPTO SWITCHES: 31, 32, 33, 34, 35, 36, 41, 42, 43
+                //OPTO SWITCHES: "31", "32", "33", "34", "35", "36", "41", "42", "43"
                 "31", "41", "42", "43",
-                "F2", "F4", "F6", "F8",
+                "F2", "F4", "F6", "F8"
             },
             initialAction = new InitialAction[]
             {
@@ -137,7 +139,7 @@
                     delayMs = 3000,
                     source = "writeMemory",
                     offset = 0x1C16,
-                    value = 0x01,
+                    value = 0x01
                 }
             }
         };
@@ -202,7 +204,7 @@
                 new MemoryPositionData { offset = 0x1D0D, name = "HISCORE_CHAMP_SCORE", description = "Grand Champion", type = "bcd", length = 5 },
 
                 new MemoryPositionData { offset = 0x1D1A, name = "GAME_CREDITS_FULL", description = "0-10 credits", type = "uint8" },
-                new MemoryPositionData { offset = 0x1D1B, name = "GAME_CREDITS_HALF", description = "0: no half credits", type = "uint8" },
+                new MemoryPositionData { offset = 0x1D1B, name = "GAME_CREDITS_HALF", description = "0: no half credits", type = "uint8" }
             }
         };
 

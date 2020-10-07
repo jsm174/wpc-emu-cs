@@ -99,6 +99,8 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
             //size must be 200x400, lamp positions according to image

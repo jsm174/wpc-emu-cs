@@ -8,6 +8,7 @@
 		RomFile? rom { get; }
 		SwitchMapping[] switchMapping { get; }
 		FliptronicsMapping[] fliptronicsMappings { get; }
+		SolenoidMapping[] solenoidMapping { get; }
 		Playfield? playfield { get; }
 		bool skipWpcRomCheck { get; }
 		string[] features { get; }

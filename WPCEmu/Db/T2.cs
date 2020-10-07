@@ -82,8 +82,11 @@ namespace WPCEmu.Db
 
         public FliptronicsMapping[] fliptronicsMappings => null;
 
+        public SolenoidMapping[] solenoidMapping => null;
+
         public Playfield? playfield => new Playfield
         {
+            //size must be 200x400, lamp positions according to image
             image = "playfield-t2.jpg",
             lamps = new Lamp[][]
             {
@@ -169,8 +172,8 @@ namespace WPCEmu.Db
             closedSwitches = new string[]
             {
                 "15", "16", "17", "22",
-                //OPTO Switches: 23
-                "23",
+                //OPTO Switches: "23"
+                "23"
             },
             initialAction = new InitialAction[]
             {
@@ -186,8 +189,8 @@ namespace WPCEmu.Db
                     delayMs = 3000,
                     source = "writeMemory",
                     offset = 0x1B9E,
-                    value = 0x01,
-                },
+                    value = 0x01
+                }
             }
         };
 
@@ -197,7 +200,7 @@ namespace WPCEmu.Db
             {
               new ChecksumData { dataStartOffset = 0x1C61, dataEndOffset = 0x1C80, checksumOffset = 0x1C81, checksum = "16bit", name = "HI_SCORE" },
               new ChecksumData { dataStartOffset = 0x1C83, dataEndOffset = 0x1C8A, checksumOffset = 0x1C8B, checksum = "16bit", name = "CHAMPION" },
-              new ChecksumData { dataStartOffset = 0x1B20, dataEndOffset = 0x1BF8, checksumOffset = 0x1BF9, checksum = "16bit", name = "ADJUSTMENT" },
+              new ChecksumData { dataStartOffset = 0x1B20, dataEndOffset = 0x1BF8, checksumOffset = 0x1BF9, checksum = "16bit", name = "ADJUSTMENT" }
             },
             knownValues = new MemoryPositionData[]
             {
@@ -248,7 +251,7 @@ namespace WPCEmu.Db
                 new MemoryPositionData { offset = 0x1C86, name = "HISCORE_CHAMP_SCORE", description = "Grand Champion", type = "bcd", length = 5 },
 
                 new MemoryPositionData { offset = 0x1C93, name = "GAME_CREDITS_FULL", description = "0-10 credits", type = "uint8" },
-                //new MemoryPositionData { offset = 0x1C80, name = "GAME_CREDITS_HALF", description = "0: no half credits", type = "uint8" },
+                //new MemoryPositionData { offset = 0x1C80, name = "GAME_CREDITS_HALF", description = "0: no half credits", type = "uint8" }
             }
         };
 

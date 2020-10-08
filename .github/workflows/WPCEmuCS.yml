@@ -1,54 +1,54 @@
 on: [push, pull_request]
 
 jobs:
-  wpc-emu-cs-win-x64:
+  wpcemu-cs-win-x64:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - uses: nuget/setup-nuget@v1
       - name: Build
-        run: dotnet build -c Release -r win-x64
+        run: dotnet build -c Release -r win-x64 src
       - name: Build Contents
-        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1/win-x64
+        run: ls -lart src/WPCEmu.Test/bin/Release/netcoreapp3.1/win-x64 
         shell: bash
       - name: Test
-        run: dotnet test -v n -r win-x64
+        run: dotnet test -v n -r win-x64 src
         shell: bash
 
-  wpc-emu-cs-win-x86:
+  wpcemu-cs-win-x86:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
       - uses: nuget/setup-nuget@v1
       - name: Build
-        run: dotnet build -c Release -r win-x86
+        run: dotnet build -c Release -r win-x86 src
       - name: Build Contents
-        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1/win-x86
+        run: ls -lart src/WPCEmu.Test/bin/Release/netcoreapp3.1/win-x86
         shell: bash
       - name: Test
-        run: dotnet test -v n -r win-x86
+        run: dotnet test -v n -r win-x86 src
         shell: bash
 
-  wpc-emu-cs-osx-x64:
+  wpcemu-cs-osx-x64:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
       - uses: nuget/setup-nuget@v1
       - name: Build
-        run: dotnet build -c Release -r osx-x64
+        run: dotnet build -c Release -r osx-x64 src
       - name: Build Contents
-        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1/osx-x64
+        run: ls -lart src/WPCEmu.Test/bin/Release/netcoreapp3.1/osx-x64
       - name: Test
-        run: dotnet test -v n -r osx-x64
+        run: dotnet test -v n -r osx-x64 src
 
-  wpc-emu-cs-linux-x64:
+  wpcemu-cs-linux-x64:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
       - uses: nuget/setup-nuget@v1
       - name: Build
-        run: dotnet build -c Release -r linux-x64
+        run: dotnet build -c Release -r linux-x64 src
       - name: Build Contents
-        run: ls -lart WPCEmu.Test/bin/Release/netcoreapp3.1/linux-x64
+        run: ls -lart src/WPCEmu.Test/bin/Release/netcoreapp3.1/linux-x64
       - name: Test
-        run: dotnet test -v n -r linux-x64
+        run: dotnet test -v n -r linux-x64 src

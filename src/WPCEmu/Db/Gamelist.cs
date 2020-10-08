@@ -98,7 +98,7 @@ namespace WPCEmu.Db
         {
             return wpcGames.FirstOrDefault(entry =>
             {
-                return entry.pinmame != null && Array.IndexOf(entry.pinmame?.knownNames, filename.ToLower()) != -1;
+                return entry.pinmame != null && Array.Exists(entry.pinmame?.knownNames, name => name == filename.ToLower());
             });
         }
     }

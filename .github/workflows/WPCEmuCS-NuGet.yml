@@ -1,0 +1,16 @@
+name: WPCEmuCS NuGet
+
+on: [push, pull_request]
+
+jobs:
+
+  wpcemu-cs-nuget:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Build
+        run: dotnet pack -c Release -o build/nupkg src/WPCEmu
+      - uses: actions/upload-artifact@v2
+        with: 
+          name: WPCEmuCS.nuget
+          path: build/nupkg/

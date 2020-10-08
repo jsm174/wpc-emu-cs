@@ -67,7 +67,7 @@ namespace WPCEmu
             return executeCycle(ticksToAdvance, tickSteps);
         }
 
-        void setCabinetInput(byte value)
+        public void setCabinetInput(byte value)
         {
             cpuBoard.setCabinetInput(value);
         }
@@ -77,7 +77,7 @@ namespace WPCEmu
             cpuBoard.setSwitchInput(switchNr, optionalValue);
         }
 
-        void setFliptronicsInput(string value, bool? optionalValue = null)
+        public void setFliptronicsInput(string value, bool? optionalValue = null)
         {
             cpuBoard.setFliptronicsInput(value, optionalValue);
         }

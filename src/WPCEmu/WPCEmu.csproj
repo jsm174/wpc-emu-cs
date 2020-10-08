@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <Description>C# port of neophob's amazing wpc-emu @ https://github.com/neophob/wpc-emu</Description>
+    <AssemblyVersion>0.0.1</AssemblyVersion>
+    <Authors>Jason Millard</Authors>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <PackOnBuild>true</PackOnBuild>
+    <Copyright>Copyright 2020 © Jason Millard All rights reserved</Copyright>
+    <AssemblyName>WPCEmuCS</AssemblyName>
+    <PackageId>WPCEmuCS</PackageId>
+    <PackagePrereleaseIdentifier></PackagePrereleaseIdentifier>
+    <PackageVersion>$(AssemblyVersion)$(PackagePrereleaseIdentifier)</PackageVersion>
+    <PackageProjectUrl>https://github.com/jsm174/wpc-emu-cs</PackageProjectUrl>
+    <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
+    <InformationalVersion>$(AssemblyVersion)</InformationalVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Include="../../LICENSE.txt">
+      <PackagePath></PackagePath>
+      <Pack>true</Pack>
+    </None>
+  </ItemGroup>
+</Project>

@@ -60,7 +60,7 @@ namespace WPCEmu.Boards.Mapper
             {
                 return buildReturnModel((ushort)(offset - MEMORY_ADDR_DMD_PAGE_HIGH), SUBSYSTEM_DMD_VIDEORAM, 1);
             }
-            return buildReturnModel((ushort)offset, SUBSYSTEM_CMD, null);
+            return buildReturnModel((ushort) offset, SUBSYSTEM_CMD, null);
         }
     }
 }

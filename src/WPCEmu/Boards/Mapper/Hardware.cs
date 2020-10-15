@@ -11,6 +11,7 @@ namespace WPCEmu.Boards.Mapper
         const ushort MEMORY_ADDR_SOUND = 0x3FE0;
 
         public const ushort MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A = 0x3FD4;
+        public const ushort MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_WPC95 = 0x3FEF;
 
         const ushort MEMORY_ADDR_WPC_IO = 0x4000;
 
@@ -31,7 +32,7 @@ namespace WPCEmu.Boards.Mapper
             };
         }
 
-        public static MapperModel getAddress(int? offset)
+        public static MapperModel getAddress(int? offset, bool hasAlphaNumbericDisplay = false)
         {
             if (offset == null) 
             {
@@ -43,25 +44,25 @@ namespace WPCEmu.Boards.Mapper
             {
                 throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
             }
-            if (offset < MEMORY_ADDR_DMD || MEMORY_ALPHANUMERIC_DISPLAY.Contains((ushort)offset))
+            if (offset < MEMORY_ADDR_DMD || hasAlphaNumbericDisplay && MEMORY_ALPHANUMERIC_DISPLAY.Contains((ushort) offset))
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_DISPLAY);
+                return buildReturnModel((ushort) offset, SUBSYSTEM_DISPLAY);
             }
-            if (offset == MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A)
+            if (offset == MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_A || offset == MEMORY_ADDR_FLIPTRONICS_FLIPPER_PORT_WPC95)
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_WPCIO);
+                return buildReturnModel((ushort) offset, SUBSYSTEM_WPCIO);
             }
             if (offset < MEMORY_ADDR_EXTERNAL_IO)
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_EXTERNAL_IO);
+                return buildReturnModel((ushort) offset, SUBSYSTEM_EXTERNAL_IO);
             }
             if (offset < MEMORY_ADDR_SOUND)
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_SOUND);
+                return buildReturnModel((ushort) offset, SUBSYSTEM_SOUND);
             }
             if (offset < MEMORY_ADDR_WPC_IO)
             {
-                return buildReturnModel((ushort)offset, SUBSYSTEM_WPCIO);
+                return buildReturnModel((ushort) offset, SUBSYSTEM_WPCIO);
             }
             throw new Exception("HW_GET_ADDRESS_INVALID_MEMORY_REGION_0x" + offset.Value.ToString("X"));
         }
@@ -131,6 +132,10 @@ $2000-$3FFF (8 KiB)	Hardware
                                                 WPC_ALPHA_ROW1
                             $3FED     Byte     WPC_EXTBOARD3 (On DMD games, this is a general I/O that is used for machine-specific purposes)
                             $3FEE     Byte     WPC_ALPHA_ROW2
+
+                            #define WPC_FLIPPERCOIL95 (0x3fee - WPC_BASE) /*      x W: Flipper Solenoids
+                            #define WPC_FLIPPERSW95   (0x3fef - WPC_BASE) /*      x R: Flipper switches
+
                             $3FF2     Byte     WPC_LEDS (7: R/W: The state of the diagnostic LED. >0=Off >1=On)
                             $3FF4     Word     WPC_SHIFTADDR
                                                 15-0: R/W: The base address for the bit shifter.

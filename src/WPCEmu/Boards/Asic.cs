@@ -392,10 +392,10 @@ namespace WPCEmu.Boards
                 case OP.WPC_EXTBOARD1:
                 case OP.WPC_EXTBOARD2:
                 case OP.WPC_EXTBOARD3:
-                case OP.WPC95_FLIPPER_SWITCH_INPUT:
                     Debug.Print("WRITE {0} {1}", REVERSEOP[offset], value);
                     break;
 
+                case OP.WPC95_FLIPPER_SWITCH_INPUT:
                 case OP.WPC_FLIPTRONICS_FLIPPER_PORT_A:
                     Debug.Print("WRITE {0} {1}", REVERSEOP[offset], value);
                     outputSolenoidMatrix.writeFliptronic((byte)((~value) & 0xFF));
@@ -529,11 +529,11 @@ namespace WPCEmu.Boards
                 case OP.WPC_EXTBOARD1:
                 case OP.WPC_EXTBOARD2:
                 case OP.WPC_EXTBOARD3:
-                case OP.WPC95_FLIPPER_COIL_OUTPUT:
                     Debug.Print("READ {0} {1}", REVERSEOP[offset], ram[offset]);
                     return ram[offset];
 
                 case OP.WPC95_FLIPPER_SWITCH_INPUT:
+                case OP.WPC95_FLIPPER_COIL_OUTPUT:
                     Debug.Print("READ {0}", REVERSEOP[offset]);
                     return inputSwitchMatrix.getFliptronicsKeys();
 

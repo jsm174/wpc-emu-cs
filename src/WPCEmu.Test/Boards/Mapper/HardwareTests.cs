@@ -8,7 +8,7 @@ namespace WPCEmu.Test.Boards.Mapper
 	public class HardwareTests
 	{
 		[Test, Order(1)]
-		public void ShouldGet_0x3FC2()
+		public void ShouldGetAddress_0x3FC2()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3FC2");
 
@@ -23,7 +23,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(2)]
-		public void ShouldGet_0()
+		public void ShouldGetAddress_0()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0");
 
@@ -41,7 +41,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(4)]
-		public void ShouldGet_0x3200()
+		public void ShouldGetAddress_0x3200()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3200 (DMD PAGE)");
 
@@ -56,7 +56,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(5)]
-		public void ShouldGet_0x3BFF()
+		public void ShouldGetAddress_0x3BFF()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3BFF (DMD PAGE)");
 
@@ -71,7 +71,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(6)]
-		public void ShouldGet_0x3800()
+		public void ShouldGetAddress_0x3800()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3800 (DMD PAGE 1)");
 
@@ -86,7 +86,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(7)]
-		public void ShouldGet_0x3A00()
+		public void ShouldGetAddress_0x3A00()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3A00 (DMD PAGE 2)");
 
@@ -101,7 +101,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(8)]
-		public void ShouldFail_0x4000()
+		public void ShouldFailGetAddress_0x4000()
 		{
 			TestContext.WriteLine("HardwareMapper, should fail to get address, 0x4000");
 
@@ -110,7 +110,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(9)]
-		public void ShouldFail_InvalidOffset()
+		public void ShouldFailGetInvalidOffset()
 		{
 			TestContext.WriteLine("HardwareMapper, should fail to get invalid offset");
 
@@ -119,7 +119,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(10)]
-		public void ShouldFail_0x2000()
+		public void ShouldFailGetAddress_0x2000()
 		{
 			TestContext.WriteLine("HardwareMapper, should fail to get address, 0x4000");
 
@@ -128,7 +128,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(11)]
-		public void ShouldGet_0x3C00()
+		public void ShouldGetAddress_0x3C00()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3c00");
 
@@ -143,7 +143,7 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(12)]
-		public void ShouldGet_0x3E66()
+		public void ShouldGetAddress_0x3E66()
 		{
 			TestContext.WriteLine("HardwareMapper, should get address, 0x3E66 - WPC_SERIAL_CONTROL_PORT **FIXME**");
 
@@ -158,9 +158,9 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(13)]
-		public void ShouldGet_0x3FC0()
+		public void ShouldGetAddress_0x3FC0()
 		{
-			TestContext.WriteLine("should get address, 0x3FC0");
+			TestContext.WriteLine("HardwareMapper, should get address, 0x3FC0");
 
 			var expectedResult = new MapperModel
 			{
@@ -173,9 +173,9 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(14)]
-		public void ShouldGet_0x3FD6()
+		public void ShouldGetAddress_0x3FD6()
 		{
-			TestContext.WriteLine("should get address, 0x3FD6");
+			TestContext.WriteLine("HardwareMapper, should get address, 0x3FD6");
 
 			var expectedResult = new MapperModel
 			{
@@ -188,9 +188,9 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(15)]
-		public void ShouldGet_0x3FDC_WPCS_DATA()
+		public void ShouldGetAddress_0x3FDC_WPCS_DATA()
 		{
-			TestContext.WriteLine("should get address, 0x3FDC - WPCS_DATA");
+			TestContext.WriteLine("HardwareMapper, should get address, 0x3FDC - WPCS_DATA");
 
 			var expectedResult = new MapperModel
 			{
@@ -203,9 +203,9 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(16)]
-		public void ShouldGet_0x3FDD_WPCS_CONTROL_STATUS()
+		public void ShouldGetAddress_0x3FDD_WPCS_CONTROL_STATUS()
 		{
-			TestContext.WriteLine("should get address, 0x3FDD - WPCS_CONTROL_STATUS");
+			TestContext.WriteLine("HardwareMapper, should get address, 0x3FDD - WPCS_CONTROL_STATUS");
 
 			var expectedResult = new MapperModel
 			{
@@ -218,9 +218,9 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(17)]
-		public void ShouldGet_0x3FDE()
+		public void ShouldGetAddress_0x3FDE()
 		{
-			TestContext.WriteLine("should get address, 0x3FDE");
+			TestContext.WriteLine("HardwareMapper, should get address, 0x3FDE");
 
 			var expectedResult = new MapperModel
 			{
@@ -233,9 +233,9 @@ namespace WPCEmu.Test.Boards.Mapper
 		}
 
 		[Test, Order(18)]
-		public void ShouldGet_0x3FE0()
+		public void ShouldGetAddress_0x3FE0()
 		{
-			TestContext.WriteLine("should get address, 0x3FE0");
+			TestContext.WriteLine("HardwareMapper, should get address, 0x3FE0");
 
 			var expectedResult = new MapperModel
 			{
@@ -247,7 +247,7 @@ namespace WPCEmu.Test.Boards.Mapper
 			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
-		[Test, Order(18)]
+		[Test, Order(19)]
 		public void ShouldGetException_FliptronicsAddress()
 		{
 			TestContext.WriteLine("HardwareMapper, should get exception for fliptronics address");
@@ -262,10 +262,25 @@ namespace WPCEmu.Test.Boards.Mapper
 			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
-		[Test, Order(18)]
-		public void ShouldGet_0x3FEB()
+		[Test, Order(20)]
+		public void ShouldGetDisplayAddress_0x3FEB()
 		{
-			TestContext.WriteLine("should get display address, 0x3FEB");
+			TestContext.WriteLine("HardwareMapper, should get display address, 0x3FEB");
+
+			var expectedResult = new MapperModel
+			{
+				offset = 0x3FEB,
+				subsystem = "wpcio"
+			};
+
+			var result = Hardware.getAddress(0x3FEB);
+			Assert.That(result, Is.EqualTo(expectedResult));
+		}
+
+		[Test, Order(21)]
+		public void ShouldGetDisplayAddressAlphaNumericDisplays_0x3FEB()
+		{
+			TestContext.WriteLine("HardwareMapper, should get display address for alpha numeric displays, 0x3FEB");
 
 			var expectedResult = new MapperModel
 			{
@@ -273,14 +288,29 @@ namespace WPCEmu.Test.Boards.Mapper
 				subsystem = "display"
 			};
 
-			var result = Hardware.getAddress(0x3FEB);
+			var result = Hardware.getAddress(0x3FEB, true);
 			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 
-		[Test, Order(19)]
-		public void ShouldGet_0x3FEF()
+		[Test, Order(22)]
+		public void ShouldGetDisplayAddress_0x3FEF()
 		{
-			TestContext.WriteLine("should get display address, 0x3FEF");
+			TestContext.WriteLine("HardwareMapper, should get display address, 0x3FEF");
+
+			var expectedResult = new MapperModel
+			{
+				offset = 0x3FEF,
+				subsystem = "wpcio"
+			};
+
+			var result = Hardware.getAddress(0x3FEF);
+			Assert.That(result, Is.EqualTo(expectedResult));
+		}
+
+		[Test, Order(23)]
+		public void ShouldGetDisplayAddressAlphaNumericDisplays_0x3FEF()
+		{
+			TestContext.WriteLine("HardwareMapper, should get display address for alpha numeric displays, 0x3FEF");
 
 			var expectedResult = new MapperModel
 			{
@@ -288,7 +318,37 @@ namespace WPCEmu.Test.Boards.Mapper
 				subsystem = "display"
 			};
 
-			var result = Hardware.getAddress(0x3FEF);
+			var result = Hardware.getAddress(0x3FEF, true);
+			Assert.That(result, Is.EqualTo(expectedResult));
+		}
+
+		[Test, Order(24)]
+		public void ShouldGetDCSData_0x3FDC()
+		{
+			TestContext.WriteLine("HardwareMapper, should get DCS data, 0x3FDC");
+
+			var expectedResult = new MapperModel
+			{
+				offset = 0x3FDC,
+				subsystem = "sound"
+			};
+
+			var result = Hardware.getAddress(0x3FDC);
+			Assert.That(result, Is.EqualTo(expectedResult));
+		}
+
+		[Test, Order(25)]
+		public void ShouldGetDCSData_0x3FDD()
+		{
+			TestContext.WriteLine("HardwareMapper, should get DCS data, 0x3FDD");
+
+			var expectedResult = new MapperModel
+			{
+				offset = 0x3FDD,
+				subsystem = "sound"
+			};
+
+			var result = Hardware.getAddress(0x3FDD);
 			Assert.That(result, Is.EqualTo(expectedResult));
 		}
 	}

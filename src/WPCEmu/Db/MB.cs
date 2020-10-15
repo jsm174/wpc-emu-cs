@@ -98,7 +98,43 @@
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
         };
 
-        public SolenoidMapping[] solenoidMapping => null;
+        public SolenoidMapping[] solenoidMapping => new SolenoidMapping[]
+        {
+            new SolenoidMapping { id = "01", name = "AUTO PLUNGER" },
+            new SolenoidMapping { id = "02", name = "BRIDE POST" },
+            new SolenoidMapping { id = "03", name = "MUMMY COFFIN" },
+            new SolenoidMapping { id = "04", name = "NOT USED" },
+            new SolenoidMapping { id = "05", name = "LEFT GATE" },
+            new SolenoidMapping { id = "06", name = "RIGHT GATE" },
+            new SolenoidMapping { id = "07", name = "NOT USED" },
+            new SolenoidMapping { id = "08", name = "RAMP LOCK POST" },
+            new SolenoidMapping { id = "09", name = "TROUGH EJECT" },
+            new SolenoidMapping { id = "10", name = "LEFT SLINGSHOT" },
+            new SolenoidMapping { id = "11", name = "RIGHT SLINGSHOT" },
+            new SolenoidMapping { id = "12", name = "LEFT JET BUMPER" },
+            new SolenoidMapping { id = "13", name = "RIGHT JET BUMPER" },
+            new SolenoidMapping { id = "14", name = "BOTTOM JET BUMPER" },
+            new SolenoidMapping { id = "15", name = "LEFT EJECT" },
+            new SolenoidMapping { id = "16", name = "RIGHT POPPER" },
+            new SolenoidMapping { id = "17", name = "WOLFMAN FLASHERS" },
+            new SolenoidMapping { id = "18", name = "BRIDE FLASHERS" },
+            new SolenoidMapping { id = "19", name = "FRANKENSTEIN FLASHERS" },
+            new SolenoidMapping { id = "20", name = "DRACULA COFFIN FLASHERS" },
+            new SolenoidMapping { id = "21", name = "CREATURE FLASHERS" },
+            new SolenoidMapping { id = "22", name = "JETS/MUMMY FLASHERS" },
+            new SolenoidMapping { id = "23", name = "RIGHT POPPER FLASHER" },
+            new SolenoidMapping { id = "24", name = "FRANK ARROW FLASHER" },
+            new SolenoidMapping { id = "25", name = "MONSTERS OF ROCK FLSHR" },
+            new SolenoidMapping { id = "26", name = "WOLFMAN LOOP FLASHERS" },
+            new SolenoidMapping { id = "27", name = "FRANKENSTEIN MOTOR" },
+            new SolenoidMapping { id = "28", name = "UP/DOWN BANK MOTOR" },
+            new SolenoidMapping { id = "29", name = "LOWER RIGHT FLIPPER POWER" },
+            new SolenoidMapping { id = "30", name = "LOWER RIGHT FLIPPER HOLD" },
+            new SolenoidMapping { id = "31", name = "LOWER LEFT FLIPPER POWER" },
+            new SolenoidMapping { id = "32", name = "LOWER LEFT FLIPPER HOLD" },
+            new SolenoidMapping { id = "37", name = "DRACULA MOTOR FORWARD" },
+            new SolenoidMapping { id = "38", name = "DRACULA MOTOR BACKWARD" }
+        };
 
         public Playfield? playfield => new Playfield
         {

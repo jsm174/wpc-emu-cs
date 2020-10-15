@@ -61,6 +61,7 @@ namespace WPCEmu.Boards
         int ticksIrq;
         int protectedMemoryWriteAttempts;
         int memoryWrites;
+        bool hasAlphaNumbericDisplay;
 
         public static WpcCpuBoard getInstance(RomObject romObject)
         {
@@ -108,6 +109,7 @@ namespace WPCEmu.Boards
                 hasAlphanumericDisplay = romObject.hasAlphanumericDisplay
             };
 
+            hasAlphaNumbericDisplay = romObject.hasAlphanumericDisplay;
             asic = CpuBoardAsic.getInstance(initObject);
             soundBoard = SoundBoard.getInstance(initObject);
             displayBoard = DisplayBoard.getInstance(initObject);
@@ -350,10 +352,10 @@ namespace WPCEmu.Boards
 
         void _hardwareWrite(ushort offset, byte value)
         {
-            // write/mirror ram value to ram, so its visible using the memory monitor
+            // write/mirror value to ram, so its visible using the memory monitor
             ram[offset] = value;
 
-            var address = hardwareMapper.getAddress(offset);
+            var address = hardwareMapper.getAddress(offset, hasAlphaNumbericDisplay);
             switch (address.subsystem)
             {
                 case hardwareMapper.SUBSYSTEM_DISPLAY:
@@ -376,7 +378,7 @@ namespace WPCEmu.Boards
 
         byte _hardwareRead(ushort offset)
         {
-            var address = hardwareMapper.getAddress(offset);
+            var address = hardwareMapper.getAddress(offset, hasAlphaNumbericDisplay);
             switch (address.subsystem)
             {
                 case hardwareMapper.SUBSYSTEM_DISPLAY:

@@ -82,7 +82,7 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F3", name = "L FLIPPER EOS" },
             new FliptronicsMapping { id = "F4", name = "L FLIPPER BUTTON" },
             new FliptronicsMapping { id = "F5", name = "UR FLIPPER EOS" },
-            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUT" }
+            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUTTON" }
         };
 
         public SolenoidMapping[] solenoidMapping => null;
@@ -113,8 +113,7 @@ namespace WPCEmu.Db
             closedSwitches = new string[]
             {
                 "22",
-                "16", "17", "18",
-                "F2", "F4", "F6"
+                "16", "17", "18"
             },
             initialAction = new InitialAction[]
             {

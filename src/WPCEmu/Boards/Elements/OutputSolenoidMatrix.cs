@@ -27,7 +27,7 @@ namespace WPCEmu.Boards.Elements
 {
     public class OutputSolenoidMatrix
     {
-        const byte NUMBER_OF_SOLENOIDS = 48;
+        const byte NUMBER_OF_SOLENOIDS = 40;
         const byte ALL_SOLENOID_OFF = 0x00;
 
         const ushort WPC_SOLENOID_GEN_OUTPUT = 0x3FE0;
@@ -84,10 +84,10 @@ namespace WPCEmu.Boards.Elements
             }
         }
 
-        public void writeFliptronic(byte value)
+        public void writeFliptronic(byte byteValue)
         {
             Debug.Print("UPDATE_FLIPPER_SOLENOIDS");
-            _updateSolenoidsPacked(OFFSET_SOLENOID_FLIPTRONIC, value);
+            _updateSolenoidsPacked(OFFSET_SOLENOID_FLIPTRONIC, byteValue);
         }
 
         public void write(ushort sourceAddress, ushort value)

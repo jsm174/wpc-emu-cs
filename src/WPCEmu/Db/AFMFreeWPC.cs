@@ -84,8 +84,8 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F2", name = "R FLIPPER BUTTON" },
             new FliptronicsMapping { id = "F3", name = "L FLIPPER EOS" },
             new FliptronicsMapping { id = "F4", name = "L FLIPPER BUTTON" },
-            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUT" },
-            new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
+            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUTTON" },
+            new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUTTON" }
         };
 
         public SolenoidMapping[] solenoidMapping => null;
@@ -205,8 +205,7 @@ namespace WPCEmu.Db
             {
                 "22",
                 //OPTO SWITCHES: "31", "32", "33", "34", "35", "36", "37"
-                "31", "36", "37", "67",
-                "F2", "F4", "F6", "F8"
+                "31", "36", "37", "67"
             },
             initialAction = new InitialAction[]
             {

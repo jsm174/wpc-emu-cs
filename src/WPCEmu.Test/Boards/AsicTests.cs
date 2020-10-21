@@ -226,6 +226,26 @@ namespace WPCEmu.Test.Boards
 		}
 
 		[Test, Order(20)]
+		public void WriteAndReadWpc95Flipper()
+		{
+			TestContext.WriteLine("wpc, write and read wpc95 flipper");
+
+			wpc.setFliptronicsInput("F2");
+			var result = wpc.read(CpuBoardAsic.OP.WPC95_FLIPPER_SWITCH_INPUT);
+			Assert.That(result, Is.EqualTo(253));
+		}
+
+		[Test, Order(21)]
+		public void WriteAndReadWpc95FlipperCoilOutput()
+		{
+			TestContext.WriteLine("wpc, write and read WPC95_FLIPPER_COIL_OUTPUT");
+
+			wpc.setFliptronicsInput("F1");
+			var result = wpc.read(CpuBoardAsic.OP.WPC95_FLIPPER_COIL_OUTPUT);
+			Assert.That(result, Is.EqualTo(254));
+		}
+
+		[Test, Order(22)]
 		public void IgnoreEmptyState()
 		{
 			TestContext.WriteLine("wpc, ignore empty setState");
@@ -234,7 +254,7 @@ namespace WPCEmu.Test.Boards
 			Assert.That(result, Is.EqualTo(false));
 		}
 
-		[Test, Order(21)]
+		[Test, Order(23)]
 		public void GetStateSetState()
 		{
 			TestContext.WriteLine("wpc, getState / setState");
@@ -246,7 +266,7 @@ namespace WPCEmu.Test.Boards
 			Assert.That(wpc.romBank, Is.EqualTo(11));
 		}
 
-		[Test, Order(22)]
+		[Test, Order(24)]
 		public void ShouldResetBlanking()
 		{
 			TestContext.WriteLine("wpc, should reset blanking");
@@ -255,7 +275,7 @@ namespace WPCEmu.Test.Boards
 			Assert.That(wpc.blankSignalHigh, Is.EqualTo(false));
 		}
 
-		[Test, Order(23)]
+		[Test, Order(25)]
 		public void ShouldNotResetBlanking()
 		{
 			TestContext.WriteLine("wpc, should NOT reset blanking");

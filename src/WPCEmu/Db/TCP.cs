@@ -88,8 +88,8 @@
             new FliptronicsMapping { id = "F2", name = "R FLIPPER BUTTON" },
             new FliptronicsMapping { id = "F3", name = "L FLIPPER EOS" },
             new FliptronicsMapping { id = "F4", name = "L FLIPPER BUTTON" },
-            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUT" },
-            new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUT" }
+            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUTTON" },
+            new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUTTON" }
 
         };
 
@@ -123,8 +123,7 @@
             {
                 "22",
                 //OPTO SWITCHES: "31", "32", "33", "34", "35", "36", "38", "41", "42", "43", "44", "45", "46", "47", "48", "64"
-                "31", "36", "38", "41", "42", "43", "44", "45", "46", "47", "48", "64",
-                "F2", "F4", "F6", "F8"
+                "31", "36", "38", "41", "42", "43", "44", "45", "46", "47", "48", "64"
 
             },
             initialAction = new InitialAction[]

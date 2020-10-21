@@ -61,6 +61,18 @@ namespace WPCEmu.Test.Boards.Elements
 		}
 
 		[Test, Order(5)]
+		public void UpdateFliptronicsSolenoids()
+		{
+			TestContext.WriteLine("solenoidMatrix, update fliptronics solenoids");
+
+			solenoidMatrix.writeFliptronic(0xFF);
+			Assert.That(solenoidMatrix.solenoidState[31], Is.EqualTo(0));
+			Assert.That(solenoidMatrix.solenoidState[32], Is.EqualTo(0xFF));
+			Assert.That(solenoidMatrix.solenoidState[33], Is.EqualTo(0xFF));
+			Assert.That(solenoidMatrix.solenoidState[39], Is.EqualTo(0xFF));
+		}
+
+		[Test, Order(6)]
 		public void FailIfValueExceedsUnsignedByteRange()
 		{
 			TestContext.WriteLine("solenoidMatrix, fail if value exceeds unsigned byte range");
@@ -68,7 +80,7 @@ namespace WPCEmu.Test.Boards.Elements
 			Assert.Throws<System.Exception>(() => solenoidMatrix.write(0x3FE0, 0xFFF));
 		}
 
-		[Test, Order(6)]
+		[Test, Order(7)]
 		public void FailIfAddressIsInvalid()
 		{
 			TestContext.WriteLine("solenoidMatrix, fail if address is invalid");
@@ -76,7 +88,7 @@ namespace WPCEmu.Test.Boards.Elements
 			Assert.Throws<System.Exception>(() => solenoidMatrix.write(0, 0xFF));
 		}
 
-		[Test, Order(7)]
+		[Test, Order(8)]
 		public void UpdateCycles()
 		{
 			TestContext.WriteLine("solenoidMatrix, update cycles");

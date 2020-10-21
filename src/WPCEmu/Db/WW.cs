@@ -88,7 +88,7 @@
             new FliptronicsMapping { id = "F2", name = "R FLIPPER BUTTON" },
             new FliptronicsMapping { id = "F3", name = "L FLIPPER EOS" },
             new FliptronicsMapping { id = "F4", name = "L FLIPPER BUTTON" },
-            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUT" }
+            new FliptronicsMapping { id = "F6", name = "UR FLIPPER BUTTON" }
         };
 
         public SolenoidMapping[] solenoidMapping => null;
@@ -204,8 +204,7 @@
                 "22",
                 //OPTO SWITCHES: "86", "87",
                 "76", "77", "78",
-                "86", "87",
-                "F2", "F4", "F6"
+                "86", "87"
             },
             initialAction = new InitialAction[]
             {

@@ -395,15 +395,15 @@ namespace WPCEmu.Boards
                     Debug.Print("WRITE {0} {1}", REVERSEOP[offset], value);
                     break;
 
+                case OP.WPC95_FLIPPER_COIL_OUTPUT:
+                    Debug.Print("WRITE {0} {1}", REVERSEOP[offset], value);
+                    outputSolenoidMatrix.writeFliptronic((byte)((value) & 0xFF));
+                    break;
+
                 case OP.WPC95_FLIPPER_SWITCH_INPUT:
                 case OP.WPC_FLIPTRONICS_FLIPPER_PORT_A:
                     Debug.Print("WRITE {0} {1}", REVERSEOP[offset], value);
                     outputSolenoidMatrix.writeFliptronic((byte)((~value) & 0xFF));
-                    break;
-
-                case OP.WPC95_FLIPPER_COIL_OUTPUT:
-                    Debug.Print("WRITE {0} {1}", REVERSEOP[offset], value);
-                    outputSolenoidMatrix.writeFliptronic(value);
                     break;
 
                 case OP.WPC_RAM_LOCKSIZE:
@@ -532,11 +532,8 @@ namespace WPCEmu.Boards
                     Debug.Print("READ {0} {1}", REVERSEOP[offset], ram[offset]);
                     return ram[offset];
 
-                case OP.WPC95_FLIPPER_SWITCH_INPUT:
                 case OP.WPC95_FLIPPER_COIL_OUTPUT:
-                    Debug.Print("READ {0}", REVERSEOP[offset]);
-                    return inputSwitchMatrix.getFliptronicsKeys();
-
+                case OP.WPC95_FLIPPER_SWITCH_INPUT:
                 case OP.WPC_FLIPTRONICS_FLIPPER_PORT_A:
                     Debug.Print("READ {0}", REVERSEOP[offset]);
                     return inputSwitchMatrix.getFliptronicsKeys();

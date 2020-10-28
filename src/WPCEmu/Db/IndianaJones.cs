@@ -107,7 +107,51 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F8", name = "LEFT RAMP MADE" }
         };
 
-        public SolenoidMapping[] solenoidMapping => null;
+        public SolenoidMapping[] solenoidMapping => new SolenoidMapping[]
+        {
+            new SolenoidMapping { id = "01", name = "Ball Popper" },
+            new SolenoidMapping { id = "02", name = "Ball Launch" },
+            new SolenoidMapping { id = "03", name = "Totem Drop Up" },
+            new SolenoidMapping { id = "04", name = "Ball Release" },
+            new SolenoidMapping { id = "05", name = "Center Drop Bank" },
+            new SolenoidMapping { id = "06", name = "Idol Release" },
+            new SolenoidMapping { id = "07", name = "Knocker" },
+            new SolenoidMapping { id = "08", name = "Left Elect" },
+            new SolenoidMapping { id = "09", name = "Left Jet Bumper" },
+            new SolenoidMapping { id = "10", name = "Right Jet Bumper" },
+            new SolenoidMapping { id = "11", name = "Bumpeur Bas" },
+            new SolenoidMapping { id = "12", name = "Left Slingshot" },
+            new SolenoidMapping { id = "13", name = "Right Slingshot" },
+            new SolenoidMapping { id = "14", name = "Left Control Gate" },
+            new SolenoidMapping { id = "15", name = "Right Control Gate" },
+            new SolenoidMapping { id = "16", name = "Totem Drop Down" },
+            new SolenoidMapping { id = "17", name = "Eternal Life" },
+            new SolenoidMapping { id = "18", name = "Light Jackpot" },
+            new SolenoidMapping { id = "19", name = "Super Jackpot" },
+            new SolenoidMapping { id = "20", name = "Jackpot" },
+            new SolenoidMapping { id = "21", name = "Path Of Adventure" },
+            new SolenoidMapping { id = "22", name = "Mini Motor Left" },
+            new SolenoidMapping { id = "23", name = "Mini Motor Right" },
+            new SolenoidMapping { id = "24", name = "Plane Gun LEDS" },
+            new SolenoidMapping { id = "25", name = "Dogfight Hurry Up" },
+            new SolenoidMapping { id = "26", name = "Right Ramp" },
+            new SolenoidMapping { id = "27", name = "Left Ramp" },
+            new SolenoidMapping { id = "28", name = "Subway Release" },
+            new SolenoidMapping { id = "29", name = "Lower Right Flipper Power" },
+            new SolenoidMapping { id = "30", name = "Lower Right Flipper Hold" },
+            new SolenoidMapping { id = "31", name = "Lower Left Flipper Power" },
+            new SolenoidMapping { id = "32", name = "Lower Left Flipper Hold" },
+            new SolenoidMapping { id = "33", name = "Diverter Power" },
+            new SolenoidMapping { id = "34", name = "Diverter Hold" },
+            new SolenoidMapping { id = "35", name = "Top Lockup Power" },
+            new SolenoidMapping { id = "36", name = "Top Lockup Hold" },
+            new SolenoidMapping { id = "37", name = "Left Side Flasher" },
+            new SolenoidMapping { id = "38", name = "Right Side Flasher" },
+            new SolenoidMapping { id = "39", name = "Special Flasher" },
+            new SolenoidMapping { id = "40", name = "Totem Multiball" },
+            new SolenoidMapping { id = "41", name = "Jackpot Multiplier Flasher" },
+            new SolenoidMapping { id = "42", name = "Wheel Motor" }
+        };
 
         public Playfield? playfield => new Playfield
         {

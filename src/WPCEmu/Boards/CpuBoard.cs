@@ -308,7 +308,7 @@ namespace WPCEmu.Boards
             {
 
                 case memoryMapper.SUBSYSTEM_RAM:
-                    if (asic.isMemoryProtectionEnabled() ||
+                    if (asic.isMemoryProtectionEnabled() || asic.memoryProtectionMask == null ||
                       (offset & asic.memoryProtectionMask) != asic.memoryProtectionMask)
                     {
                         ram[address.offset] = value;

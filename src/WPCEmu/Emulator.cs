@@ -27,7 +27,7 @@ namespace WPCEmu
             cpuBoard.start();
         }
 
-        WpcCpuBoard.State getUiState(bool includeExpensiveData = true)
+        public WpcCpuBoard.State getUiState(bool includeExpensiveData = true)
         {
             var uiState = cpuBoard.getState();
             var asicChangedState = uiFacade.getChangedAsicState((WpcCpuBoard.Asic)uiState.asic, includeExpensiveData);
@@ -45,12 +45,12 @@ namespace WPCEmu
             return cpuBoard.getState();
         }
 
-        bool? setState(WpcCpuBoard.State stateObject)
+        public bool? setState(WpcCpuBoard.State stateObject)
         {
             return cpuBoard.setState(stateObject);
         }
 
-        void registerAudioConsumer(Action<SoundBoardCallbackData> playbackIdCallback)
+        public void registerAudioConsumer(Action<SoundBoardCallbackData> playbackIdCallback)
         {
             cpuBoard.registerSoundBoardCallback(playbackIdCallback);
         }
@@ -61,7 +61,7 @@ namespace WPCEmu
             return cpuBoard.executeCycle(ticksToRun, tickSteps);
         }
 
-        int executeCycleForTime(int advanceByMs, int tickSteps)
+        public int executeCycleForTime(int advanceByMs, int tickSteps)
         {
             int ticksToAdvance = TICKS_PER_MILLISECOND * advanceByMs;
             return executeCycle(ticksToAdvance, tickSteps);

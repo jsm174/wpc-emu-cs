@@ -70,11 +70,11 @@ namespace WPCEmu.Boards
 
         bool getVideoRamDiff(byte[] videoMemory)
         {
-            bool changedFrames = false;
+            var changedFrames = false;
             for (var i = 0; i < 16; i++)
             {
-                byte[] tempDmdFrame = videoMemory.Skip(i * DMD_PAGE_SIZE).Take(DMD_PAGE_SIZE).ToArray(); //i * DMD_PAGE_SIZE, (i + 1) * DMD_PAGE_SIZE);
-                bool changedFrame = oldState.videoRam[i] != null ? !tempDmdFrame.SequenceEqual(oldState.videoRam[i]) : true;
+                var tempDmdFrame = videoMemory.Skip(i * DMD_PAGE_SIZE).Take(DMD_PAGE_SIZE).ToArray(); 
+                var changedFrame = oldState.videoRam[i] != null ? !tempDmdFrame.SequenceEqual(oldState.videoRam[i]) : true;
 
                 if (changedFrame)
                 {
@@ -145,10 +145,10 @@ namespace WPCEmu.Boards
         {
             var display = (OutputDmdDisplay.State)state.display;
 
-            bool dmdShadedBufferChanged = !display.dmdShadedBuffer.SequenceEqual(oldState.dmdShadedBuffer);
-            bool lampStateChanged = !state.wpc.lampState.SequenceEqual(oldState.lampState);
-            bool solenoidStateChanged = !state.wpc.solenoidState.SequenceEqual(oldState.solenoidState);
-            bool inputStateChanged = !state.wpc.inputState.SequenceEqual(oldState.inputState);
+            var dmdShadedBufferChanged = !display.dmdShadedBuffer.SequenceEqual(oldState.dmdShadedBuffer);
+            var lampStateChanged = !state.wpc.lampState.SequenceEqual(oldState.lampState);
+            var solenoidStateChanged = !state.wpc.solenoidState.SequenceEqual(oldState.solenoidState);
+            var inputStateChanged = !state.wpc.inputState.SequenceEqual(oldState.inputState);
 
             if (dmdShadedBufferChanged)
             {
@@ -167,9 +167,9 @@ namespace WPCEmu.Boards
                 oldState.inputState = state.wpc.inputState.Take(state.wpc.inputState.Length).ToArray();
             }
 
-            bool videoRamChanged = includeExpensiveData == false ? false : getVideoRamDiff(((OutputDmdDisplay.State)state.display).videoRam);
-            MemoryPositionData[] memoryPosition = parseMemoryPosition(state.ram);
-            byte[] ram = includeExpensiveData == false ? null : state.ram;
+            var videoRamChanged = includeExpensiveData == false ? false : getVideoRamDiff(((OutputDmdDisplay.State)state.display).videoRam);
+            var memoryPosition = parseMemoryPosition(state.ram);
+            var ram = includeExpensiveData == false ? null : state.ram;
 
             return new WpcCpuBoard.Asic
             {

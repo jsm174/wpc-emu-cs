@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <Description>C# port of neophob's amazing wpc-emu @ https://github.com/neophob/wpc-emu</Description>
-    <AssemblyVersion>0.0.5</AssemblyVersion>
+    <AssemblyVersion>0.0.6</AssemblyVersion>
     <Authors>Jason Millard</Authors>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackOnBuild>true</PackOnBuild>

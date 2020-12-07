@@ -88,7 +88,48 @@ namespace WPCEmu.Db
             new FliptronicsMapping { id = "F8", name = "UL FLIPPER BUTTON" }
         };
 
-        public SolenoidMapping[] solenoidMapping => null;
+        public SolenoidMapping[] solenoidMapping => new SolenoidMapping[]
+        {
+            new SolenoidMapping { id = "01", name = "AUTO PLUNGER" },
+            new SolenoidMapping { id = "02", name = "TROUGH EJECT" },
+            new SolenoidMapping { id = "03", name = "LEFT POPPER" },
+            new SolenoidMapping { id = "04", name = "RIGHT POPPER" },
+            new SolenoidMapping { id = "05", name = "LEFT ALIEN LOW" },
+            new SolenoidMapping { id = "06", name = "LEFT ALIEN HIGH" },
+            new SolenoidMapping { id = "07", name = "KNOCKER" },
+            new SolenoidMapping { id = "08", name = "RIGHT ALIEN" },
+            new SolenoidMapping { id = "09", name = "LEFT SLINGSHOT" },
+            new SolenoidMapping { id = "10", name = "RIGHT SLINGSHOT" },
+            new SolenoidMapping { id = "11", name = "LEFT JET" },
+            new SolenoidMapping { id = "12", name = "BOTTOM JET" },
+            new SolenoidMapping { id = "13", name = "RIGHT JET" },
+            new SolenoidMapping { id = "14", name = "RIGHT ALIEN LOW" },
+            new SolenoidMapping { id = "15", name = "SAUCER SHAKE" },
+            new SolenoidMapping { id = "16", name = "DROP TARGET" },
+            new SolenoidMapping { id = "17", name = "RIGHT RAMP HIGH" },
+            new SolenoidMapping { id = "18", name = "RIGHT RAMP LOW" },
+            new SolenoidMapping { id = "19", name = "RIGHT SIDE HIGH" },
+            new SolenoidMapping { id = "20", name = "RIGHT SIDE LOW" },
+            new SolenoidMapping { id = "21", name = "CENTER ARROW" },
+            new SolenoidMapping { id = "22", name = "JETS" },
+            new SolenoidMapping { id = "23", name = "SAUCER DOME" },
+            new SolenoidMapping { id = "24", name = "MOTOR BANK" },
+            new SolenoidMapping { id = "25", name = "LEFT RAMP LEFT" },
+            new SolenoidMapping { id = "26", name = "LEFT RAMP RIGHT" },
+            new SolenoidMapping { id = "27", name = "LEFT SIDE HIGH" },
+            new SolenoidMapping { id = "28", name = "LEFT SIDE LOW" },
+            new SolenoidMapping { id = "29", name = "LOWER RIGHT FLIPPER POWER" },
+            new SolenoidMapping { id = "30", name = "LOWER RIGHT FLIPPER HOLD" },
+            new SolenoidMapping { id = "31", name = "LOWER LEFT FLIPPER POWER" },
+            new SolenoidMapping { id = "32", name = "LOWER LEFT FLIPPER HOLD" },
+            new SolenoidMapping { id = "33", name = "RIGHT GATE" },
+            new SolenoidMapping { id = "34", name = "LEFT GATE" },
+            new SolenoidMapping { id = "35", name = "DIVERTER POWER" },
+            new SolenoidMapping { id = "36", name = "DIVERTER HOLD" },
+            new SolenoidMapping { id = "37", name = "L.E.D. CLOCK" },
+            new SolenoidMapping { id = "38", name = "L.E.D. DATA" },
+            new SolenoidMapping { id = "39", name = "STROBE LIGHT" }
+        };
 
         public Playfield? playfield => new Playfield
         {

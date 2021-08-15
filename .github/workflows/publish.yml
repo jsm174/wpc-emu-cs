@@ -16,4 +16,4 @@ jobs:
       - run: |
           cd src/WPCEmu
           dotnet pack -c Release -o nupkg
-          nuget push nupkg/WPCEmu.*.nupkg -ApiKey ${{ secrets.NUGET_KEY }} -src https://api.nuget.org/v3/index.json
+          nuget push nupkg/WPCEmuCS.*.nupkg -ApiKey ${{ secrets.NUGET_KEY }} -src https://api.nuget.org/v3/index.json

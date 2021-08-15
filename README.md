@@ -1,9 +1,9 @@
-# WPC-Emu CS
+# WPCEmuCS
 
 [![CI status (x64 Linux, macOS and Windows)](https://github.com/jsm174/wpc-emu-cs/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/jsm174/wpc-emu-cs/actions)
 [![NuGet](https://img.shields.io/nuget/vpre/WPCEmuCS.svg)](https://www.nuget.org/packages/WPCEmuCS)
 
-*Add WPC-Emu support to any .NET application*
+*Add WPC Emulator support to any .NET application*
 
 This Nuget package is C# port of neophob's amazing WPC Emulator [wpc-emu](https://github.com/neophob/wpc-emu).
 

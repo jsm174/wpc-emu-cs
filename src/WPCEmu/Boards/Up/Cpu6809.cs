@@ -1,4 +1,4 @@
-﻿/*
+/*
   seems to be based on 6809.c by Larry Bank
 
   TODO, see https://groups.google.com/forum/#!msg/comp.sys.m6809/ct2V1nGIy2c/4xfP-qI91TIJ

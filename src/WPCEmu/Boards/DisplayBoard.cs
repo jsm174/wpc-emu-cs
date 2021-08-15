@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Diagnostics;
 using WPCEmu.Boards.Elements;
 using dmdMapper = WPCEmu.Boards.Mapper.Dmd;

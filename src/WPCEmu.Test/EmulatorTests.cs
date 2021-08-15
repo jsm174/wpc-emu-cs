@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Reflection;
 using NUnit.Framework;
 
@@ -17,8 +17,19 @@ namespace WPCEmu.Test
 				u06 = new byte[262144]
 			});
 
+			AssemblyName assemblyName = null;
+
+			foreach (var tmpAssemblyName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+			{
+				if (tmpAssemblyName.Name == "WPCEmuCS")
+                {
+					assemblyName = tmpAssemblyName;
+					break;
+				}
+			}
+
 			var version = emulator.version();
-			Assert.That(version, Is.EqualTo(Assembly.GetExecutingAssembly().GetName().Version.ToString()));
+			Assert.That(version, Is.EqualTo(assemblyName.Version.ToString()));
 		}
 
 		[Test, Order(2)]

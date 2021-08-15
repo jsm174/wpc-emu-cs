@@ -1,4 +1,4 @@
-﻿using System.Linq;
+using System.Linq;
 using System.Security.Cryptography;
 using NUnit.Framework;
 using WPCEmu.Boards.Elements;

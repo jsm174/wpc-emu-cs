@@ -1,4 +1,4 @@
-﻿using NUnit.Framework;
+using NUnit.Framework;
 using WPCEmu.Boards;
 
 namespace WPCEmu.Test.Boards

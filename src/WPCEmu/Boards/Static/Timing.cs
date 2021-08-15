@@ -1,4 +1,4 @@
-﻿namespace WPCEmu.Boards.Static
+namespace WPCEmu.Boards.Static
 {
     public static class Timing
     {

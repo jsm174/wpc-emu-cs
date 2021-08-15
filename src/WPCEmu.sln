@@ -5,6 +5,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPCEmu", "WPCEmu\WPCEmu.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPCEmu.Test", "WPCEmu.Test\WPCEmu.Test.csproj", "{F13714E2-9E22-42D2-B35F-F0492AD034C0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPCEmu.Example", "WPCEmu.Example\WPCEmu.Example.csproj", "{56A48F0A-F80E-4CBD-86E7-C778EEC8ABDF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WPCEmu.Tracer", "WPCEmu.Tracer\WPCEmu.Tracer.csproj", "{FB63D325-0B56-4CC1-B1B4-4D7B25994D19}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,5 +23,13 @@ Global
 		{F13714E2-9E22-42D2-B35F-F0492AD034C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F13714E2-9E22-42D2-B35F-F0492AD034C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F13714E2-9E22-42D2-B35F-F0492AD034C0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{56A48F0A-F80E-4CBD-86E7-C778EEC8ABDF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{56A48F0A-F80E-4CBD-86E7-C778EEC8ABDF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{56A48F0A-F80E-4CBD-86E7-C778EEC8ABDF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{56A48F0A-F80E-4CBD-86E7-C778EEC8ABDF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FB63D325-0B56-4CC1-B1B4-4D7B25994D19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FB63D325-0B56-4CC1-B1B4-4D7B25994D19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FB63D325-0B56-4CC1-B1B4-4D7B25994D19}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FB63D325-0B56-4CC1-B1B4-4D7B25994D19}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

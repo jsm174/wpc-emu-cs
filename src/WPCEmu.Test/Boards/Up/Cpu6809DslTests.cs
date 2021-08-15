@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using NUnit.Framework;
@@ -596,7 +596,7 @@ namespace WPCEmu.Test.Boards.Up
 		{
 			List<InstructionData> list = new List<InstructionData>();
 
-			foreach (var line in instructions.Split("\n"))
+			foreach (var line in instructions.Split(Environment.NewLine))
 			{
 				if (line.StartsWith("|"))
 				{

@@ -1,4 +1,4 @@
-﻿namespace WPCEmu.Db
+namespace WPCEmu.Db
 {
     public class CirqusVoltaire : IDb
     {

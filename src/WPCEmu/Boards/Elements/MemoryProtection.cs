@@ -1,4 +1,4 @@
-﻿namespace WPCEmu.Boards.Elements
+namespace WPCEmu.Boards.Elements
 {
     public static class MemoryProtection
     {

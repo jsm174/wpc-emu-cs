@@ -1,4 +1,4 @@
-﻿namespace WPCEmu
+namespace WPCEmu
 {
     public struct MemoryPatchData
     {

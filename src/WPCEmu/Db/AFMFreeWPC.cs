@@ -1,4 +1,4 @@
-﻿using WPCEmu.Boards;
+using WPCEmu.Boards;
 
 namespace WPCEmu.Db
 {

@@ -1,4 +1,4 @@
-﻿/*
+/*
   seems to be based on 6809.c by Larry Bank
 
   TODO, see https://groups.google.com/forum/#!msg/comp.sys.m6809/ct2V1nGIy2c/4xfP-qI91TIJ
@@ -1290,7 +1290,7 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0x22: //BHI
                     saddr = signed(fetch());
-                    if ((regCC & (F_CARRY | F_ZERO)) == 0)
+                    if (!((regCC & (F_CARRY | F_ZERO)) != 0))
                     {
                         regPC = (ushort)(regPC + saddr);
                     }
@@ -1304,7 +1304,7 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0x24: //BCC
                     saddr = signed(fetch());
-                    if ((regCC & F_CARRY) == 0)
+                    if (!((regCC & F_CARRY) != 0))
                     {
                         regPC = (ushort)(regPC + saddr);
                     }
@@ -1318,7 +1318,7 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0x26: //BNE
                     saddr = signed(fetch());
-                    if ((regCC & F_ZERO) == 0)
+                    if (!((regCC & F_ZERO) != 0))
                     {
                         regPC = (ushort)(regPC + saddr);
                     }
@@ -1332,7 +1332,7 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0x28: //BVC
                     saddr = signed(fetch());
-                    if ((regCC & F_OVERFLOW) == 0)
+                    if (!((regCC & F_OVERFLOW) != 0))
                     {
                         regPC = (ushort)(regPC + saddr);
                     }
@@ -1346,7 +1346,7 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0x2a: //BPL
                     saddr = signed(fetch());
-                    if ((regCC & F_NEGATIVE) == 0)
+                    if (!((regCC & F_NEGATIVE) != 0))
                     {
                         regPC = (ushort)(regPC + saddr);
                     }
@@ -1360,7 +1360,7 @@ namespace WPCEmu.Boards.Up
                     break;
                 case 0x2c: //BGE
                     saddr = signed(fetch());
-                    if (((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) == 0)
+                    if (!(((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0))
                     {
                         regPC = (ushort)(regPC + saddr);
                     }
@@ -1375,8 +1375,8 @@ namespace WPCEmu.Boards.Up
                 case 0x2e: //BGT
                     saddr = signed(fetch());
                     if (
-                        (((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) == 0) ||
-                        ((regCC & F_ZERO) != 0)
+                       !((((regCC & F_NEGATIVE) ^ ((regCC & F_OVERFLOW) << 2)) != 0) ||
+                        ((regCC & F_ZERO) != 0))
                     )
                     {
                         regPC = (ushort)(regPC + saddr);

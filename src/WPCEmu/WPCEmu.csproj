@@ -9,7 +9,7 @@
     <AssemblyName>WPCEmuCS</AssemblyName>
     <AssemblyVersion>0.7.0</AssemblyVersion>
     <PackageId>WPCEmuCS</PackageId>
-    <PackageVersion>0.7.0-preview.1</PackageVersion>
+    <PackageVersion>0.7.0-preview.2</PackageVersion>
     <PackageProjectUrl>https://github.com/jsm174/wpc-emu-cs</PackageProjectUrl>
     <PackageLicenseFile>LICENSE.txt</PackageLicenseFile>
     <InformationalVersion>$(PackageVersion)</InformationalVersion>
